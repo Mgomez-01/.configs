@@ -1,7 +1,7 @@
 #+title: Emacs Configuration file in org mode 
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el
 
-* Baisc Configs
+* Basic Configs
 ** Package Managers
 
 #+begin_src emacs-lisp
