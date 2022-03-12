@@ -1,0 +1,21 @@
+#+Title: Backup for all config type files
+
+* Types of files contained
+** Keyboard files
+*** Files for Dactyl Manuform Keyboard
+Only the necessary files to flash a new keyboard if needed.
+- keymap.c : contains the layers defined for the keyboard
+- 5x6.h : contains the layout definition given the keys locations on the device
+- 5x6.c : contains definition of keyboard matrix and LED code if needed
+
+** Configs
+- Emacs_config.org : all emacs changes held in one place to be loaded using org Tangle
+** Backups
+- .emacs_backup : a copy of emacs config file from before I converted to use org mode
+** Themes
+- User_Dark-theme.el : Exactly what it sounds like
+- color-themes.el : a test theme with lots of color
+- UD-theme.el : a test minimalist Dark theme
+
+** Agenda
+- Backup of things to get done for school 
