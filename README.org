@@ -13,9 +13,9 @@ Only the necessary files to flash a new keyboard if needed.
 ** Backups
 - .emacs_backup : a copy of emacs config file from before I converted to use org mode
 ** Themes
-- User_Dark-theme.el : Exactly what it sounds like
-- color-themes.el : a test theme with lots of color
-- UD-theme.el : a test minimalist Dark theme
+- User_Dark-theme.el : Exactly what it sounds like.
+- color-themes.el : a test theme with lots of color.
+- UD-theme.el : a test minimalist Dark theme.
 
 ** Agenda
 - Backup of things to get done for school 
