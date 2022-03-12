@@ -3,29 +3,20 @@
 
 * Basic Configs
 ** Package Managers
-
+This contains all package manager code
 #+begin_src emacs-lisp
   ;; adding in package archives
   (require 'package)
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			   ("org" . "https://orgmode.org/elpa/")
 			   ("elpa" . "https://elpa.gnu.org/packages/")))
-  ;; get rid of unwanted pieces
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-
-  ;; set auto reload with auto revert 
-  (auto-revert-mode 1)
-  ;; set save place mode for all files
-  (save-place-mode 1)
-  ;; save history for all buffers
-  (savehist-mode 1)
 #+end_src
 
 #+RESULTS:
 
 ** Org specific changes
+Org specific modifications to allow for simpler entry in configs and other
+files.
 #+begin_src emacs-lisp
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
@@ -52,7 +43,7 @@
 #+end_src
 
 ** Automatic Tangling of config
-
+Exactly as it sounds. Tangles the config to init.el for loading in at Emacs startup
 #+begin_src emacs-lisp
   (defun efs/org-babel-tangle-config ()
     (when
@@ -71,17 +62,20 @@
 
 * Quality of life changes
 ** Vertico
+Vertico package for vertical buffer during completions
 #+begin_src emacs-lisp
 (require 'vertico)
 (vertico-mode t)
 #+end_src
 
 ** Orderless
+A mod for Vertico to allow searching by any string instead of by starting string
 #+begin_src emacs-lisp
   (require 'orderless)
   (setq completion-styles '(orderless))
 #+end_src
 ** Rainbow mode stuff
+Modifications for using rainbow delimiters. Makes navigating elisp code much easier
 #+begin_src emacs-lisp
   (require 'rainbow-mode)
   (rainbow-mode 1)
@@ -106,12 +100,15 @@
 #+end_src
 
 ** Marginalia
+A simple package that allows for a string of helpful text to be added alongside
+the different commands that you can use in emacs.
 #+begin_src emacs-lisp
 (require 'marginalia)
 (marginalia-mode)
 #+end_src
     
 ** Line numbers
+Adds in line numbers for the file using a relative position
 #+begin_src emacs-lisp
   (require 'display-line-numbers)
   (global-display-line-numbers-mode 'relative)
@@ -119,13 +116,34 @@
 #+end_src
 
 ** Which Key Mode
+A helpful package that allows for a buffer to appear with hotkey commands for the
+current mode.
 #+begin_src emacs-lisp
+  (require 'which-key)
   (which-key-mode t)
+#+end_src
+
+** Various changes
+Some simple quality of life things for me. 
+#+begin_src emacs-lisp
+  ;; get rid of unwanted pieces
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+
+  ;; set auto reload with auto revert 
+  (auto-revert-mode 1)
+  ;; set save place mode for all files
+  (save-place-mode 1)
+  ;; save history for all buffers
+  (savehist-mode 1)
+
 #+end_src
 
 
 * Autocomplete Stuff
 ** AC package
+ac package for autocompletion in various modes. still needs some work
 #+begin_src emacs-lisp
 ;; start auto-complete package
 (require 'auto-complete-config)
@@ -133,6 +151,8 @@
 #+end_src
 
 ** YAS(yasnippet)
+Yasnippet configuration for using snippets in code. Using in programming
+mode since that is the most convenient.
 #+begin_src emacs-lisp
   (require 'yasnippet)
   (add-to-list 'load-path
@@ -150,7 +170,11 @@
 
 * Visual Changes
 ** New Theme colors
+Load personal custom theme created for my setup and a hook for
+fontify to give selection color if wanted(useful for customization
+and setting up the theme).
 #+begin_src emacs-lisp
   (load-theme 'User_Dark t)
   (add-hook 'Info-selection-hook 'info-colors-fontify-node)
 #+end_src
+
