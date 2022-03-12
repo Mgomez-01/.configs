@@ -1,6 +1,6 @@
-#+title: Emacs Configuration file in org mode 
+#+title: Emacs Configuration file in org mode
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el
- 
+
 * Basic Configs
 ** Package Managers
 
@@ -35,11 +35,7 @@
    '((emacs-lisp . t)
      (python . t)))
   (setq org-confirm-babel-evaluate nil)
-
-  (require 'org-tempo)
-  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (setq org-support-shift-select t)
-
 
   (require 'org-superstar)
 
@@ -55,14 +51,14 @@
     (when
 	(string-equal
 	 (buffer-file-name)
-	 (expand-file-name "/mnt/c/Users/undrg/OneDrive - University of Utah/.emacs_stuff/Emacs_config.org"))
+	 (expand-file-name "/mnt/c/Users/undrg/OneDrive - University of Utah/.emacs_stuff/configs/Emacs_config.org"))
       (let
 	  ((org-confirm-babel-evaluate nil))
 	(org-babel-tangle))
       )
     )
 
-    (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
+  (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
 #+end_src
 
 
@@ -75,8 +71,8 @@
 
 ** Orderless
 #+begin_src emacs-lisp
-(require 'orderless)
-(setq completion-styles '(orderless))
+  (require 'orderless)
+  (setq completion-styles '(orderless))
 #+end_src
 ** Rainbow mode stuff
 #+begin_src emacs-lisp
@@ -115,6 +111,11 @@
   (menu-bar-display-line-numbers-mode 'relative)
 #+end_src
 
+** Which Key Mode
+#+begin_src emacs-lisp
+  (which-key-mode t)
+#+end_src
+
 
 * Autocomplete Stuff
 ** AC package
@@ -137,3 +138,12 @@
   (add-hook 'prog-mode-hook #'yas-minor-mode)
 #+end_src
 
+
+
+
+* Visual Changes
+** New Theme colors
+#+begin_src emacs-lisp
+  (load-theme 'User_Dark t)
+  
+#+end_src

@@ -1,0 +1,131 @@
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+ '(background-color nil)
+ '(custom-enabled-themes '(manoj-dark))
+ '(custom-safe-themes
+   '("cd42136d8316b7330f712b675e9c7eb5d1191e3ae1b24e6cef0178be7f2a5c39" "01f72552de0aed7bd2001f6955f95dda3e268ba7e2e727eaea46ec806b3f331b" "7e6e27c06967da8c2cef1e5e066154b9db0bbf8d6d266bcdd6715f10facf8e00" default))
+ '(display-line-numbers 'relative)
+ '(display-line-numbers-current-absolute nil)
+ '(global-highlight-changes-mode t)
+ '(highlight-changes-face-list
+   '(highlight-changes-1 highlight-changes-2 highlight-changes-3 highlight-changes-4 highlight-changes-5 highlight-changes-6 highlight-changes-7))
+ '(package-selected-packages
+   '(ascii-table company company-anaconda company-arduino isortify jedi python-mode use-package laas matlab-mode which-key format-all orderless marginalia yasnippet-snippets ## vertico rainbow-delimiters projectile-codesearch ccls achievements company-c-headers flycheck-irony company-irony irony vmd-mode ac-math platformio-mode org-inline-pdf sr-speedbar dir-treeview auto-complete-clang auto-complete-c-headers yasnippet ac-c-headers)))
+
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(highlight-changes ((t (:underline (:color foreground-color :style wave) :weight bold))))
+ '(highlight-changes-delete ((t nil)))
+ '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta"))))
+ '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue"))))
+ '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "yellow"))))
+ '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "green"))))
+ '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "white"))))
+ '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "cyan"))))
+ '(rainbow-delimiters-depth-9-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta")))))
+
+
+;;Start package.el with emcs
+(require 'package)
+
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+;; init package.el
+(package-initialize)
+;; start auto-complete package
+(require 'auto-complete-config)
+(ac-config-default)
+
+
+;; start yasnippet
+(add-to-list 'load-path
+             "~/.emacs.d/yasnippet")
+(add-to-list 'load-path
+             "~/.emacs.d/snippets")
+(require 'yasnippet)
+(yas/initialize)
+(yas-global-mode 1)
+(yas-reload-all)
+(add-hook 'prog-mode-hook #'yas-minor-mode)
+
+;; add header inits
+(defun my:ac-c-header-init ()
+  (require 'auto-complete-c-headers)
+  (add-to-list 'ac-sources 'ac-source-c-headers))
+;;add hooks
+(add-hook 'c++-mode-hook 'my:ac-c-header-init)
+(add-hook 'c-mode-hook 'my:ac-c-header-init)
+
+(require 'sr-speedbar)
+(global-set-key (kbd "C-<f9>") 'sr-speedbar-toggle)
+
+(require 'company-irony)
+(add-hook 'c++-mode-hook 'irony-mode)
+;;(add-hook 'c-mode-hook 'irony-mode)
+;;(add-hook 'objc-mode-hook 'irony-mode)
+
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+(require 'achievements)
+(achievements-mode 1)
+
+(require 'ccls)
+(setq ccls-executable "/path/to/ccls/Release/ccls")
+
+(require 'platformio-mode)
+
+;; Enable ccls for all c++ files, and platformio-mode only
+;; when needed (platformio.ini present in project root).
+(add-hook 'c++-mode-hook (lambda ()
+                           (lsp-deferred)
+                           (platformio-conditionally-enable)))
+(projectile-mode +1)
+;; Recommended keymap prefix on macOS
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+;; Recommended keymap prefix on Windows/Linux
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+(global-set-key (kbd "M-p") 'ace-window)
+
+(require 'vertico)
+(vertico-mode 1)
+(save-place-mode 1)
+(savehist-mode 1)
+
+(require 'marginalia)
+(marginalia-mode)
+
+(require 'orderless)
+(setq completion-styles '(orderless))
+;;(setq completion-styles '(substring orderless))
+
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+
+(require 'format-all)
+(format-all-mode)
+(add-hook 'prog-mode-hook 'format-all-mode)
+(add-hook 'format-all-mode-hook 'format-all-ensure-formatter)
+
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+;; functionality for showing which key comes next after a keybind is hit
+;; Try "Ctrl-x" and wait after for a second to see what happens
+
+(which-key-mode)
+(which-key-setup-side-window-bottom)
+
+
+;; Org-mode stuff
+(require 'org-tempo)

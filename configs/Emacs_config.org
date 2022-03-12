@@ -1,0 +1,149 @@
+#+title: Emacs Configuration file in org mode
+#+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el
+
+* Basic Configs
+** Package Managers
+
+#+begin_src emacs-lisp
+  ;; adding in package archives
+  (require 'package)
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			   ("org" . "https://orgmode.org/elpa/")
+			   ("elpa" . "https://elpa.gnu.org/packages/")))
+  ;; get rid of unwanted pieces
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+
+  ;; set auto reload with auto revert 
+  (auto-revert-mode 1)
+  ;; set save place mode for all files
+  (save-place-mode 1)
+  ;; save history for all buffers
+  (savehist-mode 1)
+#+end_src
+
+#+RESULTS:
+
+** Org specific changes
+#+begin_src emacs-lisp
+  (require 'org-tempo)
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  ;; set up org babel languages for code blocks
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (python . t)))
+  (setq org-confirm-babel-evaluate nil)
+  (setq org-support-shift-select t)
+
+  (require 'org-superstar)
+
+  (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
+  
+  (add-to-list 'load-path "~/.emacs.d/org-superstar/")
+#+end_src
+
+** Automatic Tangling of config
+
+#+begin_src emacs-lisp
+  (defun efs/org-babel-tangle-config ()
+    (when
+	(string-equal
+	 (buffer-file-name)
+	 (expand-file-name "/mnt/c/Users/undrg/OneDrive - University of Utah/.emacs_stuff/configs/Emacs_config.org"))
+      (let
+	  ((org-confirm-babel-evaluate nil))
+	(org-babel-tangle))
+      )
+    )
+
+  (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
+#+end_src
+
+
+* Quality of life changes
+** Vertico
+#+begin_src emacs-lisp
+(require 'vertico)
+(vertico-mode t)
+#+end_src
+
+** Orderless
+#+begin_src emacs-lisp
+  (require 'orderless)
+  (setq completion-styles '(orderless))
+#+end_src
+** Rainbow mode stuff
+#+begin_src emacs-lisp
+  (require 'rainbow-mode)
+  (rainbow-mode 1)
+  (rainbow-delimiters-mode t)
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+  
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(highlight-changes ((t (:underline (:color foreground-color :style wave) :weight bold))))
+   '(highlight-changes-delete ((t nil)))
+   '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta"))))
+   '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue"))))
+   '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "yellow"))))
+   '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "green"))))
+   '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "white"))))
+   '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "cyan"))))
+   '(rainbow-delimiters-depth-9-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta")))))
+
+#+end_src
+
+** Marginalia
+#+begin_src emacs-lisp
+(require 'marginalia)
+(marginalia-mode)
+#+end_src
+    
+** Line numbers
+#+begin_src emacs-lisp
+  (require 'display-line-numbers)
+  (global-display-line-numbers-mode 'relative)
+  (menu-bar-display-line-numbers-mode 'relative)
+#+end_src
+
+** Which Key Mode
+#+begin_src emacs-lisp
+  (which-key-mode t)
+#+end_src
+
+
+* Autocomplete Stuff
+** AC package
+#+begin_src emacs-lisp
+;; start auto-complete package
+(require 'auto-complete-config)
+(ac-config-default)
+#+end_src
+
+** YAS(yasnippet)
+#+begin_src emacs-lisp
+  (require 'yasnippet)
+  (add-to-list 'load-path
+	       "~/.emacs.d/yasnippet")
+  (add-to-list 'load-path
+	       "~/.emacs.d/snippets")
+  (yas/initialize)
+  (yas-global-mode 1)
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook #'yas-minor-mode)
+#+end_src
+
+
+
+
+* Visual Changes
+** New Theme colors
+#+begin_src emacs-lisp
+  (load-theme 'User_Dark t)
+  (add-hook 'Info-selection-hook 'info-colors-fontify-node)
+#+end_src

@@ -1,0 +1,20 @@
+#+title: Agenda Items
+
+* This upcoming week (3/14/22-3/21/22)
+
+** Get started on Lab5 (3305)
+*** Single Stub matching
+- Monopole antenna build. Single stub matching network
+- Read 2-5 in TB and go over provided code
+  [[file:/mnt/c/Users/undrg/OneDrive - University of Utah/University_of_Utah/ECE_3305/Lab5/microstrip.m][Microstrip Line Code]]
+  [[file:/mnt/c/Users/undrg/OneDrive - University of Utah/University_of_Utah/ECE_3305/Lab5/ShuntStubMatchingNetwork.m][Single Stub Matching]]
+
+** Finish Lab5 I2C ptcl(5780)
+- Still need to complete the lab
+** Get started on Lab6 (5780)
+- No idea what is needed. Read over the next handout
+** Get started on Lab4 (3500)
+- This lab should be fairly easy from what another student
+  stated.
+  [[file:/mnt/c/Users/undrg/OneDrive - University of Utah/University_of_Utah/ECE_3500/Lab/Lab4/Lab4.tex][Lab4 Tex File]]
+
