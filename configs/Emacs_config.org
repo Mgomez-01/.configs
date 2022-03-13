@@ -10,10 +10,14 @@ This contains all package manager code
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			   ("org" . "https://orgmode.org/elpa/")
 			   ("elpa" . "https://elpa.gnu.org/packages/")))
+
+
+  (eval-when-compile
+  ;; Following line is not needed if use-package.el is in ~/.emacs.d
+  (require 'use-package))
+
 #+end_src
-
-#+RESULTS:
-
+	
 ** Org specific changes
 Org specific modifications to allow for simpler entry in configs and other
 files.
@@ -60,7 +64,11 @@ Exactly as it sounds. Tangles the config to init.el for loading in at Emacs star
   (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
 #+end_src
 
-
+** Magit Git Client
+#+begin_src emacs-lisp
+    (use-package magit
+      :ensure t)
+#+end_src
 * Quality of life changes
 ** Vertico
 Vertico package for vertical buffer during completions
@@ -108,12 +116,13 @@ the different commands that you can use in emacs.
 (marginalia-mode)
 #+end_src
     
-** Line numbers
+** Line numbers and modes
 Adds in line numbers for the file using a relative position
 #+begin_src emacs-lisp
   (require 'display-line-numbers)
   (global-display-line-numbers-mode 'relative)
   (menu-bar-display-line-numbers-mode 'relative)
+  (global-visual-line-mode t)
 #+end_src
 
 ** Which Key Mode
