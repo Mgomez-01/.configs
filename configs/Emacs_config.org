@@ -215,3 +215,22 @@ result to be any of the following:
 printf("Hello %s!!","world");
 #+end_src
 
+
+
+* GUI Specific
+** EXWM
+Window manager for emacs. May be useful for tiling and controlling from
+keyboard alone. Still need some changes on system to get it working with
+WSL properly.
+*** Next steps
+  - Need to set up displays. currently does not load
+    correctly and spans over all screens.
+  - Need to find a method of partitioning the screens
+    into their own respective areas.
+  - look into randr for detecting and configuring the
+    displays. 
+#+begin_src emacs-lisp
+   ;;(require 'exwm)
+   ;;(require 'exwm-config)
+   ;;(exwm-config-example)
+#+end_src
