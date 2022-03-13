@@ -180,7 +180,7 @@ and setting up the theme).
 #+end_src
 
 
-** Example block with results
+** Example block with results (View Raw to see org text)
 Example of a block with results outputted. change keyword after
 result to be any of the following:
 *** Collection
