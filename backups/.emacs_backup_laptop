@@ -1,0 +1,83 @@
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("ff8be9ed2696bf7bc999423d909a603cb23a9525bb43135c0d256b0b9377c958" "d1527d35673f958d370d23096a266888771d68f5942be5377796d79ab2c9792f" "a0d9281cf41e8a226f0539a7f54e4812fdeaaec36c751b84671df97a54013465" "9ac11c78f208abf58e5b313a33147cbf209ad9dc9cb169bf82464b043b45ad7a" "6cf0e8d082a890e94e4423fc9e222beefdbacee6210602524b7c84d207a5dfb5" "0f302165235625ca5a827ac2f963c102a635f27879637d9021c04d845a32c568" "c29d6bc4bb6ee61149ce0fce6bc2bea539dcab11f0fb7bb0f1e2d8f5fb817a8e" "0615f6940c6c5e5638c9157644263889db755d43576c25f7b311806f4cfe2c3a" "5e769f0dc4c262f216c2a30ca8bf55ff2ebc164f779bd2f32ce989290dc13485" "011d4421eedbf1a871d1a1b3a4d61f4d0a2be516d4c94e111dfbdc121da0b043" "20ad8133a73088c0ce4f26d106c3e70cae4e10c7e613c9b9e17a962eb194a24f" "4ca84f9861113f889d505b66c4a9c30b81400f450b54f4c857d3eb44c5bdc601" "a4ef58c2fb31b065ad09fa3029adba5eb518e42ef104cf9acf7c409abf40ca55" "8310462f5008fe10661e27ceab164e05c509343641cc262134fc623422b5999d" "10551f0a24d0ac97a109f02178e9e34b448ee12a52357911cf3362a6b249cae6" "e624f013e266f41148aa2e445a4b8681b0afb346a9126993e345309c9a829535" "e006d90eaf64a2d78154ecb277ccc82327e1b975d7d0e2f933acca3131cd0177" "ded82bed6a96cb8fdc7a547ef148679e78287664a5236e9c694e917383b052d7" "be0efbaebc85494f3c1c06e320fd13a24abf485d5f221a90fe811cea9a39ed85" default))
+ '(package-selected-packages
+   '(auto-complete-config which-key Marginalia magit use-package color-theme-modern ox-latex-subfigure ox-yaow marginalia rainbow-delimiters orderless vertico org csv-mode fsm rainbow-mode test-simple verilog-mode yasnippet)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(highlight-changes ((t (:underline (:color foreground-color :style wave) :weight bold))))
+ '(highlight-changes-delete ((t nil)))
+ '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta"))))
+ '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue"))))
+ '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "yellow"))))
+ '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "green"))))
+ '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "white"))))
+ '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "cyan"))))
+ '(rainbow-delimiters-depth-9-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta")))))
+
+
+
+;;Start package.el with emcs
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+;; init package.el
+(package-initialize)
+;; start auto-complete package
+(require 'auto-complete-config)
+(ac-config-default)
+;; start yasnippet
+(require 'yasnippet)
+(yas-global-mode 1)
+;; add header inits
+(defun my:ac-c-header-init ()
+  (require 'auto-complete-c-headers)
+  (add-to-list 'ac-sources 'ac-source-c-headers))
+;;add hooks
+(add-hook 'c++-mode-hook 'my:ac-c-header-init)
+(add-hook 'c-mode-hook 'my:ac-c-header-init)
+(require 'org-ac)
+
+;; Make config suit for you. About the config item, eval the following sexp.
+;; (customize-group "org-ac")
+
+(org-ac/config-default)
+
+(require 'vertico)
+(vertico-mode)
+(require 'orderless)
+(setq completion-styles '(orderless))
+
+(require 'rainbow-delimiters)
+(rainbow-mode)
+(rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
+(save-place-mode 1)
+(menu-bar-mode -1)
+
+(require 'marginalia)
+(marginalia-mode)
+
+
+;; Org mode settings below. Will be added to a configure.org for all settings
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+(global-set-key "\C-cl"
+		'org-store-link)
+(global-set-key "\C-ca"
+		'org-agenda)
+
+(setq org-todo-keywords
+      '((sequence "first" "second" "third" "|" "DONE")))
+(require 'color-theme-modern)
+
+
+
+(savehist-mode 1)
