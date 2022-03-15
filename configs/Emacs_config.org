@@ -5,46 +5,60 @@
 ** Package Managers
 This contains all package manager code
 #+begin_src emacs-lisp
+
   ;; adding in package archives
   (require 'package)
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			   ("org" . "https://orgmode.org/elpa/")
 			   ("elpa" . "https://elpa.gnu.org/packages/")))
-
+  ;;(package-refresh-contents)
 
   (eval-when-compile
   ;; Following line is not needed if use-package.el is in ~/.emacs.d
   (require 'use-package))
-
 #+end_src
-	
+
 ** Org specific changes
 Org specific modifications to allow for simpler entry in configs and other
 files.
 #+begin_src emacs-lisp
+  (use-package org
+    :ensure t)
+  (require 'org)
+  ;; Line below is to allow quick templates to work.
+  ;;Ex: <s <TAB> returns 
+  ;;#+begin_src
+  ;;
+  ;;#+end_src
+
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("comm" . "#+COMMENT"))
+  (add-to-list 'org-structure-template-alist '("comm" . "COMMENT"))
+
+  (use-package org-modern
+    :ensure t)
   ;; set up org babel languages for code blocks
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((arduino    . t)
-     (C          . t)
-     (emacs-lisp . t)
-     (latex      . t)
-     (matlab     . t)
-     (org        . t)
-     (processing . t)
-     (python     . t)
-     (R          . t)
-     (shell      . t)))
-  (setq org-confirm-babel-evaluate nil)
-  (setq org-support-shift-select t)
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '(
+       (C          . t)
+       (emacs-lisp . t)
+       (latex      . t)
+       (matlab     . t)
+       (org        . t)
+       (processing . t)
+       (python     . t)
+       (R          . t)
+       (shell      . t)))
+    (setq org-confirm-babel-evaluate nil)
+    (setq org-support-shift-select t)
 
-  (require 'org-superstar)
-  (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
+  (use-package org-superstar
+    :ensure t)
+    (require 'org-superstar)
+    (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
 
-  (add-to-list 'load-path "~/.emacs.d/org-superstar/")
+    (add-to-list 'load-path "~/.emacs.d/org-superstar/")
 #+end_src
 
 ** Automatic Tangling of config
@@ -60,7 +74,7 @@ Exactly as it sounds. Tangles the config to init.el for loading in at Emacs star
 	(org-babel-tangle))
       )
     )
-
+ 
   (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
 #+end_src
 
@@ -69,28 +83,35 @@ Exactly as it sounds. Tangles the config to init.el for loading in at Emacs star
     (use-package magit
       :ensure t)
 #+end_src
+
+
 * Quality of life changes
 ** Vertico
 Vertico package for vertical buffer during completions
 #+begin_src emacs-lisp
-(require 'vertico)
-(vertico-mode t)
+  (use-package vertico
+    :init
+      (vertico-mode t))
 #+end_src
 
 ** Orderless
 A mod for Vertico to allow searching by any string instead of by starting string
 #+begin_src emacs-lisp
-  (require 'orderless)
-  (setq completion-styles '(orderless))
+    (use-package orderless
+      :init 
+    (setq completion-styles '(orderless)))
 #+end_src
 ** Rainbow mode stuff
 Modifications for using rainbow delimiters. Makes navigating elisp code much easier
 #+begin_src emacs-lisp
+  (use-package rainbow-mode
+    :ensure t)
+
   (require 'rainbow-mode)
   (rainbow-mode 1)
   (rainbow-delimiters-mode t)
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-  
+
   (custom-set-faces
    ;; custom-set-faces was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
@@ -104,7 +125,8 @@ Modifications for using rainbow delimiters. Makes navigating elisp code much eas
    '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "green"))))
    '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "white"))))
    '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "cyan"))))
-   '(rainbow-delimiters-depth-9-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta")))))
+   '(rainbow-delimiters-depth-9-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta"))))
+   '(rainbow-delimiters-mismatched-face ((t (:inherit rainbow-delimiters-base-face :foreground "red")))))
 
 #+end_src
 
@@ -112,32 +134,37 @@ Modifications for using rainbow delimiters. Makes navigating elisp code much eas
 A simple package that allows for a string of helpful text to be added alongside
 the different commands that you can use in emacs.
 #+begin_src emacs-lisp
-(require 'marginalia)
-(marginalia-mode)
+  (use-package marginalia
+    :ensure t)
+    (require 'marginalia)
+    (marginalia-mode)
 #+end_src
     
 ** Line numbers and modes
 Adds in line numbers for the file using a relative position
 #+begin_src emacs-lisp
   (require 'display-line-numbers)
-  (global-display-line-numbers-mode 'relative)
-  (menu-bar-display-line-numbers-mode 'relative)
-  (global-visual-line-mode t)
+    (global-display-line-numbers-mode 'relative)
+    (menu-bar-display-line-numbers-mode 'relative)
+    (global-visual-line-mode t)
 #+end_src
 
 ** Which Key Mode
 A helpful package that allows for a buffer to appear with hotkey commands for the
 current mode.
 #+begin_src emacs-lisp
-  (require 'which-key)
-  (which-key-mode t)
+    (use-package which-key
+      :ensure t)
+    (require 'which-key)
+    (which-key-mode t)
 #+end_src
 
 ** Various changes
 Some simple quality of life things for me. 
 #+begin_src emacs-lisp
   ;; get rid of unwanted pieces
-  (scroll-bar-mode -1)
+
+  ;;(scroll-bar-mode -1)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
 
@@ -147,7 +174,7 @@ Some simple quality of life things for me.
   (save-place-mode 1)
   ;; save history for all buffers
   (savehist-mode 1)
-
+  
 #+end_src
 
 
@@ -155,24 +182,28 @@ Some simple quality of life things for me.
 ** AC package
 ac package for autocompletion in various modes. still needs some work
 #+begin_src emacs-lisp
-;; start auto-complete package
-(require 'auto-complete-config)
-(ac-config-default)
+    ;; start auto-complete package
+  (use-package auto-complete
+    :ensure t)
+    (require 'auto-complete-config)
+    (ac-config-default)
 #+end_src
 
 ** YAS(yasnippet)
 Yasnippet configuration for using snippets in code. Using in programming
 mode since that is the most convenient.
 #+begin_src emacs-lisp
+  (use-package yasnippet
+    :ensure t)
   (require 'yasnippet)
-  (add-to-list 'load-path
-	       "~/.emacs.d/yasnippet")
-  (add-to-list 'load-path
-	       "~/.emacs.d/snippets")
-  (yas/initialize)
-  (yas-global-mode 1)
-  (yas-reload-all)
-  (add-hook 'prog-mode-hook #'yas-minor-mode)
+    (add-to-list 'load-path
+		 "~/.emacs.d/yasnippet")
+    (add-to-list 'load-path
+		 "~/.emacs.d/snippets")
+    (yas/initialize)
+    (yas-global-mode 1)
+    (yas-reload-all)
+    (add-hook 'prog-mode-hook #'yas-minor-mode)
 #+end_src
 
 
@@ -185,6 +216,8 @@ fontify to give selection color if wanted(useful for customization
 and setting up the theme).
 #+begin_src emacs-lisp
   (load-theme 'User_Dark t)
+  ;; add in some code to check if this is already in the .emacs.d folder.
+  ;; if not, copy over from themes
   (add-hook 'Info-selection-hook 'info-colors-fontify-node)
 #+end_src
 
@@ -243,3 +276,10 @@ WSL properly.
    ;;(require 'exwm-config)
    ;;(exwm-config-example)
 #+end_src
+
+
+
+
+
+
+
