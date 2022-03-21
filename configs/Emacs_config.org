@@ -68,7 +68,7 @@ Exactly as it sounds. Tangles the config to init.el for loading in at Emacs star
     (when
 	(string-equal
 	 (buffer-file-name)
-	 (expand-file-name "/mnt/c/Users/undrg/OneDrive - University of Utah/.emacs_stuff/configs/Emacs_config.org"))
+	 (expand-file-name "~/Emacs_config.org"))
       (let
 	  ((org-confirm-babel-evaluate nil))
 	(org-babel-tangle))
@@ -85,49 +85,70 @@ Exactly as it sounds. Tangles the config to init.el for loading in at Emacs star
 #+end_src
 
 
+* Visual Changes
+** New Theme colors
+Load personal custom theme created for my setup and a hook for
+fontify to give selection color if wanted(useful for customization
+and setting up the theme).
+#+begin_src emacs-lisp
+  (load-theme 'User_Dark t)
+  ;; add in some code to check if this is already in the .emacs.d folder.
+  ;; if not, copy over from themes
+  (add-hook 'Info-selection-hook 'info-colors-fontify-node)
+#+end_src
+
+
 * Quality of life changes
 ** Vertico
 Vertico package for vertical buffer during completions
 #+begin_src emacs-lisp
-  (use-package vertico
-    :init
-      (vertico-mode t))
+    (use-package vertico
+      :ensure t
+      :init
+	(vertico-mode))
 #+end_src
 
 ** Orderless
 A mod for Vertico to allow searching by any string instead of by starting string
 #+begin_src emacs-lisp
-    (use-package orderless
-      :init 
-    (setq completion-styles '(orderless)))
+      (use-package orderless
+	:ensure t
+	:init 
+      (setq completion-styles '(orderless)))
 #+end_src
+
 ** Rainbow mode stuff
 Modifications for using rainbow delimiters. Makes navigating elisp code much easier
 #+begin_src emacs-lisp
-  (use-package rainbow-mode
+    (use-package rainbow-mode
+      :ensure t)
+
+    (require 'rainbow-mode)
+    (rainbow-mode 1)
+
+    (custom-set-faces
+     ;; custom-set-faces was added by Custom.
+     ;; If you edit it by hand, you could mess it up, so be careful.
+     ;; Your init file should contain only one such instance.
+     ;; If there is more than one, they won't work right.
+     '(highlight-changes ((t (:underline (:color foreground-color :style wave) :weight bold))))
+     '(highlight-changes-delete ((t nil)))
+     '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta"))))
+     '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue"))))
+     '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "yellow"))))
+     '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "green"))))
+     '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "white"))))
+     '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "cyan"))))
+     '(rainbow-delimiters-depth-9-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta"))))
+     '(rainbow-delimiters-mismatched-face ((t (:inherit rainbow-delimiters-base-face :foreground "red")))))
+  (rainbow-mode t)
+
+  (use-package rainbow-delimiters
     :ensure t)
-
-  (require 'rainbow-mode)
-  (rainbow-mode 1)
-  (rainbow-delimiters-mode t)
+  (require 'rainbow-delimiters)
+  (rainbow-delimiters-mode 1)
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-
-  (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(highlight-changes ((t (:underline (:color foreground-color :style wave) :weight bold))))
-   '(highlight-changes-delete ((t nil)))
-   '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta"))))
-   '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue"))))
-   '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "yellow"))))
-   '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "green"))))
-   '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "white"))))
-   '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "cyan"))))
-   '(rainbow-delimiters-depth-9-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta"))))
-   '(rainbow-delimiters-mismatched-face ((t (:inherit rainbow-delimiters-base-face :foreground "red")))))
-
+  
 #+end_src
 
 ** Marginalia
@@ -206,22 +227,6 @@ mode since that is the most convenient.
     (add-hook 'prog-mode-hook #'yas-minor-mode)
 #+end_src
 
-
-
-
-* Visual Changes
-** New Theme colors
-Load personal custom theme created for my setup and a hook for
-fontify to give selection color if wanted(useful for customization
-and setting up the theme).
-#+begin_src emacs-lisp
-  (load-theme 'User_Dark t)
-  ;; add in some code to check if this is already in the .emacs.d folder.
-  ;; if not, copy over from themes
-  (add-hook 'Info-selection-hook 'info-colors-fontify-node)
-#+end_src
-
-
 ** Example block with results (View Raw to see org text)
 Example of a block with results outputted. change keyword after
 result to be any of the following:
@@ -272,9 +277,11 @@ WSL properly.
   - look into randr for detecting and configuring the
     displays. 
 #+begin_src emacs-lisp
-   ;;(require 'exwm)
-   ;;(require 'exwm-config)
-   ;;(exwm-config-example)
+  (use-package exwm
+    :ensure t)
+ ;; (require 'exwm)
+ ;; (require 'exwm-config)
+ ;; (exwm-config-example)
 #+end_src
 
 
