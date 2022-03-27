@@ -68,13 +68,14 @@ Exactly as it sounds. Tangles the config to init.el for loading in at Emacs star
     (when
 	(string-equal
 	 (buffer-file-name)
-	 (expand-file-name "~/Emacs_config.org"))
+	 ; Laptop version (expand-file-name "~/Emacs_config.org"))
+	 (expand-file-name "/mnt/c/Users/undrg/OneDrive - University of Utah/.emacs_stuff/configs/Emacs_config.org")); for desktop. Once the final version is done, the laptop version will be the only version 
       (let
 	  ((org-confirm-babel-evaluate nil))
 	(org-babel-tangle))
       )
     )
- 
+
   (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
 #+end_src
 
@@ -198,6 +199,15 @@ Some simple quality of life things for me.
   
 #+end_src
 
+** Origami mode
+#+begin_src emacs-lisp
+  (use-package origami
+    :ensure t)
+  (global-origami-mode t)
+#+end_src
+
+#+RESULTS:
+
 
 * Autocomplete Stuff
 ** AC package
@@ -277,12 +287,13 @@ WSL properly.
   - look into randr for detecting and configuring the
     displays. 
 #+begin_src emacs-lisp
-  (use-package exwm
-    :ensure t)
- ;; (require 'exwm)
- ;; (require 'exwm-config)
- ;; (exwm-config-example)
+    (use-package exwm
+      :ensure t)
+   ;; (require 'exwm)
+   ;; (require 'exwm-config)
+   ;; (exwm-config-example)
 #+end_src
+
 
 
 
