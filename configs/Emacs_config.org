@@ -18,7 +18,7 @@ This contains all package manager code
   (require 'use-package))
 #+end_src
 
-** Org specific changes
+** COMMENT Org specific changes
 Org specific modifications to allow for simpler entry in configs and other
 files.
 #+begin_src emacs-lisp
@@ -31,6 +31,7 @@ files.
   ;;
   ;;#+end_src
 
+  (setq org-startup-with-inline-images t)
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("comm" . "COMMENT"))
@@ -52,7 +53,7 @@ files.
        (shell      . t)))
     (setq org-confirm-babel-evaluate nil)
     (setq org-support-shift-select t)
-
+ 
   (use-package org-superstar
     :ensure t)
     (require 'org-superstar)
@@ -301,3 +302,23 @@ WSL properly.
 
 
 
+
+
+** If Gui mode
+#+begin_src emacs-lisp
+  (if (display-graphic-p)
+      (add-to-list 'default-frame-alist '(fullscreen . maximized ))
+    )
+
+  (if (display-graphic-p)
+      (load-theme 'manoj-dark)
+    )
+
+  (if (display-graphic-p)
+  (set-frame-font "FiraCode Nerd Font-14" nil t)
+  )
+
+
+#+end_src
+
+#+RESULTS:
