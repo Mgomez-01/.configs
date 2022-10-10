@@ -163,3 +163,7 @@ eval "$(starship init bash)"
 
 # just for getting the system information printed at startup
 neofetch
+
+# lol, this is a bit much, but whatever
+figlet -f katakana -k -t  "Welcome to your pc, Speedy!"  | lolcat
+
