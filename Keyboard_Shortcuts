@@ -1,0 +1,3 @@
+Ctrl+Shift+Alt+E:emacsclient -c
+Super+O:rofi -show drun
+Super+P:rofi -show run
