@@ -2,7 +2,39 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el
 #+latex_header: \mode<beamer>{\usetheme{Madrid}}
 
-* Table of Contents toc:3 
+* TABLE OF CONTENTS :toc:
+- [[#basic-configs][Basic Configs]]
+  - [[#package-managers][Package Managers]]
+  - [[#org-specific-changes][Org specific changes]]
+  - [[#automatic-tangling-of-config][Automatic Tangling of config]]
+  - [[#magit-git-client][Magit Git Client]]
+  - [[#debugging][Debugging]]
+- [[#visual-changes][Visual Changes]]
+  - [[#new-theme-colors][New Theme colors]]
+  - [[#emojis][Emojis]]
+  - [[#fonts][Fonts]]
+- [[#quality-of-life-changes][Quality of life changes]]
+  - [[#vertico][Vertico]]
+  - [[#orderless][Orderless]]
+  - [[#rainbow-mode-stuff][Rainbow mode stuff]]
+  - [[#marginalia][Marginalia]]
+  - [[#line-numbers-and-modes][Line numbers and modes]]
+  - [[#which-key-mode][Which Key Mode]]
+  - [[#various-changes][Various changes]]
+  - [[#keybindings][Keybindings]]
+  - [[#elpy-mode][elpy mode]]
+  - [[#docker-stuff][docker stuff]]
+  - [[#visual-regex][Visual Regex]]
+- [[#autocomplete-stuff][Autocomplete Stuff]]
+  - [[#ac-package][AC package]]
+  - [[#lsp][lsp]]
+  - [[#yasyasnippet][YAS(yasnippet)]]
+  - [[#pythonstuff][PythonStuff]]
+  - [[#example-block-with-results-view-raw-to-see-org-text][Example block with results (View Raw to see org text)]]
+- [[#platform-io][Platform-IO]]
+- [[#gui-specific][GUI Specific]]
+  - [[#exwm][EXWM]]
+
 * Basic Configs
 ** Package Managers
 This contains all package manager code
@@ -200,6 +232,83 @@ and setting up the theme).
 
 #+RESULTS:
 
+** Fonts
+#+begin_src emacs-lisp
+  (use-package ligature
+    :load-path "path-to-ligature-repo"
+    :config
+    ;; Enable the "www" ligature in every possible major mode
+    (ligature-set-ligatures 't '("www"))
+    ;; Enable traditional ligature support in eww-mode, if the
+    ;; `variable-pitch' face supports it
+    (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
+    ;; Enable all Cascadia and Fira Code ligatures in programming modes
+    (ligature-set-ligatures 'prog-mode
+			  '(;; == === ==== => =| =>>=>=|=>==>> ==< =/=//=// =~
+			    ;; =:= =!=
+			    ("=" (rx (+ (or ">" "<" "|" "/" "~" ":" "!" "="))))
+			    ;; ;; ;;;
+			    (";" (rx (+ ";")))
+			    ;; && &&&
+			    ("&" (rx (+ "&")))
+			    ;; !! !!! !. !: !!. != !== !~
+			    ("!" (rx (+ (or "=" "!" "\." ":" "~"))))
+			    ;; ?? ??? ?:  ?=  ?.
+			    ("?" (rx (or ":" "=" "\." (+ "?"))))
+			    ;; %% %%%
+			    ("%" (rx (+ "%")))
+			    ;; |> ||> |||> ||||> |] |} || ||| |-> ||-||
+			    ;; |->>-||-<<-| |- |== ||=||
+			    ;; |==>>==<<==<=>==//==/=!==:===>
+			    ("|" (rx (+ (or ">" "<" "|" "/" ":" "!" "}" "\]"
+					    "-" "=" ))))
+			    ;; \\ \\\ \/
+			    ("\\" (rx (or "/" (+ "\\"))))
+			    ;; ++ +++ ++++ +>
+			    ("+" (rx (or ">" (+ "+"))))
+			    ;; :: ::: :::: :> :< := :// ::=
+			    (":" (rx (or ">" "<" "=" "//" ":=" (+ ":"))))
+			    ;; // /// //// /\ /* /> /===:===!=//===>>==>==/
+			    ("/" (rx (+ (or ">"  "<" "|" "/" "\\" "\*" ":" "!"
+					    "="))))
+			    ;; .. ... .... .= .- .? ..= ..<
+			    ("\." (rx (or "=" "-" "\?" "\.=" "\.<" (+ "\."))))
+			    ;; -- --- ---- -~ -> ->> -| -|->-->>->--<<-|
+			    ("-" (rx (+ (or ">" "<" "|" "~" "-"))))
+			    ;; *> */ *)  ** *** ****
+			    ("*" (rx (or ">" "/" ")" (+ "*"))))
+			    ;; www wwww
+			    ("w" (rx (+ "w")))
+			    ;; <> <!-- <|> <: <~ <~> <~~ <+ <* <$ </  <+> <*>
+			    ;; <$> </> <|  <||  <||| <|||| <- <-| <-<<-|-> <->>
+			    ;; <<-> <= <=> <<==<<==>=|=>==/==//=!==:=>
+			    ;; << <<< <<<<
+			    ("<" (rx (+ (or "\+" "\*" "\$" "<" ">" ":" "~"  "!"
+					    "-"  "/" "|" "="))))
+			    ;; >: >- >>- >--|-> >>-|-> >= >== >>== >=|=:=>>
+			    ;; >> >>> >>>>
+			    (">" (rx (+ (or ">" "<" "|" "/" ":" "=" "-"))))
+			    ;; #: #= #! #( #? #[ #{ #_ #_( ## ### #####
+			    ("#" (rx (or ":" "=" "!" "(" "\?" "\[" "{" "_(" "_"
+					 (+ "#"))))
+			    ;; ~~ ~~~ ~=  ~-  ~@ ~> ~~>
+			    ("~" (rx (or ">" "=" "-" "@" "~>" (+ "~"))))
+			    ;; __ ___ ____ _|_ __|____|_
+			    ("_" (rx (+ (or "_" "|"))))
+			    ;; Fira code: 0xFF 0x12
+			    ("0" (rx (and "x" (+ (in "A-F" "a-f" "0-9")))))
+			    ;; Fira code:
+			    "Fl"  "Tl"  "fi"  "fj"  "fl"  "ft"
+			    ;; The few not covered by the regexps.
+			    "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
+    ;; Enables ligature checks globally in all buffers. You can also do it
+    ;; per mode with `ligature-mode'.
+    (global-ligature-mode t))
+#+end_src
+
+#+RESULTS:
+: t
+
 
 * Quality of life changes
 ** Vertico
@@ -223,6 +332,15 @@ A mod for Vertico to allow searching by any string instead of by starting string
 #+end_src
 
 #+RESULTS:
+
+** Origami Mode
+#+begin_src emacs-lisp
+  (require 'origami)
+  (global-origami-mode t)
+#+end_src
+
+#+RESULTS:
+: t
 
 ** Rainbow mode stuff
 Modifications for using rainbow delimiters. Makes navigating elisp code much easier
