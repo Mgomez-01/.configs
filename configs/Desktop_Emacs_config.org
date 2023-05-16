@@ -16,15 +16,18 @@
 - [[#quality-of-life-changes][Quality of life changes]]
   - [[#vertico][Vertico]]
   - [[#orderless][Orderless]]
+  - [[#origami-mode][Origami Mode]]
   - [[#rainbow-mode-stuff][Rainbow mode stuff]]
   - [[#marginalia][Marginalia]]
   - [[#line-numbers-and-modes][Line numbers and modes]]
   - [[#which-key-mode][Which Key Mode]]
   - [[#various-changes][Various changes]]
   - [[#keybindings][Keybindings]]
+  - [[#ssh][SSH]]
   - [[#elpy-mode][elpy mode]]
   - [[#docker-stuff][docker stuff]]
   - [[#visual-regex][Visual Regex]]
+  - [[#directory-changes][Directory Changes]]
 - [[#autocomplete-stuff][Autocomplete Stuff]]
   - [[#ac-package][AC package]]
   - [[#lsp][lsp]]
@@ -120,6 +123,8 @@ files.
   (setq org-babel-C-compiler "/usr/bin/gcc")
 
   (setq org-babel-C++-compiler "/usr/bin/g++")
+  (setq org-startup-with-inline-images t)
+
 
 #+end_src
 
@@ -447,6 +452,12 @@ Some simple quality of life things for me.
 #+RESULTS:
 : next-multiframe-window
 
+** SSH
+#+begin_src emacs-lisp
+  (defun cade ()
+    (interactive)
+    (dired "/ssh:u1318856@lab1-13.eng.utah.edu:~/"))
+#+end_src
 ** elpy mode
 
 #+begin_src emacs-lisp
@@ -476,6 +487,10 @@ Some simple quality of life things for me.
   (define-key global-map (kbd "C-c q") 'vr/query-replace)
   ;; if you use multiple-cursors, this is for you:
   (define-key global-map (kbd "C-c m") 'vr/mc-mark)
+#+end_src
+** Directory Changes
+#+begin_src emacs-lisp
+  (setq backup-directory-alist `(("." . "~/.backups/emacs-backups")))
 #+end_src
 
 #+RESULTS:

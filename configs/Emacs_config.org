@@ -1,11 +1,49 @@
 #+title: Emacs Configuration file in org mode
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el
+#+latex_header: \mode<beamer>{\usetheme{Madrid}}
+
+* TABLE OF CONTENTS :toc:
+- [[#basic-configs][Basic Configs]]
+  - [[#package-managers][Package Managers]]
+  - [[#org-specific-changes][Org specific changes]]
+  - [[#automatic-tangling-of-config][Automatic Tangling of config]]
+  - [[#magit-git-client][Magit Git Client]]
+  - [[#debugging][Debugging]]
+- [[#visual-changes][Visual Changes]]
+  - [[#new-theme-colors][New Theme colors]]
+  - [[#emojis][Emojis]]
+  - [[#fonts][Fonts]]
+- [[#quality-of-life-changes][Quality of life changes]]
+  - [[#vertico][Vertico]]
+  - [[#orderless][Orderless]]
+  - [[#origami-mode][Origami mode]]
+  - [[#rainbow-mode-stuff][Rainbow mode stuff]]
+  - [[#marginalia][Marginalia]]
+  - [[#line-numbers-and-modes][Line numbers and modes]]
+  - [[#which-key-mode][Which Key Mode]]
+  - [[#various-changes][Various changes]]
+  - [[#keybindings][Keybindings]]
+  - [[#ssh][SSH]]
+  - [[#visual-regex][Visual Regex]]
+  - [[#directory-changes][Directory Changes]]
+- [[#autocomplete-stuff][Autocomplete Stuff]]
+  - [[#ac-package][AC package]]
+  - [[#lsp][lsp]]
+  - [[#yasyasnippet][YAS(yasnippet)]]
+  - [[#elpy-mode][elpy mode]]
+  - [[#docker-stuff][docker stuff]]
+  - [[#python-stuff][Python stuff]]
+  - [[#jupyter-stuff][jupyter stuff]]
+  - [[#example-block-with-results-view-raw-to-see-org-text][Example block with results (View Raw to see org text)]]
+- [[#gui-specific][GUI Specific]]
+  - [[#exwm][EXWM]]
+  - [[#if-gui-mode][If Gui mode]]
 
 * Basic Configs
 ** Package Managers
 This contains all package manager code
 #+begin_src emacs-lisp
-  
+
   ;; adding in package archives
   (require 'package)
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -18,12 +56,6 @@ This contains all package manager code
   (require 'use-package))
 #+end_src
 
-<<<<<<< Updated upstream
-=======
-#+RESULTS:
-: use-package
-
->>>>>>> Stashed changes
 ** Org specific changes
 Org specific modifications to allow for simpler entry in configs and other
 files.
@@ -37,77 +69,81 @@ files.
   ;;
   ;;#+end_src
 
-  (setq org-startup-with-inline-images t)
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("comm" . "COMMENT"))
-  
+  ;;(add-to-list 'org-structure-template-alist '("comm" . "COMMENT"))
+  (add-to-list 'org-structure-template-alist '("ml" . "src matlab :session *MATLAB* :results 
+    output"))
+  (add-to-list 'org-structure-template-alist '("jp" . "src jupyter-python :session python3 :results output"))
+  (add-to-list 'org-structure-template-alist '("b" . "src bash"))
+  (add-to-list 'org-structure-template-alist '("sc" . "src C :session gcc :results output"))
+
   (use-package org-modern
     :ensure t)
   ;; set up org babel languages for code blocks
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '(
-       (C          . t)
-       (emacs-lisp . t)
-       (latex      . t)
-       (matlab     . t)
-       (org        . t)
-       (processing . t)
-       (python     . t)
-       (R          . t)
-       (shell      . t)))
-    (setq org-confirm-babel-evaluate nil)
-    (setq org-support-shift-select t)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '(
+     (C          . t)
+     (emacs-lisp . t)
+     (latex      . t)
+     (matlab     . t)
+     (org        . t)
+     (processing . t)
+     (python     . t)
+     (jupyter    . t)
+     (R          . t)
+     (shell      . t)))
+  (setq org-confirm-babel-evaluate nil)
+  (setq org-support-shift-select t)
 
   (use-package org-superstar
-    :ensure t)
-    (require 'org-superstar)
-    (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
+      :ensure t)
+  (require 'org-superstar)
+  (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
 
-    (add-to-list 'load-path "~/.emacs.d/org-superstar/")
+  (add-to-list 'load-path "~/.emacs.d/org-superstar/")
+  (toc-org-enable)
+  (setq org-startup-with-inline-images t)
+  (setq org-toggle-inline-images t)
+
+
 #+end_src
 
 #+RESULTS:
-| ~/.emacs.d/org-superstar/ | /home/speedy/.emacs.d/elpa/magit-20220926.56 | /home/speedy/.emacs.d/elpa/git-commit-20220918.2032 | /home/speedy/.emacs.d/elpa/magit-section-20220929.1014 | /home/speedy/.emacs.d/elpa/dash-20220608.1931 | /home/speedy/.emacs.d/elpa/org-modern-20220915.1915 | /home/speedy/.emacs.d/elpa/org-superstar-20210915.1934 | /home/speedy/.emacs.d/elpa/org-9.5.5 | /home/speedy/.emacs.d/elpa/transient-20220918.2101 | /home/speedy/.emacs.d/elpa/use-package-20220910.25 | /home/speedy/.emacs.d/elpa/bind-key-20220910.2157 | /home/speedy/.emacs.d/elpa/vertico-0.27 | /home/speedy/.emacs.d/elpa/with-editor-20220810.1159 | /home/speedy/.emacs.d/elpa/compat-28.1.2.2 | /etc/emacs | /usr/local/share/emacs/27.1/site-lisp | /usr/local/share/emacs/site-lisp | /usr/share/emacs/site-lisp/dictionaries-common | /usr/share/emacs/27.1/site-lisp | /usr/share/emacs/site-lisp | /usr/share/emacs/site-lisp/llvm-13 | /usr/share/emacs/site-lisp/llvm-14 | /usr/share/emacs/27.1/lisp | /usr/share/emacs/27.1/lisp/vc | /usr/share/emacs/27.1/lisp/url | /usr/share/emacs/27.1/lisp/textmodes | /usr/share/emacs/27.1/lisp/progmodes | /usr/share/emacs/27.1/lisp/play | /usr/share/emacs/27.1/lisp/org | /usr/share/emacs/27.1/lisp/nxml | /usr/share/emacs/27.1/lisp/net | /usr/share/emacs/27.1/lisp/mh-e | /usr/share/emacs/27.1/lisp/mail | /usr/share/emacs/27.1/lisp/leim | /usr/share/emacs/27.1/lisp/language | /usr/share/emacs/27.1/lisp/international | /usr/share/emacs/27.1/lisp/image | /usr/share/emacs/27.1/lisp/gnus | /usr/share/emacs/27.1/lisp/eshell | /usr/share/emacs/27.1/lisp/erc | /usr/share/emacs/27.1/lisp/emulation | /usr/share/emacs/27.1/lisp/emacs-lisp | /usr/share/emacs/27.1/lisp/cedet | /usr/share/emacs/27.1/lisp/calendar | /usr/share/emacs/27.1/lisp/calc | /usr/share/emacs/27.1/lisp/obsolete |
+: t
 
 ** Automatic Tangling of config
 Exactly as it sounds. Tangles the config to init.el for loading in at Emacs startup
 #+begin_src emacs-lisp
-  (defun efs/org-babel-tangle-config ()
-    (when
-	(string-equal
-	 (buffer-file-name)
-	 ; Laptop version (expand-file-name "~/Emacs_config.org"))
-	 (expand-file-name "~/.configs/configs/Emacs_config.org")); for desktop. Once the final version is done, the laptop version will be the only version 
-      (let
-	  ((org-confirm-babel-evaluate nil))
-	(org-babel-tangle))
-      )
-    )
+   (defun efs/org-babel-tangle-config ()
+     (when
+	 (string-equal
+	  (buffer-file-name)
+	  (expand-file-name "~/.config/.configs/configs/Emacs_config.org"))
+       (let
+	   ((org-confirm-babel-evaluate nil))
+	 (org-babel-tangle))
+       )
+     )
 
-  (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
+   (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
 #+end_src
 
 #+RESULTS:
-| (lambda nil (add-hook 'after-save-hook #'efs/org-babel-tangle-config)) | (lambda nil (org-superstar-mode 1)) | org-tempo-setup | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
+| (lambda nil (add-hook 'after-save-hook #'efs/org-babel-tangle-config)) | (lambda nil (org-superstar-mode 1)) | jupyter-org-interaction-mode | org-tempo-setup | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
 
 ** Magit Git Client
 #+begin_src emacs-lisp
-    (use-package magit
-      :ensure t)
+  (use-package magit
+    :ensure t)
 #+end_src
 
-** Markdown
+** Debugging
 #+begin_src emacs-lisp
-  (use-package markdown-mode
-    :ensure t
-    :mode ("README\\.md\\'" . gfm-mode)
-    :init (setq markdown-command "multimarkdown"))
+  ;(setq debug-on-error t)
 #+end_src
 
-#+RESULTS:
-: ((\.\(?:md\|markdown\|mkd\|mdown\|mkdn\|mdwn\)\' . markdown-mode) (README\.md\' . gfm-mode) (\.at\' . autotest-mode) (\.gpg\(~\|\.~[0-9]+~\)?\' nil epa-file) (\.dockerfile\' . dockerfile-mode) ([/\]\(?:Containerfile\|Dockerfile\)\(?:\.[^/\]*\)?\' . dockerfile-mode) (/git-rebase-todo\' . git-rebase-mode) (\.cmake\' . cmake-mode) (CMakeLists\.txt\' . cmake-mode) (\.elc\' . elisp-byte-code-mode) (\.zst\' nil jka-compr) (\.dz\' nil jka-compr) (\.xz\' nil jka-compr) (\.lzma\' nil jka-compr) (\.lz\' nil jka-compr) (\.g?z\' nil jka-compr) (\.bz2\' nil jka-compr) (\.Z\' nil jka-compr) (\.vr[hi]?\' . vera-mode) (\(?:\.\(?:rbw?\|ru\|rake\|thor\|jbuilder\|rabl\|gemspec\|podspec\)\|/\(?:Gem\|Rake\|Cap\|Thor\|Puppet\|Berks\|Vagrant\|Guard\|Pod\)file\)\' . ruby-mode) (\.re?st\' . rst-mode) (\.py[iw]?\' . python-mode) (\.m\' . octave-maybe-mode) (\.less\' . less-css-mode) (\.scss\' . scss-mode) (\.awk\' . awk-mode) (\.\(u?lpc\|pike\|pmod\(\.in\)?\)\' . pike-mode) (\.idl\' . idl-mode) (\.java\' . java-mode) (\.m\' . objc-mode) (\.ii\' . c++-mode) (\.i\' . c-mode) (\.lex\' . c-mode) (\.y\(acc\)?\' . c-mode) (\.h\' . c-or-c++-mode) (\.c\' . c-mode) (\.\(CC?\|HH?\)\' . c++-mode) (\.[ch]\(pp\|xx\|\+\+\)\' . c++-mode) (\.\(cc\|hh\)\' . c++-mode) (\.\(bat\|cmd\)\' . bat-mode) (\.[sx]?html?\(\.[a-zA-Z_]+\)?\' . mhtml-mode) (\.svgz?\' . image-mode) (\.svgz?\' . xml-mode) (\.x[bp]m\' . image-mode) (\.x[bp]m\' . c-mode) (\.p[bpgn]m\' . image-mode) (\.tiff?\' . image-mode) (\.gif\' . image-mode) (\.png\' . image-mode) (\.jpe?g\' . image-mode) (\.te?xt\' . text-mode) (\.[tT]e[xX]\' . tex-mode) (\.ins\' . tex-mode) (\.ltx\' . latex-mode) (\.dtx\' . doctex-mode) (\.org\' . org-mode) (\.el\' . emacs-lisp-mode) (Project\.ede\' . emacs-lisp-mode) (\.\(scm\|stk\|ss\|sch\)\' . scheme-mode) (\.l\' . lisp-mode) (\.li?sp\' . lisp-mode) (\.[fF]\' . fortran-mode) (\.for\' . fortran-mode) (\.p\' . pascal-mode) (\.pas\' . pascal-mode) (\.\(dpr\|DPR\)\' . delphi-mode) (\.ad[abs]\' . ada-mode) (\.ad[bs]\.dg\' . ada-mode) (\.\([pP]\([Llm]\|erl\|od\)\|al\)\' . perl-mode) (Imakefile\' . makefile-imake-mode) (Makeppfile\(?:\.mk\)?\' . makefile-makepp-mode) (\.makepp\' . makefile-makepp-mode) (\.mk\' . makefile-gmake-mode) (\.make\' . makefile-gmake-mode) ([Mm]akefile\' . makefile-gmake-mode) (\.am\' . makefile-automake-mode) (\.texinfo\' . texinfo-mode) (\.te?xi\' . texinfo-mode) (\.[sS]\' . asm-mode) (\.asm\' . asm-mode) (\.css\' . css-mode) (\.mixal\' . mixal-mode) (\.gcov\' . compilation-mode) (/\.[a-z0-9-]*gdbinit . gdb-script-mode) (-gdb\.gdb . gdb-script-mode) ([cC]hange\.?[lL]og?\' . change-log-mode) ([cC]hange[lL]og[-.][0-9]+\' . change-log-mode) (\$CHANGE_LOG\$\.TXT . change-log-mode) (\.scm\.[0-9]*\' . scheme-mode) (\.[ckz]?sh\'\|\.shar\'\|/\.z?profile\' . sh-mode) (\.bash\' . sh-mode) (\(/\|\`\)\.\(bash_\(profile\|history\|log\(in\|out\)\)\|z?log\(in\|out\)\)\' . sh-mode) (\(/\|\`\)\.\(shrc\|zshrc\|m?kshrc\|bashrc\|t?cshrc\|esrc\)\' . sh-mode) (\(/\|\`\)\.\([kz]shenv\|xinitrc\|startxrc\|xsession\)\' . sh-mode) (\.m?spec\' . sh-mode) (\.m[mes]\' . nroff-mode) (\.man\' . nroff-mode) (\.sty\' . latex-mode) (\.cl[so]\' . latex-mode) (\.bbl\' . latex-mode) (\.bib\' . bibtex-mode) (\.bst\' . bibtex-style-mode) (\.sql\' . sql-mode) (\(acinclude\|aclocal\|acsite\)\.m4\' . autoconf-mode) (\.m[4c]\' . m4-mode) (\.mf\' . metafont-mode) (\.mp\' . metapost-mode) (\.vhdl?\' . vhdl-mode) (\.article\' . text-mode) (\.letter\' . text-mode) (\.i?tcl\' . tcl-mode) (\.exp\' . tcl-mode) (\.itk\' . tcl-mode) (\.icn\' . icon-mode) (\.sim\' . simula-mode) (\.mss\' . scribe-mode) (\.f9[05]\' . f90-mode) (\.f0[38]\' . f90-mode) (\.indent\.pro\' . fundamental-mode) (\.\(pro\|PRO\)\' . idlwave-mode) (\.srt\' . srecode-template-mode) (\.prolog\' . prolog-mode) (\.tar\' . tar-mode) (\.\(arc\|zip\|lzh\|lha\|zoo\|[jew]ar\|xpi\|rar\|cbr\|7z\|ARC\|ZIP\|LZH\|LHA\|ZOO\|[JEW]AR\|XPI\|RAR\|CBR\|7Z\)\' . archive-mode) (\.oxt\' . archive-mode) (\.\(deb\|[oi]pk\)\' . archive-mode) (\`/tmp/Re . text-mode) (/Message[0-9]*\' . text-mode) (\`/tmp/fol/ . text-mode) (\.oak\' . scheme-mode) (\.sgml?\' . sgml-mode) (\.x[ms]l\' . xml-mode) (\.dbk\' . xml-mode) (\.dtd\' . sgml-mode) (\.ds\(ss\)?l\' . dsssl-mode) (\.js[mx]?\' . javascript-mode) (\.har\' . javascript-mode) (\.json\' . javascript-mode) (\.[ds]?va?h?\' . verilog-mode) (\.by\' . bovine-grammar-mode) (\.wy\' . wisent-grammar-mode) ([:/\]\..*\(emacs\|gnus\|viper\)\' . emacs-lisp-mode) (\`\..*emacs\' . emacs-lisp-mode) ([:/]_emacs\' . emacs-lisp-mode) (/crontab\.X*[0-9]+\' . shell-script-mode) (\.ml\' . lisp-mode) (\.ld[si]?\' . ld-script-mode) (ld\.?script\' . ld-script-mode) (\.xs\' . c-mode) (\.x[abdsru]?[cnw]?\' . ld-script-mode) (\.zone\' . dns-mode) (\.soa\' . dns-mode) (\.asd\' . lisp-mode) (\.\(asn\|mib\|smi\)\' . snmp-mode) (\.\(as\|mi\|sm\)2\' . snmpv2-mode) (\.\(diffs?\|patch\|rej\)\' . diff-mode) (\.\(dif\|pat\)\' . diff-mode) (\.[eE]?[pP][sS]\' . ps-mode) (\.\(?:PDF\|DVI\|OD[FGPST]\|DOCX\|XLSX?\|PPTX?\|pdf\|djvu\|dvi\|od[fgpst]\|docx\|xlsx?\|pptx?\)\' . doc-view-mode-maybe) (configure\.\(ac\|in\)\' . autoconf-mode) (\.s\(v\|iv\|ieve\)\' . sieve-mode) (BROWSE\' . ebrowse-tree-mode) (\.ebrowse\' . ebrowse-tree-mode) (#\*mail\* . mail-mode) (\.g\' . antlr-mode) (\.mod\' . m2-mode) (\.ses\' . ses-mode) (\.docbook\' . sgml-mode) (\.com\' . dcl-mode) (/config\.\(?:bat\|log\)\' . fundamental-mode) (/\.\(authinfo\|netrc\)\' . authinfo-mode) (\.\(?:[iI][nN][iI]\|[lL][sS][tT]\|[rR][eE][gG]\|[sS][yY][sS]\)\' . conf-mode) (\.la\' . conf-unix-mode) (\.ppd\' . conf-ppd-mode) (java.+\.conf\' . conf-javaprop-mode) (\.properties\(?:\.[a-zA-Z0-9._-]+\)?\' . conf-javaprop-mode) (\.toml\' . conf-toml-mode) (\.desktop\' . conf-desktop-mode) (/\.redshift\.conf\' . conf-windows-mode) (\`/etc/\(?:DIR_COLORS\|ethers\|.?fstab\|.*hosts\|lesskey\|login\.?de\(?:fs\|vperm\)\|magic\|mtab\|pam\.d/.*\|permissions\(?:\.d/.+\)?\|protocols\|rpc\|services\)\' . conf-space-mode) (\`/etc/\(?:acpid?/.+\|aliases\(?:\.d/.+\)?\|default/.+\|group-?\|hosts\..+\|inittab\|ksysguarddrc\|opera6rc\|passwd-?\|shadow-?\|sysconfig/.+\)\' . conf-mode) ([cC]hange[lL]og[-.][-0-9a-z]+\' . change-log-mode) (/\.?\(?:gitconfig\|gnokiirc\|hgrc\|kde.*rc\|mime\.types\|wgetrc\)\' . conf-mode) (/\.\(?:asound\|enigma\|fetchmail\|gltron\|gtk\|hxplayer\|mairix\|mbsync\|msmtp\|net\|neverball\|nvidia-settings-\|offlineimap\|qt/.+\|realplayer\|reportbug\|rtorrent\.\|screen\|scummvm\|sversion\|sylpheed/.+\|xmp\)rc\' . conf-mode) (/\.\(?:gdbtkinit\|grip\|mpdconf\|notmuch-config\|orbital/.+txt\|rhosts\|tuxracer/options\)\' . conf-mode) (/\.?X\(?:default\|resource\|re\)s\> . conf-xdefaults-mode) (/X11.+app-defaults/\|\.ad\' . conf-xdefaults-mode) (/X11.+locale/.+/Compose\' . conf-colon-mode) (/X11.+locale/compose\.dir\' . conf-javaprop-mode) (\.~?[0-9]+\.[0-9][-.0-9]*~?\' nil t) (\.\(?:orig\|in\|[bB][aA][kK]\)\' nil t) ([/.]c\(?:on\)?f\(?:i?g\)?\(?:\.[a-zA-Z0-9._-]+\)?\' . conf-mode-maybe) (\.[1-9]\' . nroff-mode) (\.art\' . image-mode) (\.avs\' . image-mode) (\.bmp\' . image-mode) (\.cmyk\' . image-mode) (\.cmyka\' . image-mode) (\.crw\' . image-mode) (\.dcr\' . image-mode) (\.dcx\' . image-mode) (\.dng\' . image-mode) (\.dpx\' . image-mode) (\.fax\' . image-mode) (\.hrz\' . image-mode) (\.icb\' . image-mode) (\.icc\' . image-mode) (\.icm\' . image-mode) (\.ico\' . image-mode) (\.icon\' . image-mode) (\.jbg\' . image-mode) (\.jbig\' . image-mode) (\.jng\' . image-mode) (\.jnx\' . image-mode) (\.miff\' . image-mode) (\.mng\' . image-mode) (\.mvg\' . image-mode) (\.otb\' . image-mode) (\.p7\' . image-mode) (\.pcx\' . image-mode) (\.pdb\' . image-mode) (\.pfa\' . image-mode) (\.pfb\' . image-mode) (\.picon\' . image-mode) (\.pict\' . image-mode) (\.rgb\' . image-mode) (\.rgba\' . image-mode) (\.tga\' . image-mode) (\.wbmp\' . image-mode) (\.webp\' . image-mode) (\.wmf\' . image-mode) (\.wpg\' . image-mode) (\.xcf\' . image-mode) (\.xmp\' . image-mode) (\.xwd\' . image-mode) (\.yuv\' . image-mode) (\.tgz\' . tar-mode) (\.tbz2?\' . tar-mode) (\.txz\' . tar-mode) (\.tzst\' . tar-mode))
 
 
 * Visual Changes
@@ -116,15 +152,121 @@ Load personal custom theme created for my setup and a hook for
 fontify to give selection color if wanted(useful for customization
 and setting up the theme).
 #+begin_src emacs-lisp
-  (load-theme 'User_Dark t)
-  ;; add in some code to check if this is already in the .emacs.d folder.
-  ;; if not, copy over from themes
-  (add-hook 'Info-selection-hook 'info-colors-fontify-node)
+
+  (defun my/load-theme-according-to-environment ()
+      "Load a different theme based on the current environment (terminal or GUI)."
+      (if (display-graphic-p)
+	  ;; Load theme for GUI Emacs.
+	  (load-theme 'tango-dark t)
+	;; Load theme for terminal Emacs.
+	(load-theme 'User_Dark t)))
+
+    ;; Call the function to apply the theme.
+    (my/load-theme-according-to-environment)
+
+    ;; For emacsclient, add a hook to apply the theme every time a new frame is created.
+    (add-hook 'after-make-frame-functions
+	      (lambda (frame)
+		(select-frame frame)
+		(my/load-theme-according-to-environment)))
+
+
+
+    ;;(load-theme 'User_Dark t)
+    ;; add in some code to check if this is already in the .emacs.d folder.
+    ;; if not, copy over from themes
+    (add-hook 'Info-selection-hook 'info-colors-fontify-node)
+#+end_src
+
+
+** Emojis
+#+begin_src emacs-lisp
+  (use-package emojify
+    :hook (after-init . global-emojify-mode))
+  (when (member "Segoe UI Emoji" (font-family-list))
+    (set-fontset-font
+   t 'symbol (font-spec :family "Segoe UI Emoji") nil 'prepend))
 #+end_src
 
 #+RESULTS:
-| info-colors-fontify-node |
 
+** Fonts
+#+begin_src emacs-lisp
+  (use-package ligature
+    :load-path ""
+    :config
+    ;; Enable the "www" ligature in every possible major mode
+    (ligature-set-ligatures 't '("www"))
+    ;; Enable traditional ligature support in eww-mode, if the
+    ;; `variable-pitch' face supports it
+    (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
+    ;; Enable all Cascadia and Fira Code ligatures in programming modes
+    (ligature-set-ligatures 'prog-mode
+			  '(;; == === ==== => =| =>>=>=|=>==>> ==< =/=//=// =~
+			    ;; =:= =!=
+			    ("=" (rx (+ (or ">" "<" "|" "/" "~" ":" "!" "="))))
+			    ;; ;; ;;;
+			    (";" (rx (+ ";")))
+			    ;; && &&&
+			    ("&" (rx (+ "&")))
+			    ;; !! !!! !. !: !!. != !== !~
+			    ("!" (rx (+ (or "=" "!" "\." ":" "~"))))
+			    ;; ?? ??? ?:  ?=  ?.
+			    ("?" (rx (or ":" "=" "\." (+ "?"))))
+			    ;; %% %%%
+			    ("%" (rx (+ "%")))
+			    ;; |> ||> |||> ||||> |] |} || ||| |-> ||-||
+			    ;; |->>-||-<<-| |- |== ||=||
+			    ;; |==>>==<<==<=>==//==/=!==:===>
+			    ("|" (rx (+ (or ">" "<" "|" "/" ":" "!" "}" "\]"
+					    "-" "=" ))))
+			    ;; \\ \\\ \/
+			    ("\\" (rx (or "/" (+ "\\"))))
+			    ;; ++ +++ ++++ +>
+			    ("+" (rx (or ">" (+ "+"))))
+			    ;; :: ::: :::: :> :< := :// ::=
+			    (":" (rx (or ">" "<" "=" "//" ":=" (+ ":"))))
+			    ;; // /// //// /\ /* /> /===:===!=//===>>==>==/
+			    ("/" (rx (+ (or ">"  "<" "|" "/" "\\" "\*" ":" "!"
+					    "="))))
+			    ;; .. ... .... .= .- .? ..= ..<
+			    ("\." (rx (or "=" "-" "\?" "\.=" "\.<" (+ "\."))))
+			    ;; -- --- ---- -~ -> ->> -| -|->-->>->--<<-|
+			    ("-" (rx (+ (or ">" "<" "|" "~" "-"))))
+			    ;; *> */ *)  ** *** ****
+			    ("*" (rx (or ">" "/" ")" (+ "*"))))
+			    ;; www wwww
+			    ("w" (rx (+ "w")))
+			    ;; <> <!-- <|> <: <~ <~> <~~ <+ <* <$ </  <+> <*>
+			    ;; <$> </> <|  <||  <||| <|||| <- <-| <-<<-|-> <->>
+			    ;; <<-> <= <=> <<==<<==>=|=>==/==//=!==:=>
+			    ;; << <<< <<<<
+			    ("<" (rx (+ (or "\+" "\*" "\$" "<" ">" ":" "~"  "!"
+					    "-"  "/" "|" "="))))
+			    ;; >: >- >>- >--|-> >>-|-> >= >== >>== >=|=:=>>
+			    ;; >> >>> >>>>
+			    (">" (rx (+ (or ">" "<" "|" "/" ":" "=" "-"))))
+			    ;; #: #= #! #( #? #[ #{ #_ #_( ## ### #####
+			    ("#" (rx (or ":" "=" "!" "(" "\?" "\[" "{" "_(" "_"
+					 (+ "#"))))
+			    ;; ~~ ~~~ ~=  ~-  ~@ ~> ~~>
+			    ("~" (rx (or ">" "=" "-" "@" "~>" (+ "~"))))
+			    ;; __ ___ ____ _|_ __|____|_
+			    ("_" (rx (+ (or "_" "|"))))
+			    ;; Fira code: 0xFF 0x12
+			    ("0" (rx (and "x" (+ (in "A-F" "a-f" "0-9")))))
+			    ;; Fira code:
+			    "Fl"  "Tl"  "fi"  "fj"  "fl"  "ft"
+			    ;; The few not covered by the regexps.
+			    "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
+    ;; Enables ligature checks globally in all buffers. You can also do it
+    ;; per mode with `ligature-mode'.
+    )
+    (global-ligature-mode t)
+#+end_src
+
+#+RESULTS:
+: t
 
 * Quality of life changes
 ** Vertico
@@ -144,6 +286,16 @@ A mod for Vertico to allow searching by any string instead of by starting string
 	:init 
       (setq completion-styles '(orderless)))
 #+end_src
+
+
+** Origami mode
+#+begin_src emacs-lisp
+  (use-package origami
+    :ensure t)
+  (global-origami-mode t)
+#+end_src
+
+#+RESULTS:
 
 ** Rainbow mode stuff
 Modifications for using rainbow delimiters. Makes navigating elisp code much easier
@@ -212,8 +364,12 @@ current mode.
 Some simple quality of life things for me. 
 #+begin_src emacs-lisp
   ;; get rid of unwanted pieces
-
-  ;;(scroll-bar-mode -1)
+  (setq scroll-step 1
+	scroll-margin 1
+	scroll-conservatively 10000
+	scroll-preserve-screen-position 1
+	)
+  (scroll-bar-mode -1)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
 
@@ -223,20 +379,40 @@ Some simple quality of life things for me.
   (save-place-mode 1)
   ;; save history for all buffers
   (savehist-mode 1)
-  
+
 #+end_src
 
-** Origami mode
+#+RESULTS: 
+: t
+
+** Keybindings
 #+begin_src emacs-lisp
-  (use-package origami
-    :ensure t)
-  (global-origami-mode t)
-  (origami-mode t)
+  (global-set-key (kbd "C-x <C-right>") 'next-multiframe-window)
+  (global-set-key (kbd "C-x <C-left>") 'next-multiframe-window)
+#+end_src
+
+** SSH
+#+begin_src emacs-lisp
+  (defun cade ()
+    (interactive)
+    (dired "/ssh:u1318856@lab1-13.eng.utah.edu:~/"))
+#+end_src
+
+** Visual Regex
+#+begin_src emacs-lisp
+  (require 'visual-regexp)
+  (define-key global-map (kbd "C-c r") 'vr/replace)
+  (define-key global-map (kbd "C-c q") 'vr/query-replace)
+  ;; if you use multiple-cursors, this is for you:
+  (define-key global-map (kbd "C-c m") 'vr/mc-mark)
+#+end_src
+** Directory Changes
+#+begin_src emacs-lisp
+  (setq backup-directory-alist `(("." . "~/.backups/emacs-backups")))
 #+end_src
 
 #+RESULTS:
-: t
-
+: ((. . ~/.somedir/emacs-backups))
 
 * Autocomplete Stuff
 ** AC package
@@ -247,6 +423,13 @@ ac package for autocompletion in various modes. still needs some work
     :ensure t)
     (require 'auto-complete-config)
     (ac-config-default)
+#+end_src
+
+** lsp
+#+begin_src emacs-lisp
+  (use-package lsp-ui
+    :ensure t)
+  (require 'lsp-ui)
 #+end_src
 
 ** YAS(yasnippet)
@@ -264,6 +447,37 @@ mode since that is the most convenient.
     (yas-global-mode 1)
     (yas-reload-all)
     (add-hook 'prog-mode-hook #'yas-minor-mode)
+#+end_src
+
+
+** elpy mode
+#+begin_src emacs-lisp
+  (use-package elpy
+    :ensure t
+    :init
+    (elpy-enable))
+    (require 'elpy)
+  (setq elpy-modules (delq 'elpy-module-eldoc elpy-modules))
+
+#+end_src
+
+** docker stuff
+#+begin_src emacs-lisp
+  (use-package dockerfile-mode
+    :ensure t
+    :mode ("Dockerfile\\'" . dockerfile-mode))
+#+end_src
+
+** Python stuff
+#+begin_src emacs-lisp
+  (use-package jupyter
+    :ensure t )
+  (setq jupyter-command "/home/speedy/mambaforge/bin/jupyter")
+#+end_src
+
+** jupyter stuff
+#+begin_src jupyter-python :session python3 :results output
+import numpy
 #+end_src
 
 ** Example block with results (View Raw to see org text)
@@ -323,15 +537,6 @@ WSL properly.
    ;; (exwm-config-example)
 #+end_src
 
-
-
-
-
-
-
-
-
-
 ** If Gui mode
 #+begin_src emacs-lisp
   (if (display-graphic-p)
@@ -342,11 +547,11 @@ WSL properly.
       (load-theme 'manoj-dark)
     )
 
-  (if (display-graphic-p)
-  (set-frame-font "FiraCode Nerd Font-14" nil t)
-  )
+  ;;(if (display-graphic-p)
+  ;;(set-frame-font "FiraCode Nerd Font-14" nil t)
+  ;;)
 
 
 #+end_src
-
+ 
 #+RESULTS:
