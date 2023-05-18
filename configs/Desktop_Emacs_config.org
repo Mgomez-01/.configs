@@ -457,7 +457,16 @@ Some simple quality of life things for me.
   (defun cade ()
     (interactive)
     (dired "/ssh:u1318856@lab1-13.eng.utah.edu:~/"))
+
+  (defun docsServer ()
+    (interactive)
+    (dired "/ssh:root@160.238.36.160:/"))
+  
 #+end_src
+
+#+RESULTS:
+: docsServer
+
 ** elpy mode
 
 #+begin_src emacs-lisp
