@@ -1,0 +1,47 @@
+#+title: Emacs Configuration file in org mode
+#+PROPERTY: header-args:bash :tangle ~/.bash_functions
+
+* Bash Functions
+
+#+begin_src bash
+  # New function setup using org
+  pokefetch()
+    {
+
+    POKEFETCH_PATH=$1
+    NORMAL=`ls $POKEFETCH_PATH/Pokemon|shuf -n 1`
+    SHINY=`ls $POKEFETCH_PATH/shiny|shuf -n 1`
+       POKE=$( [ $(( RANDOM % (101) )) -gt $2 ] && echo $POKEFETCH_PATH/shiny/$SHINY || echo $POKEFETCH_PATH/Pokemon/$NORMAL)
+       neofetch --jp2a $POKE --colors 10 12 0 12 15
+       #echo $POKE
+       #echo $NORMAL $SHINY
+    }
+#+end_src
+
+#+RESULTS:
+
+#+begin_src bash
+function apt-key-migrate {
+    typeset key="$1"
+    typeset dest="$2"
+
+    if [ -z "$key" ] || [ -z "$dest" ];
+    then
+        echo "Usage: apt-key-migrate <key> <destination>"
+        return 1
+    fi
+
+    sudo apt-key --keyring /etc/apt/trusted.gpg export $key | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/$dest.gpg
+    sudo apt-key --keyring /etc/apt/trusted.gpg del $key
+}
+
+#+end_src
+
+#+begin_src bash
+function print-colors {
+	 for i in {0..255} ;
+	 do
+	    printf "\x1b[38;5;${i}mcolour${i}\n"
+	 done
+}
+#+end_src
