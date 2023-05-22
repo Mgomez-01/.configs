@@ -208,7 +208,7 @@ eval "$(starship init bash)"
 ** Pokemon Stuff
 #+begin_src bash
   # This is to wrap the function of Pokefetch to work a little smoother. The ability to provide the main path to images as an argument.
-  # Assumes the user gives a directory that contains Pokemon/ as well as shiny/. Now you can curate your own selection to display instead of all of them.
+  # Assumes the user gives a directory that contains Pokemon/ as well as shiny/. Now you can curate your own selection to display instead of all of them. This has been moved to .bash_functions
   pokefetch()
   {
 
