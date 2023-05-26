@@ -413,6 +413,8 @@ Some simple quality of life things for me.
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x <C-right>") 'next-multiframe-window)
   (global-set-key (kbd "C-x <C-left>") 'next-multiframe-window)
+  (global-set-key (kbd "M-[ M-[") 'origami-open-node)
+  (global-set-key (kbd "M-] M-]") 'origami-close-node)
 #+end_src
 
 ** SSH
