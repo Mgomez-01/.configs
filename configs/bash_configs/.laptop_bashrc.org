@@ -174,7 +174,7 @@ fi
 #+begin_src bash
 
 # inject z into path variable for easy access of custom scripts
-ADDIN="~/repos/z"
+ADDIN="/home/speedy/repos/z"
 if [ ` (echo $PATH) | grep repos/z` ] ;
 then  echo "Z already in path.";
 else export PATH=$PATH:$ADDIN;
@@ -184,7 +184,7 @@ fi
 ZPROG='. ~/repos/z/z.sh'
 
 eval $ZPROG
-
+ 
 #+end_src
 
 #+RESULTS:
