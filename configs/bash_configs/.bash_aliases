@@ -24,3 +24,5 @@ alias emcw="emacsclient -d `echo $DISPLAY`" $1
 
 #refresh bashRC file
 alias rpr='source ~/.bashrc'
+
+alias obsidian='flatpak run md.obsidian.Obsidian'

@@ -151,36 +151,42 @@ eval $ZPROG
 
 ** Adding custom Paths  
 #+begin_src bash
-MATLAB_PATH="/usr/local/MATLAB/R2023a/bin"
-if [ ` (echo $PATH) | grep MATLAB` ] ;
-then  echo "Matlab already in path.";
-else export PATH=$PATH:$MATLAB_PATH;
-fi
+  MATLAB_PATH="/usr/local/MATLAB/R2023a/bin"
+  if [ ` (echo $PATH) | grep MATLAB` ] ;
+  then  echo "Matlab already in path.";
+  else export PATH=$PATH:$MATLAB_PATH;
+  fi
 
-PRUSA_PATH="/home/speedy/PrusaSlicer/build/src" 
-if [ ` (echo $PATH) | grep /home/speedy/PrusaSlicer/build/src` ] ;
-then  echo "prusa already in path.";
-else export PATH=$PATH:$PRUSA_PATH;
-fi
+  PRUSA_PATH="/home/speedy/PrusaSlicer/build/src" 
+  if [ ` (echo $PATH) | grep /home/speedy/PrusaSlicer/build/src` ] ;
+  then  echo "prusa already in path.";
+  else export PATH=$PATH:$PRUSA_PATH;
+  fi
 
-RENDERDOC_PATH="/home/speedy/.local/bin/renderdoc_1.26/bin" 
-if [ ` (echo $PATH) | grep /home/speedy/.local/bin/renderdoc_1.26/bin` ] ;
-then  echo "renderdoc already present already in path.";
-else export PATH=$PATH:$RENDERDOC_PATH;
-fi
+  RENDERDOC_PATH="/home/speedy/.local/bin/renderdoc_1.26/bin" 
+  if [ ` (echo $PATH) | grep /home/speedy/.local/bin/renderdoc_1.26/bin` ] ;
+  then  echo "renderdoc already present already in path.";
+  else export PATH=$PATH:$RENDERDOC_PATH;
+  fi
 
-EXA_PATH="/home/speedy/exa/target/debug" 
-if [ ` (echo $PATH) | grep /home/speedy/exa/target/debug` ] ;
-then  echo "renderdoc already present already in path.";
-else export PATH=$PATH:$EXA_PATH;
-fi
+  EXA_PATH="/home/speedy/exa/target/debug" 
+  if [ ` (echo $PATH) | grep /home/speedy/exa/target/debug` ] ;
+  then  echo "renderdoc already present already in path.";
+  else export PATH=$PATH:$EXA_PATH;
+  fi
 
-ADS_PATH="/usr/local/ADS2023_Update2/bin:/usr/local/ADS2023_Update2/bin/Licensing/2023.02/bin" 
-if [ ` (echo $PATH) | grep ADS` ] ;
-then  echo "ADS already present already in path.";
-else export PATH=$PATH:$ADS_PATH;
-fi
+  ADS_PATH="/usr/local/ADS2023_Update2/bin:/usr/local/ADS2023_Update2/bin/Licensing/2023.02/bin" 
+  if [ ` (echo $PATH) | grep ADS` ] ;
+  then  echo "ADS already present already in path.";
+  else export PATH=$PATH:$ADS_PATH;
+  fi
 
+    # adding in chitubox path
+    CHITU_PATH="/home/speedy/chitubox/CHITUBOX_V1.9.4"
+    if [ ` (echo $PATH) | grep CHITU` ] ;
+    then  echo "CHITUBOX already in path.";
+    else export PATH=$PATH:$CHITU_PATH;
+    fi
 #+end_src
 
 #+RESULTS:
