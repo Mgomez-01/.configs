@@ -1,0 +1,16 @@
+
+keymap.c,179
+#define _QWERTY 5,87
+#define _LOWER 6,105
+#define _RAISE 7,122
+#define Dvorak 8,139
+#define RAISE 10,157
+#define LOWER 11,182
+const uint16_t PROGMEM keymaps[keymaps13,208
+
+config.h,150
+#define MATRIX_COL_PINS 23,730
+#define MATRIX_ROW_PINS 24,781
+#define DIODE_DIRECTION 26,833
+#define RGB_DI_PIN 29,915
+#define RGBLED_NUM 30,937
