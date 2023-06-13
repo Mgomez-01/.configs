@@ -4,6 +4,7 @@ alias gitp="git pull"
 alias gs="git status"
 alias gc="git commit -m" $1
 alias ga="git add" $1
+alias gd="git diff" $1
 
 # Directory view aliases
 alias ll='ls -alF'

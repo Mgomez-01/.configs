@@ -230,6 +230,13 @@ eval $ZPROG
   else export PATH=$PATH:$ADS_PATH;
   fi
 
+
+  CST_PATH="/opt/cst/CST_Studio_Suite_2021"
+  if [ ` (echo $PATH) | grep CST_Studio` ] ;
+  then  echo "CST already present already in path.";
+  else export PATH=$PATH:$CST_PATH;
+  fi
+
 #+end_src
 
 #+RESULTS:
