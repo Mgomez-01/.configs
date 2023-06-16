@@ -181,12 +181,20 @@ eval $ZPROG
   else export PATH=$PATH:$ADS_PATH;
   fi
 
-    # adding in chitubox path
-    CHITU_PATH="/home/speedy/chitubox/CHITUBOX_V1.9.4"
-    if [ ` (echo $PATH) | grep CHITU` ] ;
-    then  echo "CHITUBOX already in path.";
-    else export PATH=$PATH:$CHITU_PATH;
-    fi
+  # adding in chitubox path
+  CHITU_PATH="/home/speedy/chitubox/CHITUBOX_V1.9.4"
+  if [ ` (echo $PATH) | grep CHITU` ] ;
+  then  echo "CHITUBOX already in path.";
+  else export PATH=$PATH:$CHITU_PATH;
+  fi
+
+  # adding in chitubox path
+  CST_PATH="/opt/cst/CST_Studio_Suite_2023/"
+  if [ ` (echo $PATH) | grep CST_Studio_Suite_2023` ] ;
+  then  echo "CST already in path.";
+  else export PATH=$PATH:$CST_PATH;
+  fi
+
 #+end_src
 
 #+RESULTS:
