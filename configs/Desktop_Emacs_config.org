@@ -198,29 +198,44 @@ fontify to give selection color if wanted(useful for customization
 and setting up the theme).
 #+begin_src emacs-lisp
 
-  (defun my/load-theme-according-to-environment ()
-      "Load a different theme based on the current environment (terminal or GUI)."
-      (if (display-graphic-p)
-	  ;; Load theme for GUI Emacs.
-	  (load-theme 'tango-dark t)
-	;; Load theme for terminal Emacs.
-	(load-theme 'User_Dark t)))
+    (defun my/load-theme-according-to-environment ()
+	"Load a different theme based on the current environment (terminal or GUI)."
+	(if (display-graphic-p)
+	    ;; Load theme for GUI Emacs.
+	    (progn
+	      (load-theme 'tango-dark t)
+	     (set-frame-parameter (selected-frame) 'alpha '(85 80))
+	     (add-to-list 'default-frame-alist '(alpha 85 80)))
+	  ;; Load theme for terminal Emacs.
+	  (load-theme 'User_Dark t)))
 
-    ;; Call the function to apply the theme.
-    (my/load-theme-according-to-environment)
+      ;; Call the function to apply the theme.
+      (my/load-theme-according-to-environment)
 
-    ;; For emacsclient, add a hook to apply the theme every time a new frame is created.
-    (add-hook 'after-make-frame-functions
-	      (lambda (frame)
-		(select-frame frame)
-		(my/load-theme-according-to-environment)))
+      ;; For emacsclient, add a hook to apply the theme every time a new frame is created.
+      (add-hook 'after-make-frame-functions
+		(lambda (frame)
+		  (select-frame frame)
+		  (my/load-theme-according-to-environment)))
 
 
 
-    ;;(load-theme 'User_Dark t)
-    ;; add in some code to check if this is already in the .emacs.d folder.
-    ;; if not, copy over from themes
-    (add-hook 'Info-selection-hook 'info-colors-fontify-node)
+      ;;(load-theme 'User_Dark t)
+      ;; add in some code to check if this is already in the .emacs.d folder.
+      ;; if not, copy over from themes
+      (add-hook 'Info-selection-hook 'info-colors-fontify-node)
+
+    (beacon-mode t)
+
+    (use-package all-the-icons :ensure t)
+  (use-package neotree
+  :ensure t
+  :bind (("s-x" . neotree-toggle))
+  :config
+  (setq neo-theme 'icons)
+  (setq neo-smart-open t))
+
+
 #+end_src
 
 #+RESULTS:
