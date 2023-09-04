@@ -411,7 +411,6 @@ Modifications for using rainbow delimiters. Makes navigating elisp code much eas
 | rainbow-delimiters-mode |
 
 
-
 ** Marginalia
 A simple package that allows for a string of helpful text to be added alongside
 the different commands that you can use in emacs.
@@ -535,7 +534,6 @@ version without the debugging
 
 #+RESULTS:
 : docsServer
-
 
 
 ** elpy mode
