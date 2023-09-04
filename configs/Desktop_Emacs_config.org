@@ -366,10 +366,12 @@ A mod for Vertico to allow searching by any string instead of by starting string
 #+begin_src emacs-lisp
   (require 'origami)
   (global-origami-mode t)
+  (global-set-key (kbd "M-]") 'origami-close-node)
+  (global-set-key (kbd "M-[") 'origami-open-node)
 #+end_src
 
 #+RESULTS:
-: t
+: origami-open-node
 
 ** Rainbow mode stuff
 Modifications for using rainbow delimiters. Makes navigating elisp code much easier
@@ -407,6 +409,7 @@ Modifications for using rainbow delimiters. Makes navigating elisp code much eas
 
 #+RESULTS:
 | rainbow-delimiters-mode |
+
 
 ** Marginalia
 A simple package that allows for a string of helpful text to be added alongside
