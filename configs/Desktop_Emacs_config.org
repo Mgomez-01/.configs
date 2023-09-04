@@ -411,6 +411,7 @@ Modifications for using rainbow delimiters. Makes navigating elisp code much eas
 | rainbow-delimiters-mode |
 
 
+
 ** Marginalia
 A simple package that allows for a string of helpful text to be added alongside
 the different commands that you can use in emacs.
@@ -449,6 +450,7 @@ current mode.
 #+RESULTS:
 : t
 
+
 ** Various changes
 Some simple quality of life things for me. 
 #+begin_src emacs-lisp
@@ -457,7 +459,7 @@ Some simple quality of life things for me.
   ;;(scroll-bar-mode -1)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
-
+  (setenv "DISPLAY" ":0")
   ;; set auto reload with auto revert 
   (auto-revert-mode 1)
   ;; set save place mode for all files
@@ -470,10 +472,48 @@ Some simple quality of life things for me.
 #+RESULTS:
 : t
 
+
+** LaTeX stuff
+
+version without the debugging
+  "Run xelatex on main.tex whenever a TeX file is saved."
+  (when (string-match "\\.tex\\'" buffer-file-name)
+    (let* ((bufname (format "*xelatex-%s*" (file-name-nondirectory buffer-file-name)))
+           (proc (get-buffer-process bufname)))
+      (when proc
+        (delete-process proc))
+      (start-process "xelatex" bufname "xelatex" "main.tex"))))
+
+#+begin_src emacs-lisp
+(defun run-xelatex-on-save ()
+  "Run xelatex on main.tex whenever a TeX file is saved."
+  (message "Checking if hook should run...")  ; Debug message
+  (when (string-match "\\.tex\\'" buffer-file-name)
+    (message "Running xelatex...")  ; Debug message
+    (let* ((bufname (format "*xelatex-%s*" (file-name-nondirectory buffer-file-name)))
+           (proc (get-buffer-process bufname)))
+      (when proc
+        (message "Terminating existing xelatex process...")  ; Debug message
+        (delete-process proc))
+      (message "Starting new xelatex process...")  ; Debug message
+      (start-process "xelatex" bufname "xelatex" "main.tex")
+      (message "xelatex process started."))))  ; Debug message
+
+
+  (add-hook 'latex-mode-hook
+	    (lambda ()
+	      (add-hook 'after-save-hook 'run-xelatex-on-save nil 'make-it-local)))
+#+end_src
+
+#+RESULTS:
+| lambda | nil | (add-hook 'after-save-hook 'run-xelatex-on-save nil 'make-it-local) |
+
 ** Keybindings
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x <C-right>") 'next-multiframe-window)
   (global-set-key (kbd "C-x <C-left>") 'next-multiframe-window)
+  (global-set-key (kbd "M-o <C-right>") 'exwm-layout-enlarge-window-horizontally)
+  (global-set-key (kbd "M-o <C-left>") 'exwm-layout-shrink-window-horizontally)
 #+end_src
 
 #+RESULTS:
@@ -484,15 +524,19 @@ Some simple quality of life things for me.
   (defun cade ()
     (interactive)
     (dired "/ssh:u1318856@lab1-13.eng.utah.edu:~/"))
-
+  (defun emulab ()
+    (interactive)
+    (dired "/ssh:mgomez@pc790.emulab.net:~/"))
   (defun docsServer ()
     (interactive)
     (dired "/ssh:root@160.238.36.160:/"))
-  
+
 #+end_src
 
 #+RESULTS:
 : docsServer
+
+
 
 ** elpy mode
 
