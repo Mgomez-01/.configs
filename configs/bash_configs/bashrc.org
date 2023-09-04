@@ -189,12 +189,34 @@ eval $ZPROG
   fi
 
   # adding in chitubox path
-  CST_PATH="/opt/cst/CST_Studio_Suite_2023/"
+  CST_PATH="/opt/cst/CST_Studio_Suite_2023"
   if [ ` (echo $PATH) | grep CST_Studio_Suite_2023` ] ;
   then  echo "CST already in path.";
   else export PATH=$PATH:$CST_PATH;
   fi
 
+
+  # adding in lastools path 
+  LASTOOLS_PATH="/home/speedy/repos/LAStools/bin"
+  if [ ` (echo $PATH) | grep LAStools` ] ;
+  then  echo "LAStools already in path.";
+  else export PATH=$PATH:$LASTOOLS_PATH;
+  fi
+
+
+  # adding in feko
+  FEKO_PATH="/home/speedy/2022.3/altair/feko/bin"
+  if [ ` (echo $PATH) | grep feko` ] ;
+  then  echo "Feko already in path.";
+  else export PATH=$PATH:$FEKO_PATH;
+  fi
+
+  if [ `(echo $ALTAIR_WINPROP) | grep winprop` ] ;
+  then echo "winprop dir already set up";
+  else export ALTAIR_WINPROP="~/2022/altair/feko/api/winprop/";
+  fi
+
+  export ALTAIR_LICENSE_PATH='6200@winlic-d.eng.utah.edu'
 #+end_src
 
 #+RESULTS:
@@ -202,6 +224,11 @@ eval $ZPROG
 | prusa     | already | in      | path.   |    |       |
 | renderdoc | already | present | already | in | path. |
 | renderdoc | already | present | already | in | path. |
+| ADS       | already | present | already | in | path. |
+| CHITUBOX  | already | in      | path.   |    |       |
+| CST       | already | in      | path.   |    |       |
+| LAStools  | already | in      | path.   |    |       |
+| Feko      | already | in      | path.   |    |       |
 
 ** Starship stuff
 #+begin_src bash
@@ -229,7 +256,7 @@ eval "$(starship init bash)"
   POKEFETCH_PATH=$1
   NORMAL=`ls $POKEFETCH_PATH/Pokemon|shuf -n 1`
   SHINY=`ls $POKEFETCH_PATH/shiny|shuf -n 1`
-     POKE=$( [ $(( RANDOM % (101) )) -gt $2 ] && echo $POKEFETCH_PATH/shiny/$SHINY || echo $POKEFETCH_PATH/Pokemon/$NORMAL)
+  POKE=$( [ $(( RANDOM % (101) )) -gt $2 ] && echo $POKEFETCH_PATH/shiny/$SHINY || echo $POKEFETCH_PATH/Pokemon/$NORMAL)
      neofetch --jp2a $POKE --colors 10 12 0 12 15
      # add echo for debugging and use later to pinpoint errors in the returned image 
      #echo $NORMAL $SHINY
