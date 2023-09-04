@@ -39,6 +39,7 @@
   - [[#exwm][EXWM]]
 
 * Basic Configs
+
 ** Package Managers
 This contains all package manager code
 #+begin_src emacs-lisp
@@ -69,6 +70,7 @@ This contains all package manager code
 
 #+RESULTS:
 : t
+
 
 ** Org specific changes
 Org specific modifications to allow for simpler entry in configs and other
@@ -130,6 +132,7 @@ files.
 
 #+RESULTS:
 : /usr/bin/g++
+
 *** Org matlab
 #+begin_src emacs-lisp
   (setq matlab-shell-command "/usr/local/MATLAB/R2023a/bin/matlab")
@@ -141,6 +144,7 @@ files.
 #+begin_src emacs-lisp
 
 #+end_src
+
 
 ** Automatic Tangling of config
 Exactly as it sounds. Tangles the config to init.el for loading in at Emacs startup
@@ -173,6 +177,7 @@ Exactly as it sounds. Tangles the config to init.el for loading in at Emacs star
 
 #+RESULTS:
 
+
 ** Magit Git Client
 #+begin_src emacs-lisp
     (use-package magit
@@ -180,6 +185,7 @@ Exactly as it sounds. Tangles the config to init.el for loading in at Emacs star
 #+end_src
 
 #+RESULTS:
+
 
 ** Debugging
 #+begin_src emacs-lisp
@@ -239,7 +245,7 @@ and setting up the theme).
 #+end_src
 
 #+RESULTS:
-| info-colors-fontify-node |
+: neotree-toggle
 
 ** Emojis
 #+begin_src emacs-lisp
@@ -331,16 +337,19 @@ and setting up the theme).
 
 
 * Quality of life changes
-** Vertico
+** Vertico and consult
 Vertico package for vertical buffer during completions
 #+begin_src emacs-lisp
-    (use-package vertico
-      :ensure t
-      :init
-	(vertico-mode))
+  (use-package vertico
+    :ensure t
+    :init
+      (vertico-mode))
+  (use-package consult
+    :ensure t) 
 #+end_src
 
 #+RESULTS:
+
 
 ** Orderless
 A mod for Vertico to allow searching by any string instead of by starting string
