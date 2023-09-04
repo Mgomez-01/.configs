@@ -550,6 +550,15 @@ version without the debugging
 
 #+RESULTS:
 
+** cmake
+#+begin_src emacs-lisp
+  (use-package cmake-mode
+    :ensure t)
+#+end_src
+
+#+RESULTS:
+: cmake-mode
+
 ** docker stuff
 #+begin_src emacs-lisp
   (use-package dockerfile-mode
@@ -568,30 +577,44 @@ version without the debugging
   ;; if you use multiple-cursors, this is for you:
   (define-key global-map (kbd "C-c m") 'vr/mc-mark)
 #+end_src
-** Directory Changes
-#+begin_src emacs-lisp
-  (setq backup-directory-alist `(("." . "~/.backups/emacs-backups")))
-#+end_src
 
 #+RESULTS:
 : vr/mc-mark
+
+** Directory Changes
+#+begin_src emacs-lisp
+  (setq backup-directory-alist `(("." . "~/.backups/emacs-backups")))
+  (setq auto-save-file-name-transforms
+	`((".*" "~/.backups/emacs-backups" t)))
+
+#+end_src
+
+#+RESULTS:
+| .* | ~/.backups/emacs-backups | t |
 
 
 * Autocomplete Stuff
 ** AC package
 ac package for autocompletion in various modes. still needs some work
 #+begin_src emacs-lisp
-    ;; start auto-complete package
+  ;; start auto-complete package
 
-    (eval-after-load "etags"
-      '(progn
-	  (ac-etags-setup)))
+  (eval-after-load "etags"
+    '(progn
+       (ac-etags-setup)))
 
 
   (use-package auto-complete
     :ensure t)
   (custom-set-variables
-   '(ac-etags-requires 1))
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(ac-etags-requires 1)
+   '(custom-safe-themes
+     '("af5e14845791d2baaa7ccdf455850527b963a991fa3e7a101ebf280645f30cc2" default))
+   '(dir-treeview-show-in-side-window t))
   (require 'auto-complete-config)
   (ac-config-default)
   (use-package auto-complete-clang)
@@ -600,14 +623,14 @@ ac package for autocompletion in various modes. still needs some work
 		(mapcar (lambda (item) (concat "-I" item))
 			(split-string
 			 "
-   /usr/include/c++/x.x
-   /usr/include/x86_64-linux-gnu/c++/x.x
-   /usr/include/c++/x.x/backward
-   /usr/lib/gcc/x86_64-linux-gnu/x.x/include
-   /usr/local/include
-   /usr/include/x86_64-linux-gnu
-   /usr/include
-  "))))
+     /usr/include/c++/x.x
+     /usr/include/x86_64-linux-gnu/c++/x.x
+     /usr/include/c++/x.x/backward
+     /usr/lib/gcc/x86_64-linux-gnu/x.x/include
+     /usr/local/include
+     /usr/include/x86_64-linux-gnu
+     /usr/include
+    "))))
   (setq ac-quick-help-delay 1)
   (defun my-ac-config ()
     (setq-default ac-sources '(ac-source-abbrev
