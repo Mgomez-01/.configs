@@ -472,8 +472,36 @@ Some simple quality of life things for me.
 : t
 
 
-** LaTeX stuff
+** Auctex stuff
+#+begin_src emacs-lisp
+    (use-package tex
+      :ensure auctex
+      :hook (LaTeX-mode . turn-on-reftex)
+      :config
+      (setq TeX-auto-save t)
+      (setq TeX-parse-self t)
+      (setq-default TeX-master nil)
+      (setq reftex-plug-into-AUCTeX t)
+      (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+      (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+      (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+      (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+      (setq reftex-plug-into-AUCTeX t)
+      (TeX-global-PDF-mode t) ;; PDF mode enable, not plain
+      (setq TeX-source-correlate-method 'synctex)
+      (setq TeX-source-correlate-start-server t)
+      ;; Add keybindings
+      (add-hook 'LaTeX-mode-hook
+		(lambda ()
+		  (define-key LaTeX-mode-map (kbd "C-c C-g") 'quick-xelatex)
+		  (define-key LaTeX-mode-map (kbd "C-c C-f") 'finalize-xelatex)))
+  )
+#+end_src
 
+#+RESULTS:
+| turn-on-reftex | LaTeX-math-mode | flyspell-mode | visual-line-mode | preview-mode-setup | (lambda nil (add-hook 'after-save-hook 'run-xelatex-on-save nil 'make-it-local)) |
+
+** LaTeX stuff
 version without the debugging
   "Run xelatex on main.tex whenever a TeX file is saved."
   (when (string-match "\\.tex\\'" buffer-file-name)
@@ -482,30 +510,45 @@ version without the debugging
       (when proc
         (delete-process proc))
       (start-process "xelatex" bufname "xelatex" "main.tex"))))
-
 #+begin_src emacs-lisp
-(defun run-xelatex-on-save ()
-  "Run xelatex on main.tex whenever a TeX file is saved."
-  (message "Checking if hook should run...")  ; Debug message
-  (when (string-match "\\.tex\\'" buffer-file-name)
-    (message "Running xelatex...")  ; Debug message
-    (let* ((bufname (format "*xelatex-%s*" (file-name-nondirectory buffer-file-name)))
-           (proc (get-buffer-process bufname)))
-      (when proc
-        (message "Terminating existing xelatex process...")  ; Debug message
-        (delete-process proc))
-      (message "Starting new xelatex process...")  ; Debug message
-      (start-process "xelatex" bufname "xelatex" "main.tex")
-      (message "xelatex process started."))))  ; Debug message
+  (defun run-xelatex-on-save ()
+    "Run xelatex on main.tex whenever a TeX file is saved."
+    (message "Checking if hook should run...")  ; Debug message
+    (when (string-match "\\.tex\\'" buffer-file-name)
+      (message "Running xelatex...")  ; Debug message
+      (let* ((bufname (format "*xelatex-%s*" (file-name-nondirectory buffer-file-name)))
+	     (proc (get-buffer-process bufname)))
+	(when proc
+	  (message "Terminating existing xelatex process...")  ; Debug message
+	  (delete-process proc))
+	(message "Starting new xelatex process...")  ; Debug message
+	(start-process "xelatex" bufname "xelatex" "main.tex")
+	(message "xelatex process started."))))  ; Debug message
 
+  (defun quick-xelatex ()
+    "Quickly run XeLaTeX to update the PDF."
+    (interactive)
+    (TeX-command "LaTeX" 'TeX-master-file -1))
 
-  (add-hook 'latex-mode-hook
+  (defun finalize-xelatex ()
+    "Run XeLaTeX, BibTeX, and XeLaTeX twice more to finalize the document."
+    (interactive)
+    (let ((master (TeX-master-file)))
+      (TeX-save-document master)
+      (TeX-command-sequence '("LaTeX" "BibTeX" "LaTeX" "LaTeX") t)))
+
+  ;; (add-hook 'TeX-mode-hook
+  ;; 	  (lambda ()
+  ;; 	    (define-key LaTeX-mode-map (kbd "C-c C-g") 'quick-xelatex)
+  ;; 	    (define-key LaTeX-mode-map (kbd "C-c C-f") 'finalize-xelatex)))
+
+  (add-hook 'LaTeX-mode-hook
 	    (lambda ()
 	      (add-hook 'after-save-hook 'run-xelatex-on-save nil 'make-it-local)))
 #+end_src
 
 #+RESULTS:
-| lambda | nil | (add-hook 'after-save-hook 'run-xelatex-on-save nil 'make-it-local) |
+| turn-on-reftex | LaTeX-math-mode | flyspell-mode | visual-line-mode | preview-mode-setup | (lambda nil (add-hook 'after-save-hook 'run-xelatex-on-save nil 'make-it-local)) |
 
 ** Keybindings
 #+begin_src emacs-lisp
