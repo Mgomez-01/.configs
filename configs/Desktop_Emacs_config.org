@@ -494,12 +494,17 @@ Some simple quality of life things for me.
       (add-hook 'LaTeX-mode-hook
 		(lambda ()
 		  (define-key LaTeX-mode-map (kbd "C-c C-g") 'quick-xelatex)
-		  (define-key LaTeX-mode-map (kbd "C-c C-f") 'finalize-xelatex)))
+		  (define-key LaTeX-mode-map (kbd "C-c C-f") 'finalize-xelatex)
+		  (define-key LaTeX-mode-map (kbd "M-<up>") 'elpy-nav-move-line-or-region-up)
+		  (define-key LaTeX-mode-map (kbd "M-<down>") 'elpy-nav-move-line-or-region-down)))
   )
+
+
+
 #+end_src
 
 #+RESULTS:
-| turn-on-reftex | LaTeX-math-mode | flyspell-mode | visual-line-mode | preview-mode-setup | (lambda nil (add-hook 'after-save-hook 'run-xelatex-on-save nil 'make-it-local)) |
+| (lambda nil (define-key LaTeX-mode-map (kbd C-c C-g) 'quick-xelatex) (define-key LaTeX-mode-map (kbd C-c C-f) 'finalize-xelatex) (define-key LaTeX-mode-map (kbd M-<up>) 'elpy-nav-move-line-or-region-up) (define-key LaTeX-mode-map (kbd M-<down>) 'elpy-nav-move-line-or-region-down)) | my-latex-mode-hook | preview-mode-setup | (lambda nil (define-key LaTeX-mode-map (kbd C-c C-g) 'quick-xelatex) (define-key LaTeX-mode-map (kbd C-c C-f) 'finalize-xelatex)) | LaTeX-math-mode | flyspell-mode | visual-line-mode | (lambda nil (add-hook 'after-save-hook 'run-xelatex-on-save nil 'make-it-local)) | turn-on-reftex |
 
 ** LaTeX stuff
 version without the debugging
@@ -709,21 +714,36 @@ mode since that is the most convenient.
     :ensure t)
   (use-package yasnippet-snippets
     :ensure t)
-  
+
   (require 'yasnippet)
 
-    (add-to-list 'load-path
-		 "~/.emacs.d/yasnippet")
-    (add-to-list 'load-path
-		 "~/.emacs.d/snippets")
-    (yas/initialize)
-    (yas-global-mode 1)
-    (yas-reload-all)
-    (add-hook 'prog-mode-hook #'yas-minor-mode)
+  (add-to-list 'load-path
+	       "~/.emacs.d/yasnippet")
+  (add-to-list 'load-path
+	       "~/.emacs.d/snippets")
+  (yas/initialize)
+  (yas-global-mode 1)
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook #'yas-minor-mode)
+  (global-set-key (kbd "C-c y d") 'yas-describe-tables)
 #+end_src
 
 #+RESULTS:
-| yas-minor-mode | rainbow-delimiters-mode |
+: yas-describe-tables
+
+** multi-cursors
+#+begin_src emacs-lisp
+  (use-package multiple-cursors
+    :ensure t)
+  (require 'multiple-cursors)
+
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+#+end_src
+
+#+RESULTS:
+: mc/mark-all-like-this
 
 ** PythonStuff
 #+begin_src emacs-lisp

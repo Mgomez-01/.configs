@@ -217,18 +217,18 @@ eval $ZPROG
   fi
 
   export ALTAIR_LICENSE_PATH='6200@winlic-d.eng.utah.edu'
+
+  MOJO_PATH="/home/speedy/.modular/pkg/packages.modular.com_mojo/bin"
+  if [ `(echo $PATH) | grep mojo` ] ;
+  then echo "mojo is already in path.";
+  else export PATH=$PATH:$MOJO_PATH;
+  fi
+
+  export MODULAR_HOME="/home/speedy/.modular"
 #+end_src
 
 #+RESULTS:
-| Matlab    | already | in      | path.   |    |       |
-| prusa     | already | in      | path.   |    |       |
-| renderdoc | already | present | already | in | path. |
-| renderdoc | already | present | already | in | path. |
-| ADS       | already | present | already | in | path. |
-| CHITUBOX  | already | in      | path.   |    |       |
-| CST       | already | in      | path.   |    |       |
-| LAStools  | already | in      | path.   |    |       |
-| Feko      | already | in      | path.   |    |       |
+: ADS already present already in path.
 
 ** Starship stuff
 #+begin_src bash
