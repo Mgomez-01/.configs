@@ -169,6 +169,7 @@ fi
 # <<< conda initialize <<<
 #+end_src
 
+ 
 * Custom Setups
 ** Z jumping
 #+begin_src bash
@@ -224,7 +225,7 @@ eval $ZPROG
   else export PATH=$PATH:$EXA_PATH;
   fi
 
-  ADS_PATH="/usr/local/ADS2023_Update2/bin:/usr/local/ADS2023_Update2/bin/Licensing/2023.02/bin" 
+  ADS_PATH="/usr/local/ADS2023/bin:/usr/local/ADS2023/bin/Licensing/2023.02/bin" 
   if [ ` (echo $PATH) | grep ADS` ] ;
   then  echo "ADS already present already in path.";
   else export PATH=$PATH:$ADS_PATH;
@@ -236,6 +237,31 @@ eval $ZPROG
   then  echo "CST already present already in path.";
   else export PATH=$PATH:$CST_PATH;
   fi
+
+
+  #ALTAIR_PATH="/home/speedy/2022.3/altair/security/bin/linux64:/home/speedy/2022.3/altair/feko/bin"
+  #FEKO_HOME="/home/speedy/2022.3/altair/feko"
+
+  # sourcing altair init
+  source /home/speedy/2022.3/altair/feko/bin/initfeko    
+
+  if [ ` (echo $PATH) | grep altair` ] ;
+  then  echo "Altair already present already in path.";
+  else export PATH=$PATH:$ALTAIR_PATH;
+  fi
+
+  LASTOOLS_PATH="/home/speedy/repos/LAStools/bin"
+  if [ ` (echo $PATH) | grep LAStools` ] ;
+  then  echo "Altair already present already in path.";
+  else export PATH=$PATH:$LASTOOLS_PATH;
+  fi
+
+  if [ `(echo $ALTAIR_WINPROP) | grep winprop` ] ;
+  then echo "winprop dir already set up";
+  else export ALTAIR_WINPROP="home/speedy/2022/altair/feko/api/winprop/";
+  fi
+
+  export ALTAIR_LICENSE_PATH='6200@winlic-d.eng.utah.edu'
 
 #+end_src
 
