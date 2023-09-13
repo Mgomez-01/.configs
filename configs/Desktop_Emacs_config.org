@@ -135,11 +135,16 @@ files.
 
 *** Org matlab
 #+begin_src emacs-lisp
-  (setq matlab-shell-command "/usr/local/MATLAB/R2023a/bin/matlab")
+    (setq matlab-shell-command "/usr/local/MATLAB/R2023a/bin/matlab")
+   (require 'matlab)
+     (add-hook 'matlab-mode-hook
+   	    (lambda ()
+   	      (define-key matlab-mode-map (kbd "M-<up>") 'elpy-nav-move-line-or-region-up)
+   	      (define-key matlab-mode-map (kbd "M-<down>") 'elpy-nav-move-line-or-region-down)))
 #+end_src
  
 #+RESULTS:
-: /usr/local/MATLAB/R2023a/bin/matlab
+| (lambda nil (define-key matlab-mode-map (kbd M-<up>) 'elpy-nav-move-line-or-region-up) (define-key matlab-mode-map (kbd M-<down>) 'elpy-nav-move-line-or-region-down)) | #[nil \300\301\302\303\211$\207 [add-hook after-save-hook semanticdb-matlab-possibly-add-buffer-to-cache t] 5] | (lambda nil (add-hook 'after-save-hook 'semanticdb-matlab-possibly-add-buffer-to-cache t t)) | matlab-cgen-hook-fcn |
 *** Org wolfram
 #+begin_src emacs-lisp
 
