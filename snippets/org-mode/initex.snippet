@@ -1,0 +1,79 @@
+# -*- mode: snippet -*-
+# name: initex
+# key: initex
+# --
+* LaTeX Customizations for Org Mode
+  This section contains all the LaTeX headers and custom commands for Org export.
+  #+TITLE: Homework Assignment #$1
+  #+AUTHOR: Miguel Gomez U1318856
+  #+DATE: Due Date: $2 ($3 points)
+  
+  #+LATEX: \\subtitle{ECE $4: $5 \\\\
+  \\today\\\\}
+  #+LATEX: \\textbf{Homework set #$1}
+  
+  #+LATEX_HEADER: \\documentclass[a4paper, 11pt]{exam}
+  #+LATEX_HEADER: \\usepackage[T1]{fontenc}
+  #+LATEX_HEADER: \\usepackage{titling}
+  #+LATEX_HEADER: \\usepackage{url}
+  #+LATEX_HEADER: \\usepackage{amsmath,amsthm,amssymb}
+  #+LATEX_HEADER: \\usepackage{graphicx}
+  #+LATEX_HEADER: \\usepackage{graphics}
+  #+LATEX_HEADER: \\usepackage{listings}
+  #+LATEX_HEADER: \\usepackage[dvipsnames]{xcolor}
+  #+LATEX_HEADER: \\usepackage{tabularx}
+  #+LATEX_HEADER: \\usepackage{ragged2e}
+  #+LATEX_HEADER: \\usepackage{courier}
+  #+LATEX_HEADER: \\usepackage{textcomp}
+  #+LATEX_HEADER: \\usepackage{circuitikz}
+  #+LATEX_HEADER: \\usepackage{tikz}
+  #+LATEX_HEADER: \\usepackage{enumitem}
+  #+LATEX_HEADER: \\usepackage{karnaugh-map}
+  #+LATEX_HEADER: \\usepackage{bytefield}
+  #+LATEX_HEADER: \\usepackage{mathrsfs}
+  #+LATEX_HEADER: \\usepackage{cancel}
+  #+LATEX_HEADER: \\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+  #+LATEX_HEADER: \\usepackage{hyperref}
+  #+LATEX_HEADER: \\usepackage{environ}
+  
+  #+BEGIN_EXPORT latex
+  \\newcommand{\\invlaplace}[1]{%
+    \\mathscr{L}^{-1}\\left\\{#1\\right\\}
+  }
+  \\newcommand{\\cc}[2]{%
+    \\textcolor{red}{\\cancelto{\\textcolor{black}{#2}}{\\textcolor{black}{#1}}}
+  }
+  \\newcommand{\\laplace}[1]{%
+    \\mathscr{L}\\left\\{#1\\right\\}
+  }
+  \\newcommand{\\fourier}[1]{%
+    \\mathscr{F}\\left\\{#1\\right\\}
+  }
+  \\newcommand{\\ztransform}[1]{%
+    \\mathscr{Z}\\left\\{#1\\right\\}
+  }
+  \\newcommand{\\wfbrac}[1]{%
+    \\left[ \\,#1\\right] \\,
+  }
+  \\newcommand{\\wfparen}[1]{%
+    \\left(#1\\right)
+  }
+  \\newcommand{\\uparrowat}[1]{\\underset{\\uparrow}{#1}}
+  \\newlist{myenumerate}{enumerate}{2}
+  \\setlist[myenumerate,1]{label=\\roman*\)}
+  \\setlist[myenumerate,2]{label=\\alph*\)}
+  \\newcommand\\tab[1][1cm]{\\hspace*{#1}}
+  \\renewcommand{\\labelenumi}{\\alph{enumi}\)}
+
+
+  \\NewEnviron{eqnsection}[2]{%
+	\\newcommand{\\myvspace}{#1}%
+  	\\vspace{\\myvspace}%
+  	\\begin{align*}
+  	\\intertext{#2}
+  	\\BODY
+  	\\end{align*}%
+  	\\vspace{\\myvspace}%
+  #+END_EXPORT
+
+$0
