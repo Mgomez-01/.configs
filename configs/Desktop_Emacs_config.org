@@ -2,7 +2,7 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el
 #+latex_header: \mode<beamer>{\usetheme{Madrid}}
 
-* TABLE OF CONTENTS :toc:
+* TABLE OF CONTENTS                                                     :toc:
 - [[#basic-configs][Basic Configs]]
   - [[#package-managers][Package Managers]]
   - [[#org-specific-changes][Org specific changes]]
@@ -69,69 +69,92 @@ This contains all package manager code
 #+end_src
 
 #+RESULTS:
-: t
+: package-utils
 
 
 ** Org specific changes
 Org specific modifications to allow for simpler entry in configs and other
 files.
+
+* Org main with latex
 #+begin_src emacs-lisp
-  (use-package org
-    :ensure t)
-  (require 'org)
-  ;; Line below is to allow quick templates to work
-  ;;Ex: <s <TAB> returns 
-  ;;#+begin_src
-  ;;
-  ;;#+end_src
-
-
+(use-package org
+  :defer t
+  :config
+  ;; Your org mode configuration
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  ;;(add-to-list 'org-structure-template-alist '("comm" . "COMMENT"))
-  (add-to-list 'org-structure-template-alist '("ml" . "src matlab :session *MATLAB* :results 
-  output"))
+  (add-to-list 'org-structure-template-alist '("ml" . "src matlab :session *MATLAB* :results output"))
   (add-to-list 'org-structure-template-alist '("jp" . "src jupyter-python :session python3 :results output"))
   (add-to-list 'org-structure-template-alist '("b" . "src bash"))
   (add-to-list 'org-structure-template-alist '("sc" . "src C :session gcc :results output"))
-
-  (use-package org-modern
-    :ensure t)
-  ;; set up org babel languages for code blocks
+  
+  ;; Org-Babel languages
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '(
-     (C           . t)
+   '((C           . t)
      (emacs-lisp  . t)
      (latex       . t)
      (matlab      . t)
-     ;;(mathematica . t)
      (org         . t)
      (processing  . t)
      (python      . t)
      (jupyter     . t)
      (R           . t)
      (shell       . t)))
+  
   (setq org-confirm-babel-evaluate nil)
   (setq org-support-shift-select t)
-
-  (use-package org-superstar
-    :ensure t)
-  (require 'org-superstar)
-  (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
-
-  (add-to-list 'load-path "~/.emacs.d/org-superstar/")
+  
+  ;; Org LaTeX settings
+  (setq org-latex-packages-alist
+        '(("T1" "fontenc" t)
+          ("" "titling" t)
+          ("" "url" t)
+          ("" "amsmath,amsthm,amssymb" t)))
+  
+  (with-eval-after-load 'ox-latex
+  (add-to-list 'org-latex-classes
+               '("exam"
+                 "\\documentclass[a4paper, 11pt]{exam}"
+                 ;; Add more custom settings here
+                 )))  
+  ;; More Org settings
   (setq org-toggle-inline-images t)
   (setq org-babel-C-compiler "/usr/bin/gcc")
-
   (setq org-babel-C++-compiler "/usr/bin/g++")
   (setq org-startup-with-inline-images t)
+  )
 
+(use-package texfrag
+  :defer t
+  :config
+  ;; Texfrag settings
+  (define-key texfrag-mode-map (kbd "C-c C-x C-l") 'texfrag-show-fragments)
+  (define-key texfrag-mode-map (kbd "C-c C-x C-k") 'texfrag-clear-fragments)
+)
+
+;; Function to update Org date on save
+(defun update-org-date-on-save ()
+  "Update the #+DATE: line in an Org file when it is saved."
+  (when (eq major-mode 'org-mode)
+    (save-excursion
+      (goto-char (point-min))
+      (when (re-search-forward "^#\\+DATE:.*$" nil t)
+        (replace-match (concat "#+DATE: " (format-time-string "%Y-%m-%d %H:%M:%S")))))))
+
+(add-hook 'before-save-hook 'update-org-date-on-save)
+
+;; Other packages and settings
+(use-package org-modern :ensure t)
+(use-package org-superstar :ensure t)
+(add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
+(add-to-list 'load-path "~/.emacs.d/org-superstar/")
 
 #+end_src
 
 #+RESULTS:
-: /usr/bin/g++
+| ~/.emacs.d/org-superstar/ | /home/speedy/.emacs.d/elpa/ac-c-headers-20200816.1007 | /home/speedy/.emacs.d/elpa/ac-clang-20180710.546 | /home/speedy/.emacs.d/elpa/ac-etags-20161001.1507 | /home/speedy/.emacs.d/elpa/ac-math-20141116.2127 | /home/speedy/.emacs.d/elpa/all-the-icons-20230615.2016 | /home/speedy/.emacs.d/elpa/auto-complete-clang-20140409.752 | /home/speedy/.emacs.d/elpa/auto-complete-exuberant-ctags-20140320.724 | /home/speedy/.emacs.d/elpa/bash-completion-20230612.1103 | /home/speedy/.emacs.d/elpa/basic-c-compile-20170302.1112 | /home/speedy/.emacs.d/elpa/c-eldoc-20201004.2347 | /home/speedy/.emacs.d/elpa/call-graph-20230222.525 | /home/speedy/.emacs.d/elpa/beacon-20220730.100 | /home/speedy/.emacs.d/elpa/cmake-mode-20230823.1325 | /home/speedy/.emacs.d/elpa/company-irony-20190124.2346 | /home/speedy/.emacs.d/elpa/company-math-20221227.1329 | /home/speedy/.emacs.d/elpa/cpp-auto-include-20210318.2217 | /home/speedy/.emacs.d/elpa/cpputils-cmake-20181006.328 | /home/speedy/.emacs.d/elpa/csv-mode-1.22 | /home/speedy/.emacs.d/elpa/cyanometric-theme-20220822.301 | /home/speedy/.emacs.d/elpa/autothemer-20230414.1419 | /home/speedy/.emacs.d/elpa/cyberpunk-2019-theme-20191008.1133 | /home/speedy/.emacs.d/elpa/cyberpunk-theme-20200601.1632 | /home/speedy/.emacs.d/elpa/dir-treeview-themes-20230112.134 | /home/speedy/.emacs.d/elpa/dir-treeview-20221103.35 | /home/speedy/.emacs.d/elpa/dockerfile-mode-20220822.2021 | /home/speedy/.emacs.d/elpa/elpy-20230803.1455 | /home/speedy/.emacs.d/elpa/company-20230703.2021 | /home/speedy/.emacs.d/elpa/emoji-fontset-20160726.1924 | /home/speedy/.emacs.d/elpa/emojify-logos-20180814.917 | /home/speedy/.emacs.d/elpa/emojify-20210108.1111 | /home/speedy/.emacs.d/elpa/exwm-0.27 | /home/speedy/.emacs.d/elpa/flymake-markdownlint-20220320.1208 | /home/speedy/.emacs.d/elpa/format-all-20230722.1157 | /home/speedy/.emacs.d/elpa/free-keys-20211116.1501 | /home/speedy/.emacs.d/elpa/gitignore-snippets-20201118.1551 | /home/speedy/.emacs.d/elpa/gitignore-templates-20210814.144 | /home/speedy/.emacs.d/elpa/go-mode-20230823.2304 | /home/speedy/.emacs.d/elpa/hierarchy-20190425.842 | /home/speedy/.emacs.d/elpa/highlight-indentation-20210221.1418 | /home/speedy/.emacs.d/elpa/impatient-mode-20230511.1746 | /home/speedy/.emacs.d/elpa/htmlize-20210825.2150 | /home/speedy/.emacs.d/elpa/inheritenv-20230804.651 | /home/speedy/.emacs.d/elpa/irony-eldoc-20200622.2214 | /home/speedy/.emacs.d/elpa/irony-20220110.849 | /home/speedy/.emacs.d/elpa/jedi-20191011.1750 | /home/speedy/.emacs.d/elpa/auto-complete-20221231.1633 | /home/speedy/.emacs.d/elpa/jedi-core-20210503.1315 | /home/speedy/.emacs.d/elpa/epc-20140610.534 | /home/speedy/.emacs.d/elpa/ctable-20210128.629 | /home/speedy/.emacs.d/elpa/concurrent-20170601.435 | /home/speedy/.emacs.d/elpa/jupyter-20230706.139 | /home/speedy/.emacs.d/elpa/language-id-20230722.1141 | /home/speedy/.emacs.d/elpa/latex-math-preview-20211228.641 | /home/speedy/.emacs.d/elpa/latex-pretty-symbols-20151112.1044 | /home/speedy/.emacs.d/elpa/latex-preview-pane-20181008.1822 | /home/speedy/.emacs.d/elpa/ligature-20220808.1225 | /home/speedy/.emacs.d/elpa/lsp-latex-20230717.1707 | /home/speedy/.emacs.d/elpa/consult-20230831.2212 | /home/speedy/.emacs.d/elpa/lsp-ui-20230811.552 | /home/speedy/.emacs.d/elpa/lsp-mode-20230901.1743 | /home/speedy/.emacs.d/elpa/eldoc-1.14.0 | /home/speedy/.emacs.d/elpa/ht-20230703.558 | /home/speedy/.emacs.d/elpa/f-20230823.1159 | /home/speedy/.emacs.d/elpa/lv-20200507.1518 | /home/speedy/.emacs.d/elpa/magit-20230828.1932 | /home/speedy/.emacs.d/elpa/git-commit-20230821.1659 | /home/speedy/.emacs.d/elpa/magit-section-20230805.1908 | /home/speedy/.emacs.d/elpa/marginalia-20230805.915 | /home/speedy/.emacs.d/elpa/markdown-mode-20230830.1338 | /home/speedy/.emacs.d/elpa/markdownfmt-20160609.1241 | /home/speedy/.emacs.d/elpa/math-preview-20230425.1820 | /home/speedy/.emacs.d/elpa/math-symbol-lists-20220828.2047 | /home/speedy/.emacs.d/elpa/matlab-mode-20230712.1655 | /home/speedy/.emacs.d/elpa/meson-mode-20210820.905 | /home/speedy/.emacs.d/elpa/multi-line-20230721.1814 | /home/speedy/.emacs.d/elpa/multiple-cursors-20230728.518 | /home/speedy/.emacs.d/elpa/neotree-20230815.219 | /home/speedy/.emacs.d/elpa/nerd-icons-completion-20230430.1611 | /home/speedy/.emacs.d/elpa/nerd-icons-dired-20230803.1848 | /home/speedy/.emacs.d/elpa/nerd-icons-ibuffer-20230417.1549 | /home/speedy/.emacs.d/elpa/nerd-icons-ivy-rich-20230721.357 | /home/speedy/.emacs.d/elpa/nerd-icons-20230901.1521 | /home/speedy/.emacs.d/elpa/ivy-rich-20230425.1422 | /home/speedy/.emacs.d/elpa/ivy-20230714.751 | /home/speedy/.emacs.d/elpa/orderless-20230802.218 | /home/speedy/.emacs.d/elpa/org-download-20220906.1929 | /home/speedy/.emacs.d/elpa/org-modern-20230816.2034 | /home/speedy/.emacs.d/elpa/org-superstar-20230116.1358 | /home/speedy/.emacs.d/elpa/org-20210929 | /home/speedy/.emacs.d/elpa/origami-20200331.1019 | /home/speedy/.emacs.d/elpa/dash-20230714.723 | /home/speedy/.emacs.d/elpa/package-utils-20220630.2345 | /home/speedy/.emacs.d/elpa/php-mode-20230815.1051 | /home/speedy/.emacs.d/elpa/platformio-mode-20210511.957 | /home/speedy/.emacs.d/elpa/async-20230528.622 | /home/speedy/.emacs.d/elpa/popup-20230819.2306 | /home/speedy/.emacs.d/elpa/pos-tip-20230721.834 | /home/speedy/.emacs.d/elpa/projectile-20230713.1023 | /home/speedy/.emacs.d/elpa/python-environment-20150310.853 | /home/speedy/.emacs.d/elpa/deferred-20170901.1330 | /home/speedy/.emacs.d/elpa/pyvenv-20211014.707 | /home/speedy/.emacs.d/elpa/rainbow-delimiters-20210515.1254 | /home/speedy/.emacs.d/elpa/rainbow-mode-1.0.6 | /home/speedy/.emacs.d/elpa/restart-emacs-20201127.1425 | /home/speedy/.emacs.d/elpa/s-20220902.1511 | /home/speedy/.emacs.d/elpa/shut-up-20210403.1249 | /home/speedy/.emacs.d/elpa/simple-httpd-20230821.1458 | /home/speedy/.emacs.d/elpa/spinner-1.7.4 | /home/speedy/.emacs.d/elpa/ssh-20120904.2042 | /home/speedy/.emacs.d/elpa/texfrag-20230117.1746 | /home/speedy/.emacs.d/elpa/auctex-13.2.1/ | /home/speedy/.emacs.d/elpa/auctex-13.2.1 | /home/speedy/.emacs.d/elpa/toc-org-20220110.1452 | /home/speedy/.emacs.d/elpa/transient-20230901.1237 | /home/speedy/.emacs.d/elpa/tree-mode-20151104.1331 | /home/speedy/.emacs.d/elpa/treeview-20220928.43 | /home/speedy/.emacs.d/elpa/use-package-20230426.2324 | /home/speedy/.emacs.d/elpa/bind-key-20230203.2004 | /home/speedy/.emacs.d/elpa/vertico-1.4 | /home/speedy/.emacs.d/elpa/visual-regexp-steroids-20170222.253 | /home/speedy/.emacs.d/elpa/visual-regexp-20210502.2019 | /home/speedy/.emacs.d/elpa/websocket-20230809.305 | /home/speedy/.emacs.d/elpa/which-key-20230712.2151 | /home/speedy/.emacs.d/elpa/with-editor-20230829.1917 | /home/speedy/.emacs.d/elpa/compat-29.1.4.2 | /home/speedy/.emacs.d/elpa/wolfram-20221111.816 | /home/speedy/.emacs.d/elpa/wolfram-mode-20180307.13 | /home/speedy/.emacs.d/elpa/xelb-0.18 | /home/speedy/.emacs.d/elpa/yasnippet-snippets-20230815.820 | /home/speedy/.emacs.d/elpa/yasnippet-20200604.246 | /home/speedy/.emacs.d/elpa/zmq-20230608.1856 | /usr/local/share/emacs/28.2/site-lisp | /usr/local/share/emacs/site-lisp | /usr/local/share/emacs/28.2/lisp | /usr/local/share/emacs/28.2/lisp/vc | /usr/local/share/emacs/28.2/lisp/url | /usr/local/share/emacs/28.2/lisp/textmodes | /usr/local/share/emacs/28.2/lisp/progmodes | /usr/local/share/emacs/28.2/lisp/play | /usr/local/share/emacs/28.2/lisp/org | /usr/local/share/emacs/28.2/lisp/nxml | /usr/local/share/emacs/28.2/lisp/net | /usr/local/share/emacs/28.2/lisp/mh-e | /usr/local/share/emacs/28.2/lisp/mail | /usr/local/share/emacs/28.2/lisp/leim | /usr/local/share/emacs/28.2/lisp/language | /usr/local/share/emacs/28.2/lisp/international | /usr/local/share/emacs/28.2/lisp/image | /usr/local/share/emacs/28.2/lisp/gnus | /usr/local/share/emacs/28.2/lisp/eshell | /usr/local/share/emacs/28.2/lisp/erc | /usr/local/share/emacs/28.2/lisp/emulation | /usr/local/share/emacs/28.2/lisp/emacs-lisp | /usr/local/share/emacs/28.2/lisp/cedet | /usr/local/share/emacs/28.2/lisp/calendar | /usr/local/share/emacs/28.2/lisp/calc | /usr/local/share/emacs/28.2/lisp/obsolete |
 
 *** Org matlab
 #+begin_src emacs-lisp
@@ -144,7 +167,7 @@ files.
 #+end_src
  
 #+RESULTS:
-| (lambda nil (define-key matlab-mode-map (kbd M-<up>) 'elpy-nav-move-line-or-region-up) (define-key matlab-mode-map (kbd M-<down>) 'elpy-nav-move-line-or-region-down)) | #[nil \300\301\302\303\211$\207 [add-hook after-save-hook semanticdb-matlab-possibly-add-buffer-to-cache t] 5] | (lambda nil (add-hook 'after-save-hook 'semanticdb-matlab-possibly-add-buffer-to-cache t t)) | matlab-cgen-hook-fcn |
+| lambda | nil | (define-key matlab-mode-map (kbd M-<up>) 'elpy-nav-move-line-or-region-up) | (define-key matlab-mode-map (kbd M-<down>) 'elpy-nav-move-line-or-region-down) |
 *** Org wolfram
 #+begin_src emacs-lisp
 
