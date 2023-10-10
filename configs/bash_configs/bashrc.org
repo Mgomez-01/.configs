@@ -225,10 +225,41 @@ eval $ZPROG
   fi
 
   export MODULAR_HOME="/home/speedy/.modular"
+
+  GF_PATH="/home/speedy/repos/gf"
+  if [ `(echo $PATH) | grep repos/gf` ] ;
+  then echo "gf is already in path.";
+  else export PATH=$PATH:$GF_PATH;
+  fi
+
+  ZCHAFF_PATH="/home/speedy/repos/zchaff/zchaff"
+  if [ `(echo $PATH) | grep repos/zchaff` ] ;
+  then echo "zchaff is already in path.";
+  else export PATH=$PATH:$ZCHAFF_PATH;
+  fi
+
+  ABC_PATH="/home/speedy/repos/abc"
+  if [ `(echo $PATH) | grep repos/abc` ] ;
+  then echo "abc is already in path.";
+  else export PATH=$PATH:$ABC_PATH;
+  fi
+
 #+end_src
 
 #+RESULTS:
-: ADS already present already in path.
+| Matlab    | already | in      | path.   |       |       |
+| prusa     | already | in      | path.   |       |       |
+| renderdoc | already | present | already | in    | path. |
+| renderdoc | already | present | already | in    | path. |
+| ADS       | already | present | already | in    | path. |
+| CHITUBOX  | already | in      | path.   |       |       |
+| CST       | already | in      | path.   |       |       |
+| LAStools  | already | in      | path.   |       |       |
+| Feko      | already | in      | path.   |       |       |
+| winprop   | dir     | already | set     | up    |       |
+| mojo      | is      | already | in      | path. |       |
+| gf        | is      | already | in      | path. |       |
+| zchaff    | is      | already | in      | path. |       |
 
 ** Starship stuff
 #+begin_src bash
@@ -236,6 +267,11 @@ eval $ZPROG
 eval "$(starship init bash)"
 #+end_src
 
+** CST
+#+begin_src bash
+export CUDA_VISIBLE_DEVICES=0
+export CST_HWACC_ALLOW_UNVERIFIED_HARDWARE=1
+#+end_src
 
 * Finalize Startup
 ** Start SSH agent
@@ -296,6 +332,4 @@ eval "$(starship init bash)"
   # This makes the outputted picture the edward from FMA directory
   #neofetch --jp2a ~/Downloads/FMA/edward/`ls ~/Downloads/FMA/edward|shuf -n 1`
   #--colors 10 12 0 12 15
-
-
 #+end_src
