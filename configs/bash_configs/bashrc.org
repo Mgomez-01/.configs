@@ -141,14 +141,6 @@ eval $ZPROG
 #+RESULTS:
 : Z already in path.
 
-** Emacsclient
-#+begin_src bash
-  #start emacs daemon if not already running
-  if ! emacsclient -e 0 >&/dev/null
-     then emacs --daemon
-  fi
-#+end_src
-
 ** Adding custom Paths  
 #+begin_src bash
   MATLAB_PATH="/usr/local/MATLAB/R2023a/bin"
@@ -195,7 +187,6 @@ eval $ZPROG
   else export PATH=$PATH:$CST_PATH;
   fi
 
-
   # adding in lastools path 
   LASTOOLS_PATH="/home/speedy/repos/LAStools/bin"
   if [ ` (echo $PATH) | grep LAStools` ] ;
@@ -203,9 +194,8 @@ eval $ZPROG
   else export PATH=$PATH:$LASTOOLS_PATH;
   fi
 
-
   # adding in feko
-  FEKO_PATH="/home/speedy/2022.3/altair/feko/bin"
+  FEKO_PATH="/home/speedy/2022/altair/feko/bin"
   if [ ` (echo $PATH) | grep feko` ] ;
   then  echo "Feko already in path.";
   else export PATH=$PATH:$FEKO_PATH;
@@ -247,19 +237,16 @@ eval $ZPROG
 #+end_src
 
 #+RESULTS:
-| Matlab    | already | in      | path.   |       |       |
-| prusa     | already | in      | path.   |       |       |
-| renderdoc | already | present | already | in    | path. |
-| renderdoc | already | present | already | in    | path. |
-| ADS       | already | present | already | in    | path. |
-| CHITUBOX  | already | in      | path.   |       |       |
-| CST       | already | in      | path.   |       |       |
-| LAStools  | already | in      | path.   |       |       |
-| Feko      | already | in      | path.   |       |       |
-| winprop   | dir     | already | set     | up    |       |
-| mojo      | is      | already | in      | path. |       |
-| gf        | is      | already | in      | path. |       |
-| zchaff    | is      | already | in      | path. |       |
+: ADS already present already in path.
+
+
+** Emacsclient
+#+begin_src bash
+  #start emacs daemon if not already running
+  if ! emacsclient -e 0 >&/dev/null
+     then emacs --daemon
+  fi
+#+end_src
 
 ** Starship stuff
 #+begin_src bash
