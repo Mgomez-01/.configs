@@ -234,10 +234,30 @@ eval $ZPROG
   else export PATH=$PATH:$ABC_PATH;
   fi
 
+  GO_PATH ="/home/speedy/go/bin"
+  if [ `(echo $PATH) | grep repos/abc` ] ;
+  then echo "go is already in path.";
+  else export PATH=$PATH:$GO_PATH;
+  fi
+  
 #+end_src
 
 #+RESULTS:
-: ADS already present already in path.
+| Matlab    | already | in      | path.   |       |       |
+| prusa     | already | in      | path.   |       |       |
+| renderdoc | already | present | already | in    | path. |
+| renderdoc | already | present | already | in    | path. |
+| ADS       | already | present | already | in    | path. |
+| CHITUBOX  | already | in      | path.   |       |       |
+| CST       | already | in      | path.   |       |       |
+| LAStools  | already | in      | path.   |       |       |
+| Feko      | already | in      | path.   |       |       |
+| winprop   | dir     | already | set     | up    |       |
+| mojo      | is      | already | in      | path. |       |
+| gf        | is      | already | in      | path. |       |
+| zchaff    | is      | already | in      | path. |       |
+| abc       | is      | already | in      | path. |       |
+| go        | is      | already | in      | path. |       |
 
 
 ** Emacsclient

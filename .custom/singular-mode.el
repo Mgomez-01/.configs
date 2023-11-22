@@ -20,9 +20,9 @@
 ;; Combine the above into a list of highlighting rules.
 (defvar singular-font-lock-keywords
   `(
+    (,singular-comment-regexp . font-lock-comment-face)
     (,singular-keywords-regexp . font-lock-builtin-face)
     (,singular-functions-regexp . font-lock-function-name-face)
-    (,singular-comment-regexp . font-lock-comment-face)
     )
   "Highlighting expressions for Singular mode.")
 

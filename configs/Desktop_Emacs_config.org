@@ -607,11 +607,13 @@ version without the debugging
     (dired "/ssh:u1318856@lab1-13.eng.utah.edu:~/"))
   (defun emulab ()
     (interactive)
-    (dired "/ssh:mgomez@pc790.emulab.net:~/"))
+    (dired "/ssh:mgomez@pc14-fort.emulab.net:~/"))
+  (defun lab-feko ()
+    (interactive)
+    (dired "/ssh:mgomez@pc12-fort.emulab.net:~/"))
   (defun docsServer ()
     (interactive)
     (dired "/ssh:root@160.238.36.160:/"))
-
 #+end_src
 
 #+RESULTS:
@@ -873,6 +875,9 @@ printf("Hello %s!!","world");
   (load "blif-mode.el")
   (add-to-list 'auto-mode-alist '("\\.blif\\'" . blif-mode))
   (load "feko-mode.el")
+  (add-to-list 'auto-mode-alist '("\\.sing\\'" . singular-mode))
+  (load "singular-mode.el")
+  
 #+end_src
 
 #+RESULTS:
