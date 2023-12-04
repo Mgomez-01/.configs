@@ -306,6 +306,21 @@ ac package for autocompletion in various modes. still needs some work
   
 #+end_src
 
+** lsp stuff
+#+begin_src emacs-lisp
+  (require 'lsp-mode)
+
+  (add-to-list 'lsp-language-id-configuration '(cmake-mode . "cmake"))
+
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection "cmake-language-server")
+		    :major-modes '(cmake-mode)
+		    :server-id 'cmake-ls))
+
+  (add-hook 'cmake-mode-hook #'lsp-deferred)
+ 
+#+end_src
+
 #+RESULTS:
 | my-ac-cc-mode-setup | ac-cc-mode-setup |
 
