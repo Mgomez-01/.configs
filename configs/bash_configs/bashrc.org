@@ -195,8 +195,8 @@ eval $ZPROG
   fi
 
   # adding in feko
-  FEKO_PATH="/home/speedy/2022/altair/feko/bin"
-  if [ ` (echo $PATH) | grep feko` ] ;
+  FEKO_PATH="/home/speedy/2022.3/altair/feko/bin"
+  if [ ` (echo $PATH) | grep 2022.3/altair` ] ;
   then  echo "Feko already in path.";
   else export PATH=$PATH:$FEKO_PATH;
   fi
@@ -222,8 +222,8 @@ eval $ZPROG
   else export PATH=$PATH:$GF_PATH;
   fi
 
-  ZCHAFF_PATH="/home/speedy/repos/zchaff/zchaff"
-  if [ `(echo $PATH) | grep repos/zchaff` ] ;
+  ZCHAFF_PATH="/home/speedy/repos/zchaff/zchaff64"
+  if [ `(echo $PATH) | grep zchaff` ] ;
   then echo "zchaff is already in path.";
   else export PATH=$PATH:$ZCHAFF_PATH;
   fi
@@ -249,7 +249,6 @@ eval $ZPROG
 | renderdoc | already | present | already | in    | path. |
 | ADS       | already | present | already | in    | path. |
 | CHITUBOX  | already | in      | path.   |       |       |
-| CST       | already | in      | path.   |       |       |
 | LAStools  | already | in      | path.   |       |       |
 | Feko      | already | in      | path.   |       |       |
 | winprop   | dir     | already | set     | up    |       |
@@ -257,16 +256,6 @@ eval $ZPROG
 | gf        | is      | already | in      | path. |       |
 | zchaff    | is      | already | in      | path. |       |
 | abc       | is      | already | in      | path. |       |
-| go        | is      | already | in      | path. |       |
-
-
-** Emacsclient
-#+begin_src bash
-  #start emacs daemon if not already running
-  if ! emacsclient -e 0 >&/dev/null
-     then emacs --daemon
-  fi
-#+end_src
 
 ** Starship stuff
 #+begin_src bash
@@ -287,6 +276,15 @@ export CST_HWACC_ALLOW_UNVERIFIED_HARDWARE=1
     eval "$(ssh-agent -s)"
     ssh-add ~/.ssh/id_ed25519
     clear
+#+end_src
+
+** Emacsclient
+#+begin_src bash
+  #start emacs daemon if not already running
+  if ! emacsclient -e 0 >&/dev/null
+     then emacs --daemon
+  fi
+  clear
 #+end_src
 
 ** Pokemon Stuff

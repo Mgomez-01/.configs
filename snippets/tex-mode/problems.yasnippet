@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: problems
+# key: problems
+# --
+\begin{document}
+\maketitle
+\noindent
+`(let ((counter (string-to-number (read-string "Enter the range (1-n): "))))
+   (cl-loop for i from 1 to counter concat
+        (format "\\section{}\n%d\n\\vspace{2em}\n\\hrule\n" i)))`
+\end{document}

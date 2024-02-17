@@ -6,6 +6,7 @@
 - [[#basic-configs][Basic Configs]]
   - [[#package-managers][Package Managers]]
   - [[#org-specific-changes][Org specific changes]]
+  - [[#matlab][matlab]]
   - [[#automatic-tangling-of-config][Automatic Tangling of config]]
   - [[#magit-git-client][Magit Git Client]]
   - [[#debugging][Debugging]]
@@ -22,10 +23,13 @@
   - [[#line-numbers-and-modes][Line numbers and modes]]
   - [[#which-key-mode][Which Key Mode]]
   - [[#various-changes][Various changes]]
+  - [[#auctex-stuff][Auctex stuff]]
+  - [[#latex-stuff][LaTeX stuff]]
   - [[#keybindings][Keybindings]]
   - [[#ssh][SSH]]
   - [[#visual-regex][Visual Regex]]
   - [[#directory-changes][Directory Changes]]
+  - [[#generic-x][generic-x]]
 - [[#autocomplete-stuff][Autocomplete Stuff]]
   - [[#ac-package][AC package]]
   - [[#lsp][lsp]]
@@ -35,6 +39,7 @@
   - [[#python-stuff][Python stuff]]
   - [[#jupyter-stuff][jupyter stuff]]
   - [[#example-block-with-results-view-raw-to-see-org-text][Example block with results (View Raw to see org text)]]
+- [[#platform-io][Platform-IO]]
 - [[#gui-specific][GUI Specific]]
   - [[#exwm][EXWM]]
   - [[#if-gui-mode][If Gui mode]]
@@ -56,62 +61,93 @@ This contains all package manager code
   (require 'use-package))
 #+end_src
 
-** Org specific changes
-Org specific modifications to allow for simpler entry in configs and other
-files.
+** Org main with latex
 #+begin_src emacs-lisp
-  (use-package org
-    :ensure t)
-  (require 'org)
-  ;; Line below is to allow quick templates to work.
-  ;;Ex: <s <TAB> returns 
-  ;;#+begin_src
-  ;;
-  ;;#+end_src
-
+(use-package org
+  :defer t
+  :config
+  ;; Your org mode configuration
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  ;;(add-to-list 'org-structure-template-alist '("comm" . "COMMENT"))
-  (add-to-list 'org-structure-template-alist '("ml" . "src matlab :session *MATLAB* :results 
-    output"))
+  (add-to-list 'org-structure-template-alist '("ml" . "src matlab :session *MATLAB* :results output"))
   (add-to-list 'org-structure-template-alist '("jp" . "src jupyter-python :session python3 :results output"))
   (add-to-list 'org-structure-template-alist '("b" . "src bash"))
   (add-to-list 'org-structure-template-alist '("sc" . "src C :session gcc :results output"))
-
-  (use-package org-modern
-    :ensure t)
-  ;; set up org babel languages for code blocks
+  
+  ;; Org-Babel languages
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '(
-     (C          . t)
-     (emacs-lisp . t)
-     (latex      . t)
-     (matlab     . t)
-     (org        . t)
-     (processing . t)
-     (python     . t)
-     (jupyter    . t)
-     (R          . t)
-     (shell      . t)))
+   '((C           . t)
+     (emacs-lisp  . t)
+     (latex       . t)
+     (matlab      . t)
+     (org         . t)
+     (processing  . t)
+     (python      . t)
+     (jupyter     . t)
+     (R           . t)
+     (shell       . t)))
+  
   (setq org-confirm-babel-evaluate nil)
   (setq org-support-shift-select t)
-
-  (use-package org-superstar
-      :ensure t)
-  (require 'org-superstar)
-  (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
-
-  (add-to-list 'load-path "~/.emacs.d/org-superstar/")
-  (toc-org-enable)
-  (setq org-startup-with-inline-images t)
+  
+  ;; Org LaTeX settings
+  (setq org-latex-packages-alist
+        '(("T1" "fontenc" t)
+          ("" "titling" t)
+          ("" "url" t)
+          ("" "amsmath,amsthm,amssymb" t)))
+  
+  (with-eval-after-load 'ox-latex
+  (add-to-list 'org-latex-classes
+               '("exam"
+                 "\\documentclass[a4paper, 11pt]{exam}"
+                 ;; Add more custom settings here
+                 )))  
+  ;; More Org settings
   (setq org-toggle-inline-images t)
+  (setq org-babel-C-compiler "/usr/bin/gcc")
+  (setq org-babel-C++-compiler "/usr/bin/g++")
+  (setq org-startup-with-inline-images t)
+  )
 
+(use-package texfrag
+  :defer t
+  :config
+  ;; Texfrag settings
+  (define-key texfrag-mode-map (kbd "C-c C-x C-l") 'texfrag-show-fragments)
+  (define-key texfrag-mode-map (kbd "C-c C-x C-k") 'texfrag-clear-fragments)
+)
+
+;; Function to update Org date on save
+(defun update-org-date-on-save ()
+  "Update the #+DATE: line in an Org file when it is saved."
+  (when (eq major-mode 'org-mode)
+    (save-excursion
+      (goto-char (point-min))
+      (when (re-search-forward "^#\\+DATE:.*$" nil t)
+        (replace-match (concat "#+DATE: " (format-time-string "%Y-%m-%d %H:%M:%S")))))))
+
+(add-hook 'before-save-hook 'update-org-date-on-save)
+
+;; Other packages and settings
+(use-package org-modern :ensure t)
+(use-package org-superstar :ensure t)
+(add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
+(add-to-list 'load-path "~/.emacs.d/org-superstar/")
 
 #+end_src
 
-#+RESULTS:
-: t
+
+** matlab
+#+begin_src emacs-lisp
+    (setq matlab-shell-command "/usr/local/MATLAB/R2023a/bin/matlab")
+   (require 'matlab)
+     (add-hook 'matlab-mode-hook
+   	    (lambda ()
+   	      (define-key matlab-mode-map (kbd "M-<up>") 'elpy-nav-move-line-or-region-up)
+   	      (define-key matlab-mode-map (kbd "M-<down>") 'elpy-nav-move-line-or-region-down)))
+#+end_src
 
 ** Automatic Tangling of config
 Exactly as it sounds. Tangles the config to init.el for loading in at Emacs startup
@@ -137,7 +173,19 @@ Exactly as it sounds. Tangles the config to init.el for loading in at Emacs star
 	(org-babel-tangle))
       )
     )
-  
+
+  (defun efs/org-babel-tangle-bashaliases ()
+    ;;(message "filename: %s" buffer-file-name)
+    (when
+	(string-equal
+	 (buffer-file-name)
+	 (expand-file-name "~/.config/.configs/configs/bash_configs/.bash_aliases.org"))
+      (let
+	  ((org-confirm-babel-evaluate nil))
+	(org-babel-tangle))
+      )
+    )
+
   (defun efs/org-babel-tangle-bashrc ()
     (when
 	(string-equal
@@ -151,11 +199,14 @@ Exactly as it sounds. Tangles the config to init.el for loading in at Emacs star
 
   (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
   (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-bashfunctions)))
+  (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-bashaliases)))
   (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-bashrc)))
-#+end_src
 
-#+RESULTS:
-| (lambda nil (add-hook 'after-save-hook #'efs/org-babel-tangle-config)) | (lambda nil (org-superstar-mode 1)) | jupyter-org-interaction-mode | org-tempo-setup | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
+  (add-hook 'org-mode-hook
+	    (lambda ()
+	      (define-key org-mode-map (kbd "M-<up>") 'elpy-nav-move-line-or-region-up)
+	      (define-key org-mode-map (kbd "M-<down>") 'elpy-nav-move-line-or-region-down)))
+#+end_src
 
 ** Magit Git Client
 #+begin_src emacs-lisp
@@ -206,9 +257,6 @@ and setting up the theme).
     (add-hook 'Info-selection-hook 'info-colors-fontify-node)
 #+end_src
 
-#+RESULTS:
-| info-colors-fontify-node |
-
 ** Emojis
 #+begin_src emacs-lisp
   (use-package emojify
@@ -218,7 +266,6 @@ and setting up the theme).
    t 'symbol (font-spec :family "Segoe UI Emoji") nil 'prepend))
 #+end_src
 
-#+RESULTS:
 
 ** Fonts
 #+begin_src emacs-lisp
@@ -295,9 +342,6 @@ and setting up the theme).
     (global-ligature-mode t)
 #+end_src
 
-#+RESULTS:
-: t
-
 
 * Quality of life changes
 ** Vertico
@@ -325,7 +369,6 @@ A mod for Vertico to allow searching by any string instead of by starting string
   (global-origami-mode t)
 #+end_src
 
-#+RESULTS:
 
 ** Rainbow mode stuff
 Modifications for using rainbow delimiters. Makes navigating elisp code much easier
@@ -412,10 +455,6 @@ Some simple quality of life things for me.
 
 #+end_src
 
-#+RESULTS: 
-: t
-
-
 
 ** Auctex stuff
 #+begin_src emacs-lisp
@@ -439,12 +478,11 @@ Some simple quality of life things for me.
       (add-hook 'LaTeX-mode-hook
 		(lambda ()
 		  (define-key LaTeX-mode-map (kbd "C-c C-g") 'quick-xelatex)
-		  (define-key LaTeX-mode-map (kbd "C-c C-f") 'finalize-xelatex)))
-  )
-#+end_src
+		  (define-key LaTeX-mode-map (kbd "C-c C-f") 'finalize-xelatex)
+		  (define-key LaTeX-mode-map (kbd "M-<up>") 'elpy-nav-move-line-or-region-up)
+		  (define-key LaTeX-mode-map (kbd "M-<down>") 'elpy-nav-move-line-or-region-down))))
+#+end_src 
 
-#+RESULTS:
-| turn-on-reftex | LaTeX-math-mode | flyspell-mode | visual-line-mode | preview-mode-setup | (lambda nil (add-hook 'after-save-hook 'run-xelatex-on-save nil 'make-it-local)) |
 
 ** LaTeX stuff
 version without the debugging
@@ -492,9 +530,6 @@ version without the debugging
 	      (add-hook 'after-save-hook 'run-xelatex-on-save nil 'make-it-local)))
 #+end_src
 
-#+RESULTS:
-| turn-on-reftex | LaTeX-math-mode | flyspell-mode | visual-line-mode | preview-mode-setup | (lambda nil (add-hook 'after-save-hook 'run-xelatex-on-save nil 'make-it-local)) |
-
 
 ** Keybindings
 #+begin_src emacs-lisp
@@ -529,76 +564,125 @@ version without the debugging
   (setq backup-directory-alist `(("." . "~/.backups/emacs-backups")))
 #+end_src
 
-#+RESULTS:
-: ((. . ~/.somedir/emacs-backups))
+
+** generic-x
+#+begin_src emacs-lisp
+ (require 'generic-x)
+#+end_src
 
 
 * Autocomplete Stuff
 ** AC package
 ac package for autocompletion in various modes. still needs some work
 #+begin_src emacs-lisp
-    ;; start auto-complete package
+      ;; start auto-complete package
 
-  (use-package auto-complete
-      :ensure t)
-  (use-package ac-etags
-    :ensure t
-    :after auto-complete
-    :config
-    (progn
-      (ac-etags-setup)
-      (setq ac-etags-requires 1)
-      (add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)))
+    (use-package auto-complete
+	:ensure t)
+    (use-package ac-etags
+      :ensure t
+      :after auto-complete
+      :config
+      (progn
+	(ac-etags-setup)
+	(setq ac-etags-requires 1)
+	(add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)))
 
-    (custom-set-variables
-     ;; custom-set-variables was added by Custom.
-     ;; If you edit it by hand, you could mess it up, so be careful.
-     ;; Your init file should contain only one such instance.
-     ;; If there is more than one, they won't work right.
-     '(ac-etags-requires 1)
-     '(custom-safe-themes
-       '("af5e14845791d2baaa7ccdf455850527b963a991fa3e7a101ebf280645f30cc2" default))
-     '(dir-treeview-show-in-side-window t))
-    (require 'auto-complete-config)
-    (ac-config-default)
-    (use-package auto-complete-clang)
-    (setq ac-clang-flags
-	  (append '("-std=c++11")
-		  (mapcar (lambda (item) (concat "-I" item))
-			  (split-string
-			   "
-       /usr/include/c++/x.x
-       /usr/include/x86_64-linux-gnu/c++/x.x
-       /usr/include/c++/x.x/backward
-       /usr/lib/gcc/x86_64-linux-gnu/x.x/include
-       /usr/local/include
-       /usr/include/x86_64-linux-gnu
-       /usr/include
-      "))))
-    (setq ac-quick-help-delay 1)
-    (defun my-ac-config ()
-      (setq-default ac-sources '(ac-source-abbrev
-				 ac-source-dictionary
-				 ac-source-words-in-same-mode-buffers
-				 ))
-      (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
-      (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
-      (add-hook 'c-mode-common-hook 'my/c-mode-common-hook)
-      (add-hook 'ruby-mode-hook 'ac-ruby-mode-setup)
-      (add-hook 'css-mode-hook 'ac-css-mode-setup)
-      (add-hook 'auto-complete-mode-hook 'ac-common-setup)
-      (global-auto-complete-mode t))
-    (defun my-ac-cc-mode-setup ()
-      (setq ac-sources (append '(ac-source-clang ac-source-yasnippet) ac-sources)))
+      (custom-set-variables
+       ;; custom-set-variables was added by Custom.
+       ;; If you edit it by hand, you could mess it up, so be careful.
+       ;; Your init file should contain only one such instance.
+       ;; If there is more than one, they won't work right.
+       '(ac-etags-requires 1)
+       '(custom-safe-themes
+	 '("af5e14845791d2baaa7ccdf455850527b963a991fa3e7a101ebf280645f30cc2" default))
+       '(dir-treeview-show-in-side-window t))
+      (require 'auto-complete-config)
+      (ac-config-default)
+      (use-package auto-complete-clang)
+      (setq ac-clang-flags
+	    (append '("-std=c++11")
+		    (mapcar (lambda (item) (concat "-I" item))
+			    (split-string
+			     "
+	 /usr/include/c++/x.x
+	 /usr/include/x86_64-linux-gnu/c++/x.x
+	 /usr/include/c++/x.x/backward
+	 /usr/lib/gcc/x86_64-linux-gnu/x.x/include
+	 /usr/local/include
+	 /usr/include/x86_64-linux-gnu
+	 /usr/include
+	"))))
+      (setq ac-quick-help-delay 1)
+      (defun my-ac-config ()
+	(setq-default ac-sources '(ac-source-abbrev
+				   ac-source-dictionary
+				   ac-source-words-in-same-mode-buffers
+				   ))
+	(add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
+	(add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
+	(add-hook 'c-mode-common-hook 'my/c-mode-common-hook)
+	(add-hook 'ruby-mode-hook 'ac-ruby-mode-setup)
+	(add-hook 'css-mode-hook 'ac-css-mode-setup)
+	(add-hook 'auto-complete-mode-hook 'ac-common-setup)
+	(global-auto-complete-mode t))
+      (defun my-ac-cc-mode-setup ()
+	(setq ac-sources (append '(ac-source-clang ac-source-yasnippet) ac-sources)))
     (add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)
+
+    ;; (setq lsp-clients-clangd-executable "/usr/bin/clangd")
+    ;; (setq lsp-clients-clangd-args '("--log=verbose" ...))
+    ;; (with-eval-after-load 'flycheck
+    ;; (add-to-list 'flycheck-checkers 'lsp))
+    ;; (setq lsp-enabled-clients '(clangd))
+    ;; (with-eval-after-load 'lsp-mode
+    ;; (add-to-list 'lsp-enabled-clients 'clangd))
+  (add-hook 'c-mode-common-hook
+	    (lambda ()
+	      (local-set-key (kbd "M-<up>") 'elpy-nav-move-line-or-region-up)
+	      (local-set-key (kbd "M-<down>") 'elpy-nav-move-line-or-region-down)))
 #+end_src
+
 
 ** lsp
 #+begin_src emacs-lisp
-  (use-package lsp-ui
-    :ensure t)
-  (require 'lsp-ui)
+  ;; Existing LSP and CMake setup
+  (use-package lsp-ui)
+  (use-package lsp-mode
+     :config
+    (setenv "LIBRARY_PATH" "/home/speedy/2022/altair/feko/api/winprop/bin/")
+    (setenv "INCLUDE_PATH" "/home/speedy/2022/altair/feko/api/winprop/source/")) 
+  (require 'lsp-mode)
+
+  (add-to-list 'lsp-language-id-configuration '(cmake-mode . "cmake"))
+
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection "cmake-language-server")
+		    :major-modes '(cmake-mode)
+		    :server-id 'cmake-ls))
+  (add-hook 'cmake-mode-hook #'lsp-deferred)
+
+  ;; Additional setup for C/C++ with clangd
+  (add-hook 'c-mode-hook #'lsp-deferred)
+  (add-hook 'c++-mode-hook #'lsp-deferred)
+
+  ;; Clangd configuration (assuming clangd is in your PATH)
+  (setq lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error"))
+
+  ;; Company Mode for auto-completion (if not already set up)
+  (use-package company
+    :config
+    (setq company-idle-delay 0)
+    (setq company-minimum-prefix-length 1)
+    (add-hook 'after-init-hook 'global-company-mode))
+
+  ;; Company LSP for LSP-driven auto-completions (if not already set up)
+  (use-package company-lsp
+    :commands company-lsp)
 #+end_src
+
+#+RESULTS:
+
 
 ** YAS(yasnippet)
 Yasnippet configuration for using snippets in code. Using in programming
@@ -617,7 +701,7 @@ mode since that is the most convenient.
     (add-hook 'prog-mode-hook #'yas-minor-mode)
 #+end_src
 
-
+ 
 ** elpy mode
 #+begin_src emacs-lisp
   (use-package elpy
@@ -647,6 +731,7 @@ mode since that is the most convenient.
 #+begin_src jupyter-python :session python3 :results output
 import numpy
 #+end_src
+
 
 ** Example block with results (View Raw to see org text)
 Example of a block with results outputted. change keyword after
@@ -692,11 +777,11 @@ printf("Hello %s!!","world");
   (use-package irony-eldoc
     :ensure t)
   (use-package company-irony
-    :ensure t) 
+    :ensure t)
   (use-package platformio-mode
     :ensure t)
-  ;; edit ino files with adruino mode. 
-  (add-to-list 'auto-mode-alist '("\\.ino$" . arduino-mode)) 
+  ;; edit ino files with adruino mode.
+  (add-to-list 'auto-mode-alist '("\\.ino$" . arduino-mode))
   ;; Enable irony for all c++ files, and platformio-mode only
   ;; when needed (platformio.ini present in project root).
   (add-hook 'c++-mode-hook (lambda ()
@@ -705,9 +790,9 @@ printf("Hello %s!!","world");
 			     (platformio-conditionally-enable)))
 
   (add-hook 'c-mode-hook (lambda ()
-			     (irony-mode)
-			     (irony-eldoc)
-			     (platformio-conditionally-enable)))
+			   (irony-mode)
+			   (irony-eldoc)
+			   (platformio-conditionally-enable)))
 
   ;; Use irony's completion functions.
   (add-hook 'irony-mode-hook
@@ -719,10 +804,41 @@ printf("Hello %s!!","world");
 		'irony-completion-at-point-async)
 
 	      (irony-cdb-autosetup-compile-options)))
-#+end_src
 
-#+RESULTS:
-| lambda | nil | (define-key irony-mode-map [remap completion-at-point] 'irony-completion-at-point-async) | (define-key irony-mode-map [remap complete-symbol] 'irony-completion-at-point-async) | (irony-cdb-autosetup-compile-options) |
+  (defun my-setup-company-backend ()
+    "Dynamically set the company backend."
+    (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
+	(progn
+	  ;; Use company-lsp or company-capf for C/C++ modes
+	  (setq-local company-backends '((company-lsp :with company-yasnippet)
+					 company-capf
+					 company-files))
+	  (message "Set company backends for C/C++ mode"))
+      (progn
+	;; Use default company backends for other modes
+	(setq-local company-backends '(company-irony company-capf company-files))
+	(message "Set default company backends"))))
+
+  ;; Add this function to the hooks for the modes where you want to set up company backends
+  (add-hook 'c-mode-hook 'my-setup-company-backend)
+  (add-hook 'c++-mode-hook 'my-setup-company-backend)
+  (add-hook 'python-mode-hook 'my-setup-company-backend)
+
+  (defun my-disable-ac-if-company-active ()
+    "Disable auto-complete if company-mode is active."
+    (message "Checking if auto-complete and company-mode are both active...")
+    (when (and (bound-and-true-p company-mode)
+	       (bound-and-true-p auto-complete-mode))
+      (message "Both are active. Disabling auto-complete-mode.")
+      (auto-complete-mode -1)))
+
+
+  ;; Add this function to the hooks where both company-mode and auto-complete could be active
+  (add-hook 'c-mode-hook 'my-disable-ac-if-company-active)
+  (add-hook 'c++-mode-hook 'my-disable-ac-if-company-active)
+  (add-hook 'cmake-mode-hook 'my-disable-ac-if-company-active)
+  (add-hook 'prog-mode-hook 'my-disable-ac-if-company-active)
+#+end_src
 
 
 * GUI Specific
@@ -762,4 +878,62 @@ WSL properly.
 
 #+end_src
  
+
+#+begin_src emacs-lisp
+  ;; (defun org-babel-post-process-ansi-colors ()
+  ;;   (let ((params (nth 2 (org-babel-get-src-block-info))))
+  ;;     (when (assoc :with_ansi_color params)
+  ;;       (goto-char (point-min))
+  ;;       (while (re-search-forward "\033\\[37m" nil t)
+  ;;         (replace-match "#+BEGIN_VERSE\n"))
+  ;;       (goto-char (point-min))
+  ;;       (while (re-search-forward "\033\\[0m" nil t)
+  ;;         (replace-match "\n#+END_VERSE")))))
+
+  ;; (add-to-list 'org-babel-after-execute-hook 'org-babel-post-process-ansi-colors)
+#+end_src
+
 #+RESULTS:
+
+** custom modes
+#+begin_src emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/.custom/")
+  (load "cnf-mode.el")
+  (add-to-list 'auto-mode-alist '("\\.cnf\\'" . cnf-mode))  
+  (load "blif-mode.el")
+  (add-to-list 'auto-mode-alist '("\\.blif\\'" . blif-mode))  
+#+end_src
+
+** custom python def creator
+#+begin_src emacs-lisp
+  (defun generate-python-function ()
+    (interactive)
+    (let (function-name current-point)
+      (save-excursion
+      ;; Capture function name using regex search
+      (if (or (re-search-backward "\\b\\([a-zA-Z0-9_]+\\)\\b" nil t)
+	      (re-search-forward "\\b\\([a-zA-Z0-9_]+\\)\\b" nil t))
+	  (setq function-name (match-string 1))
+	(error "No valid function name at point"))))
+	(goto-char (point-min))
+      ;; Search for the last import statement followed by a blank line
+      (if (re-search-forward "^import \\|^from .+ import " nil t)
+	  (progn
+	    (while (or (looking-at "^import \\|^from .+ import ")
+		       (looking-at "^[ \t]*$"))
+	      (forward-line))
+	    (insert (format "\n\ndef %s():\n    pass\n" function-name)))
+	(goto-char (point-max))
+	(insert (format "\n\ndef %s():\n    pass\n" function-name))))
+  (global-set-key (kbd "C-c g") 'generate-python-function)
+  
+#+end_src
+
+#+RESULTS:
+: generate-python-function
+
+** exec-shell-from-path
+#+begin_src emacs-lisp
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+#+end_src

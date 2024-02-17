@@ -68,9 +68,6 @@ This contains all package manager code
   (require 'package-utils)
 #+end_src
 
-#+RESULTS:
-: package-utils
-
 
 ** Org specific changes
 Org specific modifications to allow for simpler entry in configs and other
@@ -153,10 +150,7 @@ files.
 
 #+end_src
 
-#+RESULTS:
-| ~/.emacs.d/org-superstar/ | /home/speedy/.emacs.d/elpa/ac-c-headers-20200816.1007 | /home/speedy/.emacs.d/elpa/ac-clang-20180710.546 | /home/speedy/.emacs.d/elpa/ac-etags-20161001.1507 | /home/speedy/.emacs.d/elpa/ac-math-20141116.2127 | /home/speedy/.emacs.d/elpa/all-the-icons-20230615.2016 | /home/speedy/.emacs.d/elpa/auto-complete-clang-20140409.752 | /home/speedy/.emacs.d/elpa/auto-complete-exuberant-ctags-20140320.724 | /home/speedy/.emacs.d/elpa/bash-completion-20230612.1103 | /home/speedy/.emacs.d/elpa/basic-c-compile-20170302.1112 | /home/speedy/.emacs.d/elpa/c-eldoc-20201004.2347 | /home/speedy/.emacs.d/elpa/call-graph-20230222.525 | /home/speedy/.emacs.d/elpa/beacon-20220730.100 | /home/speedy/.emacs.d/elpa/cmake-mode-20230823.1325 | /home/speedy/.emacs.d/elpa/company-irony-20190124.2346 | /home/speedy/.emacs.d/elpa/company-math-20221227.1329 | /home/speedy/.emacs.d/elpa/cpp-auto-include-20210318.2217 | /home/speedy/.emacs.d/elpa/cpputils-cmake-20181006.328 | /home/speedy/.emacs.d/elpa/csv-mode-1.22 | /home/speedy/.emacs.d/elpa/cyanometric-theme-20220822.301 | /home/speedy/.emacs.d/elpa/autothemer-20230414.1419 | /home/speedy/.emacs.d/elpa/cyberpunk-2019-theme-20191008.1133 | /home/speedy/.emacs.d/elpa/cyberpunk-theme-20200601.1632 | /home/speedy/.emacs.d/elpa/dir-treeview-themes-20230112.134 | /home/speedy/.emacs.d/elpa/dir-treeview-20221103.35 | /home/speedy/.emacs.d/elpa/dockerfile-mode-20220822.2021 | /home/speedy/.emacs.d/elpa/elpy-20230803.1455 | /home/speedy/.emacs.d/elpa/company-20230703.2021 | /home/speedy/.emacs.d/elpa/emoji-fontset-20160726.1924 | /home/speedy/.emacs.d/elpa/emojify-logos-20180814.917 | /home/speedy/.emacs.d/elpa/emojify-20210108.1111 | /home/speedy/.emacs.d/elpa/exwm-0.27 | /home/speedy/.emacs.d/elpa/flymake-markdownlint-20220320.1208 | /home/speedy/.emacs.d/elpa/format-all-20230722.1157 | /home/speedy/.emacs.d/elpa/free-keys-20211116.1501 | /home/speedy/.emacs.d/elpa/gitignore-snippets-20201118.1551 | /home/speedy/.emacs.d/elpa/gitignore-templates-20210814.144 | /home/speedy/.emacs.d/elpa/go-mode-20230823.2304 | /home/speedy/.emacs.d/elpa/hierarchy-20190425.842 | /home/speedy/.emacs.d/elpa/highlight-indentation-20210221.1418 | /home/speedy/.emacs.d/elpa/impatient-mode-20230511.1746 | /home/speedy/.emacs.d/elpa/htmlize-20210825.2150 | /home/speedy/.emacs.d/elpa/inheritenv-20230804.651 | /home/speedy/.emacs.d/elpa/irony-eldoc-20200622.2214 | /home/speedy/.emacs.d/elpa/irony-20220110.849 | /home/speedy/.emacs.d/elpa/jedi-20191011.1750 | /home/speedy/.emacs.d/elpa/auto-complete-20221231.1633 | /home/speedy/.emacs.d/elpa/jedi-core-20210503.1315 | /home/speedy/.emacs.d/elpa/epc-20140610.534 | /home/speedy/.emacs.d/elpa/ctable-20210128.629 | /home/speedy/.emacs.d/elpa/concurrent-20170601.435 | /home/speedy/.emacs.d/elpa/jupyter-20230706.139 | /home/speedy/.emacs.d/elpa/language-id-20230722.1141 | /home/speedy/.emacs.d/elpa/latex-math-preview-20211228.641 | /home/speedy/.emacs.d/elpa/latex-pretty-symbols-20151112.1044 | /home/speedy/.emacs.d/elpa/latex-preview-pane-20181008.1822 | /home/speedy/.emacs.d/elpa/ligature-20220808.1225 | /home/speedy/.emacs.d/elpa/lsp-latex-20230717.1707 | /home/speedy/.emacs.d/elpa/consult-20230831.2212 | /home/speedy/.emacs.d/elpa/lsp-ui-20230811.552 | /home/speedy/.emacs.d/elpa/lsp-mode-20230901.1743 | /home/speedy/.emacs.d/elpa/eldoc-1.14.0 | /home/speedy/.emacs.d/elpa/ht-20230703.558 | /home/speedy/.emacs.d/elpa/f-20230823.1159 | /home/speedy/.emacs.d/elpa/lv-20200507.1518 | /home/speedy/.emacs.d/elpa/magit-20230828.1932 | /home/speedy/.emacs.d/elpa/git-commit-20230821.1659 | /home/speedy/.emacs.d/elpa/magit-section-20230805.1908 | /home/speedy/.emacs.d/elpa/marginalia-20230805.915 | /home/speedy/.emacs.d/elpa/markdown-mode-20230830.1338 | /home/speedy/.emacs.d/elpa/markdownfmt-20160609.1241 | /home/speedy/.emacs.d/elpa/math-preview-20230425.1820 | /home/speedy/.emacs.d/elpa/math-symbol-lists-20220828.2047 | /home/speedy/.emacs.d/elpa/matlab-mode-20230712.1655 | /home/speedy/.emacs.d/elpa/meson-mode-20210820.905 | /home/speedy/.emacs.d/elpa/multi-line-20230721.1814 | /home/speedy/.emacs.d/elpa/multiple-cursors-20230728.518 | /home/speedy/.emacs.d/elpa/neotree-20230815.219 | /home/speedy/.emacs.d/elpa/nerd-icons-completion-20230430.1611 | /home/speedy/.emacs.d/elpa/nerd-icons-dired-20230803.1848 | /home/speedy/.emacs.d/elpa/nerd-icons-ibuffer-20230417.1549 | /home/speedy/.emacs.d/elpa/nerd-icons-ivy-rich-20230721.357 | /home/speedy/.emacs.d/elpa/nerd-icons-20230901.1521 | /home/speedy/.emacs.d/elpa/ivy-rich-20230425.1422 | /home/speedy/.emacs.d/elpa/ivy-20230714.751 | /home/speedy/.emacs.d/elpa/orderless-20230802.218 | /home/speedy/.emacs.d/elpa/org-download-20220906.1929 | /home/speedy/.emacs.d/elpa/org-modern-20230816.2034 | /home/speedy/.emacs.d/elpa/org-superstar-20230116.1358 | /home/speedy/.emacs.d/elpa/org-20210929 | /home/speedy/.emacs.d/elpa/origami-20200331.1019 | /home/speedy/.emacs.d/elpa/dash-20230714.723 | /home/speedy/.emacs.d/elpa/package-utils-20220630.2345 | /home/speedy/.emacs.d/elpa/php-mode-20230815.1051 | /home/speedy/.emacs.d/elpa/platformio-mode-20210511.957 | /home/speedy/.emacs.d/elpa/async-20230528.622 | /home/speedy/.emacs.d/elpa/popup-20230819.2306 | /home/speedy/.emacs.d/elpa/pos-tip-20230721.834 | /home/speedy/.emacs.d/elpa/projectile-20230713.1023 | /home/speedy/.emacs.d/elpa/python-environment-20150310.853 | /home/speedy/.emacs.d/elpa/deferred-20170901.1330 | /home/speedy/.emacs.d/elpa/pyvenv-20211014.707 | /home/speedy/.emacs.d/elpa/rainbow-delimiters-20210515.1254 | /home/speedy/.emacs.d/elpa/rainbow-mode-1.0.6 | /home/speedy/.emacs.d/elpa/restart-emacs-20201127.1425 | /home/speedy/.emacs.d/elpa/s-20220902.1511 | /home/speedy/.emacs.d/elpa/shut-up-20210403.1249 | /home/speedy/.emacs.d/elpa/simple-httpd-20230821.1458 | /home/speedy/.emacs.d/elpa/spinner-1.7.4 | /home/speedy/.emacs.d/elpa/ssh-20120904.2042 | /home/speedy/.emacs.d/elpa/texfrag-20230117.1746 | /home/speedy/.emacs.d/elpa/auctex-13.2.1/ | /home/speedy/.emacs.d/elpa/auctex-13.2.1 | /home/speedy/.emacs.d/elpa/toc-org-20220110.1452 | /home/speedy/.emacs.d/elpa/transient-20230901.1237 | /home/speedy/.emacs.d/elpa/tree-mode-20151104.1331 | /home/speedy/.emacs.d/elpa/treeview-20220928.43 | /home/speedy/.emacs.d/elpa/use-package-20230426.2324 | /home/speedy/.emacs.d/elpa/bind-key-20230203.2004 | /home/speedy/.emacs.d/elpa/vertico-1.4 | /home/speedy/.emacs.d/elpa/visual-regexp-steroids-20170222.253 | /home/speedy/.emacs.d/elpa/visual-regexp-20210502.2019 | /home/speedy/.emacs.d/elpa/websocket-20230809.305 | /home/speedy/.emacs.d/elpa/which-key-20230712.2151 | /home/speedy/.emacs.d/elpa/with-editor-20230829.1917 | /home/speedy/.emacs.d/elpa/compat-29.1.4.2 | /home/speedy/.emacs.d/elpa/wolfram-20221111.816 | /home/speedy/.emacs.d/elpa/wolfram-mode-20180307.13 | /home/speedy/.emacs.d/elpa/xelb-0.18 | /home/speedy/.emacs.d/elpa/yasnippet-snippets-20230815.820 | /home/speedy/.emacs.d/elpa/yasnippet-20200604.246 | /home/speedy/.emacs.d/elpa/zmq-20230608.1856 | /usr/local/share/emacs/28.2/site-lisp | /usr/local/share/emacs/site-lisp | /usr/local/share/emacs/28.2/lisp | /usr/local/share/emacs/28.2/lisp/vc | /usr/local/share/emacs/28.2/lisp/url | /usr/local/share/emacs/28.2/lisp/textmodes | /usr/local/share/emacs/28.2/lisp/progmodes | /usr/local/share/emacs/28.2/lisp/play | /usr/local/share/emacs/28.2/lisp/org | /usr/local/share/emacs/28.2/lisp/nxml | /usr/local/share/emacs/28.2/lisp/net | /usr/local/share/emacs/28.2/lisp/mh-e | /usr/local/share/emacs/28.2/lisp/mail | /usr/local/share/emacs/28.2/lisp/leim | /usr/local/share/emacs/28.2/lisp/language | /usr/local/share/emacs/28.2/lisp/international | /usr/local/share/emacs/28.2/lisp/image | /usr/local/share/emacs/28.2/lisp/gnus | /usr/local/share/emacs/28.2/lisp/eshell | /usr/local/share/emacs/28.2/lisp/erc | /usr/local/share/emacs/28.2/lisp/emulation | /usr/local/share/emacs/28.2/lisp/emacs-lisp | /usr/local/share/emacs/28.2/lisp/cedet | /usr/local/share/emacs/28.2/lisp/calendar | /usr/local/share/emacs/28.2/lisp/calc | /usr/local/share/emacs/28.2/lisp/obsolete |
-
-*** Org matlab
+** matlab
 #+begin_src emacs-lisp
     (setq matlab-shell-command "/usr/local/MATLAB/R2023a/bin/matlab")
    (require 'matlab)
@@ -166,11 +160,8 @@ files.
    	      (define-key matlab-mode-map (kbd "M-<down>") 'elpy-nav-move-line-or-region-down)))
 #+end_src
  
-#+RESULTS:
-| lambda | nil | (define-key matlab-mode-map (kbd M-<up>) 'elpy-nav-move-line-or-region-up) | (define-key matlab-mode-map (kbd M-<down>) 'elpy-nav-move-line-or-region-down) |
 *** Org wolfram
 #+begin_src emacs-lisp
-
 #+end_src
 
 
@@ -208,27 +199,17 @@ Exactly as it sounds. Tangles the config to init.el for loading in at Emacs star
 			    (define-key org-mode-map (kbd "M-<down>") 'elpy-nav-move-line-or-region-down)))
 #+end_src
 
-#+RESULTS:
-| (lambda nil (define-key org-mode-map (kbd M-<up>) 'elpy-nav-move-line-or-region-up) (define-key org-mode-map (kbd M-<down>) 'elpy-nav-move-line-or-region-down)) | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | (lambda nil (add-hook 'after-save-hook #'efs/org-babel-tangle-bashrc)) | (lambda nil (add-hook 'after-save-hook #'efs/org-babel-tangle-config)) | (lambda nil (org-superstar-mode 1)) | org-babel-jupyter-make-local-aliases | jupyter-org-interaction-mode | org-tempo-setup | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
-
-
 ** Magit Git Client
 #+begin_src emacs-lisp
     (use-package magit
       :ensure t)
 #+end_src
 
-#+RESULTS:
-
-
 ** Debugging
 #+begin_src emacs-lisp
   ;(setq debug-on-error t)
 
 #+end_src
-
-#+RESULTS:
-: t
 
 
 * Visual Changes
@@ -278,8 +259,6 @@ and setting up the theme).
 
 #+end_src
 
-#+RESULTS:
-: neotree-toggle
 
 ** Emojis
 #+begin_src emacs-lisp
@@ -290,7 +269,6 @@ and setting up the theme).
    t 'symbol (font-spec :family "Segoe UI Emoji") nil 'prepend))
 #+end_src
 
-#+RESULTS:
 
 ** Fonts
 #+begin_src emacs-lisp
@@ -366,9 +344,6 @@ and setting up the theme).
     (global-ligature-mode t))
 #+end_src
 
-#+RESULTS:
-: t
-
 
 * Quality of life changes
 ** Vertico and consult
@@ -382,8 +357,6 @@ Vertico package for vertical buffer during completions
     :ensure t) 
 #+end_src
 
-#+RESULTS:
-
 
 ** Orderless
 A mod for Vertico to allow searching by any string instead of by starting string
@@ -394,7 +367,6 @@ A mod for Vertico to allow searching by any string instead of by starting string
       (setq completion-styles '(orderless)))
 #+end_src
 
-#+RESULTS:
 
 ** Origami Mode
 #+begin_src emacs-lisp
@@ -404,8 +376,6 @@ A mod for Vertico to allow searching by any string instead of by starting string
   (global-set-key (kbd "M-[") 'origami-open-node)
 #+end_src
 
-#+RESULTS:
-: origami-open-node
 
 ** Rainbow mode stuff
 Modifications for using rainbow delimiters. Makes navigating elisp code much easier
@@ -441,9 +411,6 @@ Modifications for using rainbow delimiters. Makes navigating elisp code much eas
   
 #+end_src
 
-#+RESULTS:
-| rainbow-delimiters-mode |
-
 
 ** Marginalia
 A simple package that allows for a string of helpful text to be added alongside
@@ -455,8 +422,6 @@ the different commands that you can use in emacs.
     (marginalia-mode)
 #+end_src
 
-#+RESULTS:
-: t
     
 ** Line numbers and modes
 Adds in line numbers for the file using a relative position
@@ -467,8 +432,6 @@ Adds in line numbers for the file using a relative position
     (global-visual-line-mode t)
 #+end_src
 
-#+RESULTS:
-: t
 
 ** Which Key Mode
 A helpful package that allows for a buffer to appear with hotkey commands for the
@@ -479,9 +442,6 @@ current mode.
     (require 'which-key)
     (which-key-mode t)
 #+end_src
-~
-#+RESULTS:
-: t
 
 
 ** Various changes
@@ -501,9 +461,6 @@ Some simple quality of life things for me.
   (savehist-mode 1)
 
 #+end_src
-
-#+RESULTS:
-: t
 
 
 ** Auctex stuff
@@ -537,8 +494,6 @@ Some simple quality of life things for me.
 
 #+end_src
 
-#+RESULTS:
-| (lambda nil (define-key LaTeX-mode-map (kbd C-c C-g) 'quick-xelatex) (define-key LaTeX-mode-map (kbd C-c C-f) 'finalize-xelatex) (define-key LaTeX-mode-map (kbd M-<up>) 'elpy-nav-move-line-or-region-up) (define-key LaTeX-mode-map (kbd M-<down>) 'elpy-nav-move-line-or-region-down)) | my-latex-mode-hook | preview-mode-setup | (lambda nil (define-key LaTeX-mode-map (kbd C-c C-g) 'quick-xelatex) (define-key LaTeX-mode-map (kbd C-c C-f) 'finalize-xelatex)) | LaTeX-math-mode | flyspell-mode | visual-line-mode | (lambda nil (add-hook 'after-save-hook 'run-xelatex-on-save nil 'make-it-local)) | turn-on-reftex |
 
 ** LaTeX stuff
 version without the debugging
@@ -586,8 +541,6 @@ version without the debugging
 	      (add-hook 'after-save-hook 'run-xelatex-on-save nil 'make-it-local)))
 #+end_src
 
-#+RESULTS:
-| turn-on-reftex | LaTeX-math-mode | flyspell-mode | visual-line-mode | preview-mode-setup | (lambda nil (add-hook 'after-save-hook 'run-xelatex-on-save nil 'make-it-local)) |
 
 ** Keybindings
 #+begin_src emacs-lisp
@@ -597,8 +550,6 @@ version without the debugging
   (global-set-key (kbd "M-o <C-left>") 'exwm-layout-shrink-window-horizontally)
 #+end_src
 
-#+RESULTS:
-: next-multiframe-window
 
 ** SSH
 #+begin_src emacs-lisp
@@ -616,9 +567,6 @@ version without the debugging
     (dired "/ssh:root@160.238.36.160:/"))
 #+end_src
 
-#+RESULTS:
-: docsServer
-
 
 ** elpy mode
 
@@ -630,16 +578,12 @@ version without the debugging
   
 #+end_src
 
-#+RESULTS:
-
 ** cmake
 #+begin_src emacs-lisp
   (use-package cmake-mode
     :ensure t)
 #+end_src
 
-#+RESULTS:
-: cmake-mode
 
 ** docker stuff
 #+begin_src emacs-lisp
@@ -657,8 +601,6 @@ version without the debugging
   (define-key global-map (kbd "C-c m") 'vr/mc-mark)
 #+end_src
 
-#+RESULTS:
-: vr/mc-mark
 
 ** Directory Changes
 #+begin_src emacs-lisp
@@ -724,16 +666,12 @@ ac package for autocompletion in various modes. still needs some work
   (add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)
 #+end_src
 
-#+RESULTS:
-| my-ac-cc-mode-setup | ac-cc-mode-setup |
 
 ** lsp
 #+begin_src emacs-lisp
   (use-package lsp-ui)
 #+end_src
 
-#+RESULTS:
-: lsp-ui
 
 ** YAS(yasnippet)
 Yasnippet configuration for using snippets in code. Using in programming
@@ -757,8 +695,6 @@ mode since that is the most convenient.
   (global-set-key (kbd "C-c y d") 'yas-describe-tables)
 #+end_src
 
-#+RESULTS:
-: yas-describe-tables
 
 ** multi-cursors
 #+begin_src emacs-lisp
@@ -771,8 +707,19 @@ mode since that is the most convenient.
   (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 #+end_src
 
-#+RESULTS:
-: mc/mark-all-like-this
+** elpy mode
+# passibly add into the desktop version
+# ** elpy mode
+# #+begin_src emacs-lisp
+#   (use-package elpy
+#     :ensure t
+#     :init
+#     (elpy-enable))
+#     (require 'elpy)
+#   (setq elpy-modules (delq 'elpy-module-eldoc elpy-modules))
+
+# #+end_src
+
 
 ** PythonStuff
 #+begin_src emacs-lisp
@@ -807,7 +754,6 @@ mode since that is the most convenient.
 
   )
 #+end_src
-
 #+RESULTS:
 | hl-line-mode | tramp-compile-disable-ssh-controlmaster-options |
 
@@ -918,8 +864,6 @@ printf("Hello %s!!","world");
 
 #+end_src
 
-#+RESULTS:
-| lambda | nil | (define-key irony-mode-map [remap completion-at-point] 'irony-completion-at-point-async) | (define-key irony-mode-map [remap complete-symbol] 'irony-completion-at-point-async) | (irony-cdb-autosetup-compile-options) |
 
 ** custom modes
 #+begin_src emacs-lisp
