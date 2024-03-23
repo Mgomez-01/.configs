@@ -11,9 +11,8 @@ alias ll='ls -alF'
 alias lsr='ls --sort time -r'
 alias la='ls -A'
 alias l='ls -CF'
-alias dir='ls -la'
 alias dirr='ls --sort time -r'
-alias ex='exa -T --icons -L=1 --git --long'
+alias dir='exa -T --icons -L=1 --git --long'
 
 # Emacs names for various types
 alias emnw="emacs -nw" $1
