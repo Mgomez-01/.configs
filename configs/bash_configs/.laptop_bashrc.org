@@ -19,7 +19,7 @@
 
   export PYTHONPATH='/usr/bin/python3.8'
 
-  export HPEESOF_DIR='/usr/local/ADS2023'
+  export HPEESOF_DIR='/home/speedy/ADS2024'
 
   #adding ADS to path
   # if [ ` (echo $PATH) | grep ADS2023` ] ;
@@ -193,109 +193,124 @@ eval $ZPROG
 
 ** Adding custom Paths  
 #+begin_src bash
-    MATLAB_PATH="/usr/local/MATLAB/R2023a/bin"
-    if [ $( (echo $PATH) | grep R2023a) ]; then
-	    echo "Matlab already in path."
-    else
-	    export PATH=$PATH:$MATLAB_PATH
-    fi
+  MATLAB_PATH="/usr/local/MATLAB/R2023b/bin/"
+  if [ $( (echo $PATH) | grep R2023a) ]; then
+	  echo "Matlab already in path."
+  else
+	  export PATH=$PATH:$MATLAB_PATH
+  fi
 
-    PRUSA_PATH="/home/speedy/PrusaSlicer/build/src"
-    if [ $( (echo $PATH) | grep /home/speedy/PrusaSlicer/build/src) ]; then
-	    echo "prusa already in path."
-    else
-	    export PATH=$PATH:$PRUSA_PATH
-    fi
+  PRUSA_PATH="/home/speedy/PrusaSlicer/build/src"
+  if [ $( (echo $PATH) | grep /home/speedy/PrusaSlicer/build/src) ]; then
+	  echo "prusa already in path."
+  else
+	  export PATH=$PATH:$PRUSA_PATH
+  fi
 
-    RENDERDOC_PATH="/home/speedy/.local/bin/renderdoc_1.26/bin"
-    if [ $( (echo $PATH) | grep /home/speedy/.local/bin/renderdoc_1.26/bin) ]; then
-	    echo "renderdoc already present already in path."
-    else
-	    export PATH=$PATH:$RENDERDOC_PATH
-    fi
+  RENDERDOC_PATH="/home/speedy/.local/bin/renderdoc_1.26/bin"
+  if [ $( (echo $PATH) | grep /home/speedy/.local/bin/renderdoc_1.26/bin) ]; then
+	  echo "renderdoc already present already in path."
+  else
+	  export PATH=$PATH:$RENDERDOC_PATH
+  fi
 
-    EXA_PATH="/home/speedy/exa/target/debug"
-    if [ $( (echo $PATH) | grep /home/speedy/exa/target/debug) ]; then
-	    echo "renderdoc already present already in path."
-    else
-	    export PATH=$PATH:$EXA_PATH
-    fi
+  EXA_PATH="/home/speedy/exa/target/debug"
+  if [ $( (echo $PATH) | grep /home/speedy/exa/target/debug) ]; then
+	  echo "renderdoc already present already in path."
+  else
+	  export PATH=$PATH:$EXA_PATH
+  fi
 
-    ADS_PATH="/usr/local/ADS2023/bin:/usr/local/ADS2023/bin/Licensing/2023.02/bin"
-    if [ $( (echo $PATH) | grep ADS) ]; then
-	    echo "ADS already present already in path."
-    else
-	    export PATH=$PATH:$ADS_PATH
-    fi
+  ADS_PATH="/home/speedy/ADS2024/bin/:/home/speedy/ADS2024/Licensing/2023.08/bin/"
+  if [ $( (echo $PATH) | grep ADS) ]; then
+	  echo "ADS already present already in path."
+  else
+	  export PATH=$PATH:$ADS_PATH
+  fi
 
-    CST_PATH="/opt/cst/CST_Studio_Suite_2021"
-    if [ $( (echo $PATH) | grep CST_Studio) ]; then
-	    echo "CST already present already in path."
-    else
-	    export PATH=$PATH:$CST_PATH
-    fi
+  CST_PATH="/opt/cst/CST_Studio_Suite_2021"
+  if [ $( (echo $PATH) | grep CST_Studio) ]; then
+	  echo "CST already present already in path."
+  else
+	  export PATH=$PATH:$CST_PATH
+  fi
 
-    # sourcing altair init
-    source /home/speedy/2022.3/altair/feko/bin/initfeko
+  # sourcing altair init
+  source /home/speedy/2022/altair/feko/bin/initfeko
 
-    ALTAIR_PATH="/home/speedy/2022/altair/feko/bin"
-    if [ $( (echo $PATH) | grep 2022/altair) ]; then
-	    echo "Altair already present already in path."
-    else
-	    export PATH=$PATH:$ALTAIR_PATH
-    fi
+  ALTAIR_PATH="/home/speedy/2022/altair/feko/bin"
+  if [ $( (echo $PATH) | grep 2022/altair) ]; then
+	  echo "Altair already present already in path."
+  else
+	  export PATH=$PATH:$ALTAIR_PATH
+  fi
 
-    LASTOOLS_PATH="/home/speedy/repos/LAStools/bin"
-    if [ $( (echo $PATH) | grep LAStools) ]; then
-	    echo "Altair already present already in path."
-    else
-	    export PATH=$PATH:$LASTOOLS_PATH
-    fi
+  LASTOOLS_PATH="/home/speedy/repos/LAStools/bin"
+  if [ $( (echo $PATH) | grep LAStools) ]; then
+	  echo "Altair already present already in path."
+  else
+	  export PATH=$PATH:$LASTOOLS_PATH
+  fi
 
-    if [ $( (echo $ALTAIR_WINPROP) | grep winprop) ]; then
-	    echo "winprop dir already set up"
-    else
-	    export ALTAIR_WINPROP="home/speedy/2022/altair/feko/api/winprop/"
-    fi
-    export ALTAIR_LICENSE_PATH='6200@winlic-d.eng.utah.edu'
+  if [ $( (echo $ALTAIR_WINPROP) | grep winprop) ]; then
+	  echo "winprop dir already set up"
+  else
+	  export ALTAIR_WINPROP="home/speedy/2022/altair/feko/api/winprop/"
+  fi
+  export ALTAIR_LICENSE_PATH='6200@winlic-d.eng.utah.edu'
 
-    MOJO_PATH="/home/speedy/.modular/pkg/packages.modular.com_mojo/bin"
-    if [ $( (echo $PATH) | grep mojo) ]; then
-	    echo "Mojo has already been added"
-    else
-	    export PATH=$MOJO_PATH:$PATH
-    fi
+  MOJO_PATH="/home/speedy/.modular/pkg/packages.modular.com_mojo/bin"
+  if [ $( (echo $PATH) | grep mojo) ]; then
+	  echo "Mojo has already been added"
+  else
+	  export PATH=$MOJO_PATH:$PATH
+  fi
 
-    export MOJO_PYTHON_LIBRARY="/home/speedy/mambaforge/lib/libpython3.10.so"
-    export MODULAR_HOME="/home/speedy/.modular"
+  export MOJO_PYTHON_LIBRARY="/home/speedy/mambaforge/lib/libpython3.10.so"
+  export MODULAR_HOME="/home/speedy/.modular"
 
-    NANOTRAV_PATH="/home/speedy/repos/cudd/nanotrav"
-    if [ $( (echo $PATH) | grep nanotrav) ]; then
-	    echo "nanotrav already present already in path."
-    else
-	    export PATH=$PATH:$NANOTRAV_PATH
-    fi
+  NANOTRAV_PATH="/home/speedy/repos/cudd/nanotrav"
+  if [ $( (echo $PATH) | grep nanotrav) ]; then
+	  echo "nanotrav already present already in path."
+  else
+	  export PATH=$PATH:$NANOTRAV_PATH
+  fi
 
-    GF_PATH="/home/speedy/repos/gf"
-    if [ $( (echo $PATH) | grep repos/gf) ]; then
-	    echo "gf is already in path."
-    else
-	    export PATH=$PATH:$GF_PATH
-    fi
+  GF_PATH="/home/speedy/repos/gf"
+  if [ $( (echo $PATH) | grep repos/gf) ]; then
+	  echo "gf is already in path."
+  else
+	  export PATH=$PATH:$GF_PATH
+  fi
 
-    ZCHAFF_PATH="/home/speedy/repos/zchaff/zchaff64"
-    if [ `(echo $PATH) | grep zchaff64` ] ;
-    then echo "zchaff is already in path.";
-    else export PATH=$PATH:$ZCHAFF_PATH;
-    fi
+  ZCHAFF_PATH="/home/speedy/repos/zchaff/zchaff64"
+  if [ `(echo $PATH) | grep zchaff64` ] ;
+  then echo "zchaff is already in path.";
+  else export PATH=$PATH:$ZCHAFF_PATH;
+  fi
 
-    ABC_PATH="/home/speedy/repos/abc"
-    if [ $( (echo $PATH) | grep repos/abc) ]; then
-	    echo "abc is already in path."
-    else
-	    export PATH=$PATH:$ABC_PATH
-    fi
+  ABC_PATH="/home/speedy/repos/abc"
+  if [ $( (echo $PATH) | grep repos/abc) ]; then
+	  echo "abc is already in path."
+  else
+	  export PATH=$PATH:$ABC_PATH
+  fi
 
+  Singular_PATH="/home/speedy/repos/singular/git/Singular/Singular/Singular"
+  if [ $( (echo $PATH) | grep Singular) ]; then
+	  echo "Singular is already in path."
+  else
+	  export PATH=$PATH:$Singular_PATH
+  fi
+
+  RUBY_PATH="/home/speedy/.gem/ruby/3.0.0/bin"
+  if [ $( (echo $PATH) | grep "\.gem/ruby/3\.0\.0/bin") ]; then
+	  echo "RUBY is already in path."
+  else
+	  export PATH=$PATH:$RUBY_PATH
+  fi
+
+  
 #+end_src
 
 #+RESULTS:
@@ -306,12 +321,14 @@ eval $ZPROG
 | ADS       | already | present | already | in    | path. |
 | CST       | already | present | already | in    | path. |
 | Altair    | already | present | already | in    | path. |
+| Altair    | already | present | already | in    | path. |
 | winprop   | dir     | already | set     | up    |       |
 | Mojo      | has     | already | been    | added |       |
 | nanotrav  | already | present | already | in    | path. |
 | gf        | is      | already | in      | path. |       |
 | zchaff    | is      | already | in      | path. |       |
 | abc       | is      | already | in      | path. |       |
+| Singular  | is      | already | in      | path. |       |
 
 ** Starship stuff
 #+begin_src bash
@@ -365,7 +382,7 @@ eval "$(starship init bash)"
 #+begin_src bash
   #start emacs daemon if not already running
   if ! emacsclient -e 0 >&/dev/null
-     then emacs --daemon
+     then LD_LIBRARY_PATH=  emacs --daemon
   fi
   clear
 #+end_src
@@ -377,6 +394,6 @@ eval "$(starship init bash)"
   # Assumes the user gives a directory that contains Pokemon/ as well as shiny/. Now you can curate your own selection to display instead of all of them. This has been moved to .bash_functions
 
   # Remember to change ~/Path/to/neofetch below to make this work as expected
-  pokefetch ~/Pictures/neofetch 95
+  pokefetch ~/repos/pokefetch/neofetch 95
 
 #+end_src
