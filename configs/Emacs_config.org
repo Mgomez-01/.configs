@@ -203,7 +203,7 @@ This contains all package manager code
     (search-forward "#+end_example")
     (newline)
     ;; Insert the LaTeX block with the copied content
-    (insert "\n\n#+begin_export latex\n\\[\n\\subsection{output of __ results}\n\\begin{lstlisting}[language=Singular]\n")
+    (insert "\n\n#+begin_export latex\n\\[\n\\subsubsection{output of __ results}\n\\begin{lstlisting}[language=Singular]\n")
     (yank)
     (insert "\n\\end{lstlisting}\n\\]\n#+end_export\n")
     ;; Clean up the mark
