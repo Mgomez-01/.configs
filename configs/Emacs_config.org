@@ -69,6 +69,13 @@ This contains all package manager code
   (use-package org
     :defer t
     :config
+      ;; Add Org-Beamer support
+  (require 'ox-beamer)
+  (setq org-latex-to-pdf-process
+	'("pdflatex -interaction nonstopmode -output-directory %o %f"
+	  "pdflatex -interaction nonstopmode -output-directory %o %f"
+	  "pdflatex -interaction nonstopmode -output-directory %o %f"))
+
     ;; Your org mode configuration
     (require 'org-tempo)
     (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
@@ -117,6 +124,7 @@ This contains all package manager code
     (setq org-babel-C-compiler "/usr/bin/gcc")
     (setq org-babel-C++-compiler "/usr/bin/g++")
     (setq org-startup-with-inline-images t)
+    (setq org-latex-images-centered t)
     )
 
   (use-package texfrag
@@ -141,7 +149,6 @@ This contains all package manager code
   ;; Other packages and settings
   (use-package org-modern
     :ensure t
-    :hook (org-mode . org-modern-mode) ; Ensure org-modern-mode is enabled in org-mode buffers
     :config
     ;; Define the key binding in the org-mode-map
     (define-key org-mode-map (kbd "C-c a") 'insert-export-latex-from-example)
@@ -722,41 +729,33 @@ ac package for autocompletion in various modes. still needs some work
       (ac-etags-setup)
       (setq ac-etags-requires 1)
       (add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)))
-  (custom-set-variables
-   ;; custom-set-variables was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(ac-etags-requires 1)
-   '(custom-safe-themes
-     '("af5e14845791d2baaa7ccdf455850527b963a991fa3e7a101ebf280645f30cc2" default))
-   '(dir-treeview-show-in-side-window t)
-   '(lsp-clients-svlangserver-formatCommand "/tools/verible-verilog-format")
-   '(lsp-clients-svlangserver-launchConfiguration "/tools/verilator -sv --lint-only -Wall")
-   '(math-preview-scale 3)
-   '(org-format-latex-options
-     '(:foreground default :background default :scale 2.0 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
-		   ("begin" "$1" "$" "$$" "\\(" "\\[")))
-   '(org-latex-image-default-scale "2")
-   '(package-selected-packages
-     '(verilog-mode yaxception yasnippet-snippets yaml-mode wolfram-mode wolfram which-key visual-regexp-steroids vertico use-package toc-org texfrag talonscript-mode ssh recompile-on-save rainbow-mode rainbow-delimiters protobuf-mode platformio-mode php-mode package-utils origami org-superstar org-roam-ui org-radiobutton org-modern org-latex-impatient org-download orderless nerd-icons-ivy-rich nerd-icons-ibuffer nerd-icons-dired nerd-icons-completion neotree multiple-cursors multi-line meson-mode matlab-mode math-preview markdownfmt marginalia magit lsp-ui lsp-latex log4e ligature latex-preview-pane latex-pretty-symbols latex-math-preview latex-labeler latex-extra jupyter jedi irony-eldoc impatient-mode go-mode gitignore-templates gitignore-snippets free-keys format-all font-lock-studio flymake-yaml flymake-markdownlint fancy-compilation exwm exec-path-from-shell emojify-logos emoji-fontset elpy editorconfig dockerfile-mode dir-treeview-themes cyberpunk-theme cyberpunk-2019-theme cyanometric-theme csv-mode cpputils-cmake cpp-auto-include corfu company-statistics company-shell company-reftex company-org-block company-math company-manually company-irony-c-headers company-irony company-bibtex company-auctex cmake-mode call-graph c-eldoc basic-c-compile bash-completion auto-complete-exuberant-ctags auto-complete-clang all-the-icons ac-math ac-etags ac-clang ac-c-headers)))
-  (require 'auto-complete-config)
-  (ac-config-default)
-  (use-package auto-complete-clang)
-  (setq ac-clang-flags
-	(append '("-std=c++11")
-		(mapcar (lambda (item) (concat "-I" item))
-			(split-string
-			 "
-	 /usr/include/c++/x.x
-	 /usr/include/x86_64-linux-gnu/c++/x.x
-	 /usr/include/c++/x.x/backward
-	 /usr/lib/gcc/x86_64-linux-gnu/x.x/include
-	 /usr/local/include
-	 /usr/include/x86_64-linux-gnu
-	 /usr/include
-	"))))
-  (setq ac-quick-help-delay 1)
+     (custom-set-variables
+     ;; custom-set-variables was added by Custom.
+     ;; If you edit it by hand, you could mess it up, so be careful.
+     ;; Your init file should contain only one such instance.
+     ;; If there is more than one, they won't work right.
+     '(ac-etags-requires 1)
+     '(custom-safe-themes
+       '("af5e14845791d2baaa7ccdf455850527b963a991fa3e7a101ebf280645f30cc2" default))
+     '(dir-treeview-show-in-side-window t))
+    (require 'auto-complete-config)
+    (ac-config-default)
+    (use-package auto-complete-clang)
+    (setq ac-clang-flags
+	  (append '("-std=c++11")
+		  (mapcar (lambda (item) (concat "-I" item))
+			  (split-string
+			   "
+       /usr/include/c++/x.x
+       /usr/include/x86_64-linux-gnu/c++/x.x
+       /usr/include/c++/x.x/backward
+       /usr/lib/gcc/x86_64-linux-gnu/x.x/include
+       /usr/local/include
+       /usr/include/x86_64-linux-gnu
+       /usr/include
+      "))))
+    (setq ac-quick-help-delay 1)
+
   (defun my-ac-config ()
     (setq-default ac-sources '(ac-source-abbrev
 			       ac-source-dictionary
@@ -769,7 +768,6 @@ ac package for autocompletion in various modes. still needs some work
     (add-hook 'css-mode-hook 'ac-css-mode-setup)
     (add-hook 'auto-complete-mode-hook 'ac-common-setup)
     (global-auto-complete-mode t))
-
   (defun my-ac-cc-mode-setup ()
     (setq ac-sources (append '(ac-source-clang ac-source-yasnippet) ac-sources)))
   (add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)
@@ -796,9 +794,6 @@ ac package for autocompletion in various modes. still needs some work
     ;; Existing LSP and CMake setup
     (use-package lsp-ui)
     (use-package lsp-mode
-      :ensure t
-      :commands lsp
-      :hook (LaTeX-mode . lsp)
       :config
       (setenv "LIBRARY_PATH" "/home/speedy/2022/altair/feko/api/winprop/bin/")
       (setenv "INCLUDE_PATH" "/home/speedy/2022/altair/feko/api/winprop/source/")) 
@@ -829,15 +824,6 @@ ac package for autocompletion in various modes. still needs some work
     ;; Company LSP for LSP-driven auto-completions (if not already set up)
     (use-package company-lsp
       :commands company-lsp)
-
-    (add-to-list 'load-path "/home/speedy/repos/lsp-bridge")
-
-  (require 'yasnippet)
-  (yas-global-mode 1)
-
-  (require 'lsp-bridge)
-  (global-lsp-bridge-mode)
-  (setq lsp-tex-server 'digestif)
 #+end_src
 
 #+RESULTS:
@@ -878,14 +864,11 @@ mode since that is the most convenient.
 | elpy-module-sane-defaults | elpy-module-company | elpy-module-flymake | elpy-module-highlight-indentation | elpy-module-pyvenv | elpy-module-yasnippet | elpy-module-django |
 
 ** docker stuff
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results none
   (use-package dockerfile-mode
     :ensure t
     :mode ("Dockerfile\\'" . dockerfile-mode))
 #+end_src
-
-#+RESULTS:
-: ((Dockerfile\' . dockerfile-mode) (\.dockerfile\' . dockerfile-mode) ([/\]\(?:Containerfile\|Dockerfile\)\(?:\.[^/\]*\)?\' . dockerfile-mode) (\.\(?:md\|markdown\|mkd\|mdown\|mkdn\|mdwn\)\' . markdown-mode) (/etc/conf\.modules . etc-modules-conf-generic-mode) (/etc/modules\.conf . etc-modules-conf-generic-mode) (/etc/resolve?\.conf\' . resolve-conf-generic-mode) (/etc/named\.boot\' . named-boot-generic-mode) (/etc/sudoers\' . etc-sudoers-generic-mode) (/etc/[v]*fstab\' . etc-fstab-generic-mode) (/etc/shadow-?\' . etc-passwd-generic-mode) (/etc/group-?\' . etc-passwd-generic-mode) (/etc/passwd-?\' . etc-passwd-generic-mode) (/etc/services\' . etc-services-generic-mode) (/etc/inetd\.conf\' . inetd-conf-generic-mode) (\.mailrc\' . mailrc-generic-mode) (inventory\' . ansible-inventory-generic-mode) (alias\' . alias-generic-mode) ([mM][aA][nN][iI][fF][eE][sS][tT]\.[mM][fF]\' . java-manifest-generic-mode) (\.wrl\' . vrml-generic-mode) (prototype\' . prototype-generic-mode) (\.rules\' . mailagent-rules-generic-mode) ([hH][oO][sS][tT][sS]\' . hosts-generic-mode) ([xX]modmap\(rc\)?\' . xmodmap-generic-mode) (\.ad\' . x-resource-generic-mode) (\.Xenvironment\' . x-resource-generic-mode) (\.Xresources\' . x-resource-generic-mode) (\.Xdefaults\' . x-resource-generic-mode) (\.fvwm2rc\' . fvwm-generic-mode) (\.fvwmrc\' . fvwm-generic-mode) (smb\.conf\' . samba-generic-mode) (access_log\' . apache-log-generic-mode) (access\.conf\' . apache-conf-generic-mode) (httpd\.conf\' . apache-conf-generic-mode) (srm\.conf\' . apache-conf-generic-mode) (\.hva\' . latex-mode) (/git-rebase-todo\' . git-rebase-mode) (\.odc\' . archive-mode) (\.odf\' . archive-mode) (\.odi\' . archive-mode) (\.otp\' . archive-mode) (\.odp\' . archive-mode) (\.otg\' . archive-mode) (\.odg\' . archive-mode) (\.ots\' . archive-mode) (\.ods\' . archive-mode) (\.odm\' . archive-mode) (\.ott\' . archive-mode) (\.odt\' . archive-mode) (\.gpg\(~\|\.~[0-9]+~\)?\' nil epa-file) (\.elc\' . elisp-byte-code-mode) (\.zst\' nil jka-compr) (\.dz\' nil jka-compr) (\.xz\' nil jka-compr) (\.lzma\' nil jka-compr) (\.lz\' nil jka-compr) (\.g?z\' nil jka-compr) (\.bz2\' nil jka-compr) (\.Z\' nil jka-compr) (\.vr[hi]?\' . vera-mode) (\(?:\.\(?:rbw?\|ru\|rake\|thor\|jbuilder\|rabl\|gemspec\|podspec\)\|/\(?:Gem\|Rake\|Cap\|Thor\|Puppet\|Berks\|Brew\|Vagrant\|Guard\|Pod\)file\)\' . ruby-mode) (\.re?st\' . rst-mode) (\.py[iw]?\' . python-mode) (\.m\' . octave-maybe-mode) (\.less\' . less-css-mode) (\.scss\' . scss-mode) (\.awk\' . awk-mode) (\.\(u?lpc\|pike\|pmod\(\.in\)?\)\' . pike-mode) (\.idl\' . idl-mode) (\.java\' . java-mode) (\.m\' . objc-mode) (\.ii\' . c++-mode) (\.i\' . c-mode) (\.lex\' . c-mode) (\.y\(acc\)?\' . c-mode) (\.h\' . c-or-c++-mode) (\.c\' . c-mode) (\.\(CC?\|HH?\)\' . c++-mode) (\.[ch]\(pp\|xx\|\+\+\)\' . c++-mode) (\.\(cc\|hh\)\' . c++-mode) (\.\(bat\|cmd\)\' . bat-mode) (\.[sx]?html?\(\.[a-zA-Z_]+\)?\' . mhtml-mode) (\.svgz?\' . image-mode) (\.svgz?\' . xml-mode) (\.x[bp]m\' . image-mode) (\.x[bp]m\' . c-mode) (\.p[bpgn]m\' . image-mode) (\.tiff?\' . image-mode) (\.gif\' . image-mode) (\.png\' . image-mode) (\.jpe?g\' . image-mode) (\.te?xt\' . text-mode) (\.[tT]e[xX]\' . tex-mode) (\.ins\' . tex-mode) (\.ltx\' . latex-mode) (\.dtx\' . doctex-mode) (\.org\' . org-mode) (\.dir-locals\(?:-2\)?\.el\' . lisp-data-mode) (eww-bookmarks\' . lisp-data-mode) (tramp\' . lisp-data-mode) (/archive-contents\' . lisp-data-mode) (places\' . lisp-data-mode) (\.emacs-places\' . lisp-data-mode) (\.el\' . emacs-lisp-mode) (Project\.ede\' . emacs-lisp-mode) (\.\(scm\|stk\|ss\|sch\)\' . scheme-mode) (\.l\' . lisp-mode) (\.li?sp\' . lisp-mode) (\.[fF]\' . fortran-mode) (\.for\' . fortran-mode) (\.p\' . pascal-mode) (\.pas\' . pascal-mode) (\.\(dpr\|DPR\)\' . delphi-mode) (\.\([pP]\([Llm]\|erl\|od\)\|al\)\' . perl-mode) (Imakefile\' . makefile-imake-mode) (Makeppfile\(?:\.mk\)?\' . makefile-makepp-mode) (\.makepp\' . makefile-makepp-mode) (\.mk\' . makefile-gmake-mode) (\.make\' . makefile-gmake-mode) ([Mm]akefile\' . makefile-gmake-mode) (\.am\' . makefile-automake-mode) (\.texinfo\' . texinfo-mode) (\.te?xi\' . texinfo-mode) (\.[sS]\' . asm-mode) (\.asm\' . asm-mode) (\.css\' . css-mode) (\.mixal\' . mixal-mode) (\.gcov\' . compilation-mode) (/\.[a-z0-9-]*gdbinit . gdb-script-mode) (-gdb\.gdb . gdb-script-mode) ([cC]hange\.?[lL]og?\' . change-log-mode) ([cC]hange[lL]og[-.][0-9]+\' . change-log-mode) (\$CHANGE_LOG\$\.TXT . change-log-mode) (\.scm\.[0-9]*\' . scheme-mode) (\.[ckz]?sh\'\|\.shar\'\|/\.z?profile\' . sh-mode) (\.bash\' . sh-mode) (/PKGBUILD\' . sh-mode) (\(/\|\`\)\.\(bash_\(profile\|history\|log\(in\|out\)\)\|z?log\(in\|out\)\)\' . sh-mode) (\(/\|\`\)\.\(shrc\|zshrc\|m?kshrc\|bashrc\|t?cshrc\|esrc\)\' . sh-mode) (\(/\|\`\)\.\([kz]shenv\|xinitrc\|startxrc\|xsession\)\' . sh-mode) (\.m?spec\' . sh-mode) (\.m[mes]\' . nroff-mode) (\.man\' . nroff-mode) (\.sty\' . latex-mode) (\.cl[so]\' . latex-mode) (\.bbl\' . latex-mode) (\.bib\' . bibtex-mode) (\.bst\' . bibtex-style-mode) (\.sql\' . sql-mode) (\(acinclude\|aclocal\|acsite\)\.m4\' . autoconf-mode) (\.m[4c]\' . m4-mode) (\.mf\' . metafont-mode) (\.mp\' . metapost-mode) (\.vhdl?\' . vhdl-mode) (\.article\' . text-mode) (\.letter\' . text-mode) (\.i?tcl\' . tcl-mode) (\.exp\' . tcl-mode) (\.itk\' . tcl-mode) (\.icn\' . icon-mode) (\.sim\' . simula-mode) (\.mss\' . scribe-mode) (\.f9[05]\' . f90-mode) (\.f0[38]\' . f90-mode) (\.indent\.pro\' . fundamental-mode) (\.\(pro\|PRO\)\' . idlwave-mode) (\.srt\' . srecode-template-mode) (\.prolog\' . prolog-mode) (\.tar\' . tar-mode) (\.\(arc\|zip\|lzh\|lha\|zoo\|[jew]ar\|xpi\|rar\|cbr\|7z\|squashfs\|ARC\|ZIP\|LZH\|LHA\|ZOO\|[JEW]AR\|XPI\|RAR\|CBR\|7Z\|SQUASHFS\)\' . archive-mode) (\.oxt\' . archive-mode) (\.\(deb\|[oi]pk\)\' . archive-mode) (\`/tmp/Re . text-mode) (/Message[0-9]*\' . text-mode) (\`/tmp/fol/ . text-mode) (\.oak\' . scheme-mode) (\.sgml?\' . sgml-mode) (\.x[ms]l\' . xml-mode) (\.dbk\' . xml-mode) (\.dtd\' . sgml-mode) (\.ds\(ss\)?l\' . dsssl-mode) (\.js[mx]?\' . javascript-mode) (\.har\' . javascript-mode) (\.json\' . javascript-mode) (\.[ds]?va?h?\' . verilog-mode) (\.by\' . bovine-grammar-mode) (\.wy\' . wisent-grammar-mode) ([:/\]\..*\(emacs\|gnus\|viper\)\' . emacs-lisp-mode) (\`\..*emacs\' . emacs-lisp-mode) ([:/]_emacs\' . emacs-lisp-mode) (/crontab\.X*[0-9]+\' . shell-script-mode) (\.ml\' . lisp-mode) (\.ld[si]?\' . ld-script-mode) (ld\.?script\' . ld-script-mode) (\.xs\' . c-mode) (\.x[abdsru]?[cnw]?\' . ld-script-mode) (\.zone\' . dns-mode) (\.soa\' . dns-mode) (\.asd\' . lisp-mode) (\.\(asn\|mib\|smi\)\' . snmp-mode) (\.\(as\|mi\|sm\)2\' . snmpv2-mode) (\.\(diffs?\|patch\|rej\)\' . diff-mode) (\.\(dif\|pat\)\' . diff-mode) (\.[eE]?[pP][sS]\' . ps-mode) (\.\(?:PDF\|DVI\|OD[FGPST]\|DOCX\|XLSX?\|PPTX?\|pdf\|djvu\|dvi\|od[fgpst]\|docx\|xlsx?\|pptx?\)\' . doc-view-mode-maybe) (configure\.\(ac\|in\)\' . autoconf-mode) (\.s\(v\|iv\|ieve\)\' . sieve-mode) (BROWSE\' . ebrowse-tree-mode) (\.ebrowse\' . ebrowse-tree-mode) (#\*mail\* . mail-mode) (\.g\' . antlr-mode) (\.mod\' . m2-mode) (\.ses\' . ses-mode) (\.docbook\' . sgml-mode) (\.com\' . dcl-mode) (/config\.\(?:bat\|log\)\' . fundamental-mode) (/\.\(authinfo\|netrc\)\' . authinfo-mode) (\.\(?:[iI][nN][iI]\|[lL][sS][tT]\|[rR][eE][gG]\|[sS][yY][sS]\)\' . conf-mode) (\.la\' . conf-unix-mode) (\.ppd\' . conf-ppd-mode) (java.+\.conf\' . conf-javaprop-mode) (\.properties\(?:\.[a-zA-Z0-9._-]+\)?\' . conf-javaprop-mode) (\.toml\' . conf-toml-mode) (\.desktop\' . conf-desktop-mode) (/\.redshift\.conf\' . conf-windows-mode) (\`/etc/\(?:DIR_COLORS\|ethers\|.?fstab\|.*hosts\|lesskey\|login\.?de\(?:fs\|vperm\)\|magic\|mtab\|pam\.d/.*\|permissions\(?:\.d/.+\)?\|protocols\|rpc\|services\)\' . conf-space-mode) (\`/etc/\(?:acpid?/.+\|aliases\(?:\.d/.+\)?\|default/.+\|group-?\|hosts\..+\|inittab\|ksysguarddrc\|opera6rc\|passwd-?\|shadow-?\|sysconfig/.+\)\' . conf-mode) ([cC]hange[lL]og[-.][-0-9a-z]+\' . change-log-mode) (/\.?\(?:gitconfig\|gnokiirc\|hgrc\|kde.*rc\|mime\.types\|wgetrc\)\' . conf-mode) (/\.\(?:asound\|enigma\|fetchmail\|gltron\|gtk\|hxplayer\|mairix\|mbsync\|msmtp\|net\|neverball\|nvidia-settings-\|offlineimap\|qt/.+\|realplayer\|reportbug\|rtorrent\.\|screen\|scummvm\|sversion\|sylpheed/.+\|xmp\)rc\' . conf-mode) (/\.\(?:gdbtkinit\|grip\|mpdconf\|notmuch-config\|orbital/.+txt\|rhosts\|tuxracer/options\)\' . conf-mode) (/\.?X\(?:default\|resource\|re\)s\> . conf-xdefaults-mode) (/X11.+app-defaults/\|\.ad\' . conf-xdefaults-mode) (/X11.+locale/.+/Compose\' . conf-colon-mode) (/X11.+locale/compose\.dir\' . conf-javaprop-mode) (\.~?[0-9]+\.[0-9][-.0-9]*~?\' nil t) (\.\(?:orig\|in\|[bB][aA][kK]\)\' nil t) ([/.]c\(?:on\)?f\(?:i?g\)?\(?:\.[a-zA-Z0-9._-]+\)?\' . conf-mode-maybe) (\.[1-9]\' . nroff-mode) (\.art\' . image-mode) (\.avs\' . image-mode) (\.bmp\' . image-mode) (\.cmyk\' . image-mode) (\.cmyka\' . image-mode) (\.crw\' . image-mode) (\.dcr\' . image-mode) (\.dcx\' . image-mode) (\.dng\' . image-mode) (\.dpx\' . image-mode) (\.fax\' . image-mode) (\.hrz\' . image-mode) (\.icb\' . image-mode) (\.icc\' . image-mode) (\.icm\' . image-mode) (\.ico\' . image-mode) (\.icon\' . image-mode) (\.jbg\' . image-mode) (\.jbig\' . image-mode) (\.jng\' . image-mode) (\.jnx\' . image-mode) (\.miff\' . image-mode) (\.mng\' . image-mode) (\.mvg\' . image-mode) (\.otb\' . image-mode) (\.p7\' . image-mode) (\.pcx\' . image-mode) (\.pdb\' . image-mode) (\.pfa\' . image-mode) (\.pfb\' . image-mode) (\.picon\' . image-mode) (\.pict\' . image-mode) (\.rgb\' . image-mode) (\.rgba\' . image-mode) (\.tga\' . image-mode) (\.wbmp\' . image-mode) (\.webp\' . image-mode) (\.wmf\' . image-mode) (\.wpg\' . image-mode) (\.xcf\' . image-mode) (\.xmp\' . image-mode) (\.xwd\' . image-mode) (\.yuv\' . image-mode) (\.tgz\' . tar-mode) (\.tbz2?\' . tar-mode) (\.txz\' . tar-mode) (\.tzst\' . tar-mode) (\.drv\' . latex-mode))
 
 ** Python stuff
 #+begin_src emacs-lisp
@@ -901,59 +884,6 @@ mode since that is the most convenient.
 #+begin_src jupyter-python :session python3 :results output
 import numpy
 #+end_src
-
-** verilog stuff
-#+begin_src emacs-lisp
-  (use-package verilog-mode
-    :ensure t
-    :mode "\\.v\\'"
-    :config
-    (setq verilog-linter "iverilog -g2005 -I../")
-    )
-
-  (require 'lsp-verilog)
-
-  (custom-set-variables
-   '(lsp-clients-svlangserver-launchConfiguration "/tools/verilator -sv --lint-only -Wall")
-   '(lsp-clients-svlangserver-formatCommand "/tools/verible-verilog-format"))
-
-  (add-hook 'verilog-mode-hook #'lsp-deferred)
-
-
-  ;;  (defun my-verilog-compile-current-buffer ()
-  ;;    (interactive)
-  ;;    (save-buffer)
-  ;;    (compile (format "vlog +cover=bcesfx -work work %s" (buffer-file-name))))
-
-  ;; (global-set-key (kbd "C-c C-s") my-verilog-compile-current-buffer)
-
-   (defun find-verilog-base-dir (path)
-  "Recursively search for a 'verilog' directory up the directory tree from the given PATH."
-  (let ((parent-dir (file-name-directory (directory-file-name path)))
-	(current-dir (file-name-as-directory path)))
-    (if (or (not parent-dir) (string= parent-dir current-dir))
-	nil ;; We've reached the root without finding a 'verilog' directory.
-      (if (file-exists-p (concat current-dir "verilog"))
-	  current-dir ;; Found the 'verilog' base directory.
-	(find-verilog-base-dir parent-dir))))) ;; Recurse up.
-
-  (defun my-run-modelsim-simulation ()
-  (interactive)
-  (save-buffer)
-  ;; Use the current buffer's file name to find the base Verilog project directory.
-  (let* ((base-dir (find-verilog-base-dir (buffer-file-name)))
-	 (testbench-dir (concat base-dir "verilog/testbenches"))
-	 (work-dir (concat testbench-dir "/work")) ;; Assuming "work" is always under "testbenches"
-	 (file-name (file-name-nondirectory (buffer-file-name)))
-	 (top-module (read-string "Enter top module name: ")))
-    (when base-dir ;; Ensure we found a base directory before proceeding.
-      (compile (format "vlog +cover=bcesfx -work %s %s && vsim -c -do \"vlib %s; vmap work %s; vsim work.%s; add wave -r /*; run -all;\" " work-dir (buffer-file-name) work-dir work-dir top-module)))))
-
-  (global-set-key (kbd "C-c c") 'my-run-modelsim-simulation)
-#+end_src
-
-#+RESULTS:
-: my-run-modelsim-simulation
 
 ** Example block with results (View Raw to see org text)
 Example of a block with results outputted. change keyword after
@@ -995,81 +925,80 @@ printf("Hello %s!!","world");
 
 * Platform-IO
 #+begin_src emacs-lisp
-    ;; emacs-lisp
-    (use-package irony-eldoc
-      :ensure t)
-    (use-package company-irony
-      :ensure t)
-    (use-package platformio-mode
-      :ensure t)
-    ;; edit ino files with adruino mode.
-    (add-to-list 'auto-mode-alist '("\\.ino$" . arduino-mode))
-    ;; Enable irony for all c++ files, and platformio-mode only
-    ;; when needed (platformio.ini present in project root).
-    (add-hook 'c++-mode-hook (lambda ()
-			       (irony-mode)
-			       (irony-eldoc)
-			       (platformio-conditionally-enable)))
+  ;; emacs-lisp
+(use-package irony-eldoc
+  :ensure t)
+(use-package company-irony
+  :ensure t)
+(use-package platformio-mode
+  :ensure t)
+;; edit ino files with adruino mode.
+(add-to-list 'auto-mode-alist '("\\.ino$" . arduino-mode))
+;; Enable irony for all c++ files, and platformio-mode only
+;; when needed (platformio.ini present in project root).
+(add-hook 'c++-mode-hook (lambda ()
+			   (irony-mode)
+			   (irony-eldoc)
+			   (platformio-conditionally-enable)))
 
-    (add-hook 'c-mode-hook (lambda ()
-			     (irony-mode)
-			     (irony-eldoc)
-			     (platformio-conditionally-enable)))
+(add-hook 'c-mode-hook (lambda ()
+			 (irony-mode)
+			 (irony-eldoc)
+			 (platformio-conditionally-enable)))
 
-    ;; Use irony's completion functions.
-    (add-hook 'irony-mode-hook
-	      (lambda ()
-		(define-key irony-mode-map [remap completion-at-point]
-		  'irony-completion-at-point-async)
+;; Use irony's completion functions.
+(add-hook 'irony-mode-hook
+	  (lambda ()
+	    (define-key irony-mode-map [remap completion-at-point]
+	      'irony-completion-at-point-async)
 
-		(define-key irony-mode-map [remap complete-symbol]
-		  'irony-completion-at-point-async)
+	    (define-key irony-mode-map [remap complete-symbol]
+	      'irony-completion-at-point-async)
 
-		(irony-cdb-autosetup-compile-options)))
+	    (irony-cdb-autosetup-compile-options)))
 
-    (defun my-setup-company-backend ()
-      "Dynamically set the company backend."
-      (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
-	  (progn
-	    ;; Use company-lsp or company-capf for C/C++ modes
-	    (setq-local company-backends '((company-lsp :with company-yasnippet)
-					   company-capf
-					   company-files))
-	    (message "Set company backends for C/C++ mode"))
-	(progn
-	  ;; Use default company backends for other modes
-	  (setq-local company-backends '(company-irony company-capf company-files))
-	  (message "Set default company backends"))))
+(defun my-setup-company-backend ()
+  "Dynamically set the company backend."
+  (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
+      (progn
+	;; Use company-lsp or company-capf for C/C++ modes
+	(setq-local company-backends '((company-lsp :with company-yasnippet)
+				       company-capf
+				       company-files))
+	(message "Set company backends for C/C++ mode"))
+    (progn
+      ;; Use default company backends for other modes
+      (setq-local company-backends '(company-irony company-capf company-files))
+      (message "Set default company backends"))))
 
-    ;; Add this function to the hooks for the modes where you want to set up company backends
-    (add-hook 'c-mode-hook 'my-setup-company-backend)
-    (add-hook 'c++-mode-hook 'my-setup-company-backend)
-    (add-hook 'python-mode-hook 'my-setup-company-backend)
+;; Add this function to the hooks for the modes where you want to set up company backends
+(add-hook 'c-mode-hook 'my-setup-company-backend)
+(add-hook 'c++-mode-hook 'my-setup-company-backend)
+(add-hook 'python-mode-hook 'my-setup-company-backend)
 
-    (defun my-disable-ac-if-company-active ()
-      "Disable auto-complete if company-mode is active."
-      (message "Checking if auto-complete and company-mode are both active...")
-      (when (and (bound-and-true-p company-mode)
-		 (bound-and-true-p auto-complete-mode))
-	(message "Both are active. Disabling auto-complete-mode.")
-	(auto-complete-mode -1)))
+(defun my-disable-ac-if-company-active ()
+  "Disable auto-complete if company-mode is active."
+  (message "Checking if auto-complete and company-mode are both active...")
+  (when (and (bound-and-true-p company-mode)
+	     (bound-and-true-p auto-complete-mode))
+    (message "Both are active. Disabling auto-complete-mode.")
+    (auto-complete-mode -1)))
 
-  (defun my/latex-mode-setup ()
-    (setq-local company-backends '((company-files company-latex-commands company-dabbrev)))
-    ;; Other LaTeX mode specific setups can go here
-  )
 
-  (add-hook 'LaTeX-mode-hook #'my/latex-mode-setup)
+;; Add this function to the hooks where both company-mode and auto-complete could be active
+(add-hook 'c-mode-hook 'my-disable-ac-if-company-active)
+(add-hook 'c++-mode-hook 'my-disable-ac-if-company-active)
+(add-hook 'cmake-mode-hook 'my-disable-ac-if-company-active)
+(add-hook 'prog-mode-hook 'my-disable-ac-if-company-active)
 
-    ;; Add this function to the hooks where both company-mode and auto-complete could be active
-    (add-hook 'c-mode-hook 'my-disable-ac-if-company-active)
-    (add-hook 'c++-mode-hook 'my-disable-ac-if-company-active)
-    (add-hook 'cmake-mode-hook 'my-disable-ac-if-company-active)
-    (add-hook 'prog-mode-hook 'my-disable-ac-if-company-active)
-
-  (use-package company-manually
-    :load-path "/home/speedy/.emacs.d/elpa/company-manually-20200721.1903/")
 #+end_src
+
+#+RESULTS:
+| my-disable-ac-if-company-active | yas-minor-mode | rainbow-delimiters-mode |
+
+The code below may not really be necessary for the ASUS laptop. check if there are any conflicts if adding this
+(use-package company-manually
+    :load-path "/home/speedy/.emacs.d/elpa/company-manually-20200721.1903/")
 
 #+RESULTS:
 
@@ -1151,7 +1080,6 @@ WSL properly.
 			  (let ((command (format "Singular %s" (shell-quote-argument (buffer-file-name)))))
 			    (async-shell-command command))
 			  ) nil 'local)))
-
 #+end_src
 
 #+RESULTS:
@@ -1193,3 +1121,45 @@ WSL properly.
   (exec-path-from-shell-initialize))
 #+end_src
 
+** compile and fancy comp for python testing
+#+begin_src emacs-lisp
+(use-package compile
+  :ensure nil
+  :custom
+  (compilation-scroll-output 'first-error)
+  (compilation-always-kill t)
+  (compilation-max-output-line-length nil)
+  :hook (compilation-mode . hl-line-mode)
+  :init
+  ; from enberg on #emacs
+  (add-hook 'compilation-finish-functions
+            (lambda (buf str)
+              (if (null (string-match ".*exited abnormally.*" str))
+                  ;;no errors, make the compilation window go away in a few seconds
+                  (progn
+                    (run-at-time
+                     "1 sec" nil 'delete-windows-on
+                     (get-buffer-create "*compilation*"))
+                    (message "No Compilation Errors!")))))
+
+  )
+
+(use-package fancy-compilation
+  :ensure t
+  :defer 3
+  :config
+  (fancy-compilation-mode)
+  :custom
+  (fancy-compilation-scroll-output 'first-error))
+
+(use-package recompile-on-save
+  :ensure t
+  ;; Kill the buffer message that pops up after running advice on compile
+  :hook (after-init . (lambda () (run-at-time 1 nil
+     (lambda ()
+        (when (get-buffer "*Compile-Log*")
+           (kill-buffer "*Compile-Log*"))
+        (delete-other-windows)))))
+  :init
+  (recompile-on-save-advice compile))
+#+end_src
